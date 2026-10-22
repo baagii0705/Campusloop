@@ -384,7 +384,7 @@ function renderAdminReports(){
  const linked=adminListingRows.find(x=>x.id===r.listing_id);
  row.append(adminText("p","Зар: "+(linked?.title||r.listing_id)));
  const actions=document.createElement("div");actions.className="adminRowActions";
- if(linked){const view=adminText("button","Зар харах");view.onclick=()=>{closeAdminPanel();openDetail(r.listing_id)};actions.append(view)}
+ if(linked){const view=adminText("button","Зар харах");view.onclick=()=>{closeAdminPanel();openListing(r.listing_id)};actions.append(view)}
  for(const [status,label] of [["reviewed","Шалгасан"],["dismissed","Хэрэгсэхгүй"]]){
  const btn=adminText("button",label);btn.disabled=r.status===status;btn.onclick=()=>updateAdminReport(r.id,status);actions.append(btn)}
  row.append(actions);root.append(row)
@@ -406,7 +406,7 @@ function renderAdminListings(){
  row.append(adminText("strong",x.title));
  row.append(adminText("p",Number(x.price).toLocaleString("mn-MN")+" ₮"));
  const actions=document.createElement("div");actions.className="adminRowActions";
- const view=adminText("button","Харах");view.onclick=()=>{closeAdminPanel();openDetail(x.id)};actions.append(view);
+ const view=adminText("button","Харах");view.onclick=()=>{closeAdminPanel();openListing(x.id)};actions.append(view);
  const remove=adminText("button","Устгах");remove.className="danger";remove.onclick=()=>adminDeleteListing(x.id,x.title);actions.append(remove);
  row.append(actions);root.append(row)
  }
