@@ -1,0 +1,17 @@
+{
+  "appId": "mn.solio.market",
+  "appName": "Solio",
+  "webDir": "dist",
+  "backgroundColor": "#F9F6FF",
+  "server": {
+    "androidScheme": "https",
+    "iosScheme": "capacitor"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1500,
+      "backgroundColor": "#7654C7",
+      "showSpinner": false
+    }
+  }
+}
