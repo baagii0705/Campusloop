@@ -1,0 +1,20 @@
+{
+  "id": "/",
+  "name": "Solio — Оюутны онлайн зах",
+  "short_name": "Solio",
+  "description": "Ол. Солилц. Дахин хэрэглэ.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#F9F6FF",
+  "theme_color": "#7654C7",
+  "lang": "mn",
+  "icons": [
+    {
+      "src": "/solio-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
