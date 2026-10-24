@@ -15,7 +15,9 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - uses: android-actions/setup-android@v3
+      # GitHub ubuntu-latest already includes Android SDK; avoid setup-android tool download failures.
+      - name: Check Android SDK
+        run: test -d "$ANDROID_HOME" && "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --version
       - run: npm install
       - run: npm run cap:add:android
       - name: Build unsigned debug APK
