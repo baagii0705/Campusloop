@@ -1,0 +1,27 @@
+{
+  "name": "solio-mobile",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Solio student marketplace Capacitor Android and iOS app",
+  "scripts": {
+    "build": "node scripts/build-mobile.mjs",
+    "cap:add:android": "npm run build && npx cap add android",
+    "cap:add:ios": "npm run build && npx cap add ios",
+    "cap:sync": "npm run build && npx cap sync",
+    "cap:open:android": "npx cap open android",
+    "cap:open:ios": "npx cap open ios",
+    "android": "npm run cap:sync && npx cap open android",
+    "ios": "npm run cap:sync && npx cap open ios"
+  },
+  "dependencies": {
+    "@capacitor/core": "^7.4.0",
+    "@capacitor/android": "^7.4.0",
+    "@capacitor/ios": "^7.4.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.4.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
