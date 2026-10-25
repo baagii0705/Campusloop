@@ -58,7 +58,7 @@ public class MarketplaceReadController {
       return ResponseEntity.status(response.statusCode())
         .contentType(MediaType.APPLICATION_JSON).body(response.body());
     } catch (Exception e) {
-      Thread.currentThread().interruptIfInterrupted();
+      if (e instanceof InterruptedException) Thread.currentThread().interrupt();
       return error(HttpStatus.BAD_GATEWAY, "Data source unavailable");
     }
   }
