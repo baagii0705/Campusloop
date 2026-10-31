@@ -1,6 +1,6 @@
 # Solio Android + iOS (Capacitor)
 
-This mobile wrapper packages the **existing** Solio `index.html` and its PWA assets into native WebViews. It keeps the current Supabase project, listings, chat, profiles, school marketplace, Wanted and community features. It does not create a second backend.
+This mobile wrapper packages the **existing** Solio `index.html` and its PWA assets into native WebViews. It keeps the current Appwrite project, listings, chat, profiles, school marketplace, Wanted and community features. It does not create a second backend.
 
 ## Requirements
 - Node.js 20+, npm
@@ -22,8 +22,8 @@ On macOS: `npm run cap:open:ios` and build/run from Xcode. Set a unique signing 
 After changing `index.html`: run `npm run cap:sync` again. The `build` script copies current site files to `dist/` (no second version of the site). The generated native `android/` and `ios/` directories are excluded from Git and must be created on the development machine.
 
 ## Important checks before release
-1. Test login/signup, Supabase authentication persistence, chat, images, listings, file upload and links on **both physical platforms**. Supabase email confirmation/password-reset redirect URLs must include the mobile scheme if deep-link auth is required.
-2. Review Capacitor WebView origin, Supabase allowed redirect URLs, and native network permissions; do not put service-role keys in the app.
+1. Test login/signup, Appwrite authentication persistence, chat, images, listings, file upload and links on **both physical platforms**. Appwrite email confirmation/password-reset redirect URLs must include the mobile scheme if deep-link auth is required.
+2. Review Capacitor WebView origin, Appwrite allowed redirect URLs, and native network permissions; do not put service-role keys in the app.
 3. Create real PNG launcher icons and splash assets for Android and iOS; the included SVG is a PWA icon, not a production native icon set.
 4. Build a signed AAB for Play Store, and a signed iOS archive for App Store Connect. Apple Developer Program and Google Play Console registration may be required.
 5. App Store review may require native-app value beyond a simple website wrapper.
