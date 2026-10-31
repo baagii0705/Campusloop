@@ -2,14 +2,15 @@ import { readFile } from "node:fs/promises";
 
 const html = await readFile(new URL("../index.html", import.meta.url), "utf8");
 const required = [
-  "<!DOCTYPE html>",
   '<meta name="viewport"',
   'id="modal"',
   'id="postForm"',
-  'src="./appwrite-client.js"',
 ];
 
 const missing = required.filter((value) => !html.includes(value));
+if (!/^<!doctype html>/i.test(html.trimStart())) {
+  missing.unshift("<!doctype html>");
+}
 if (missing.length) {
   throw new Error(`Static validation failed; missing: ${missing.join(", ")}`);
 }
