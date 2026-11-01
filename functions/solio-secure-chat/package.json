@@ -1,0 +1,9 @@
+{
+  "name": "solio-secure-chat",
+  "version": "1.0.0",
+  "private": true,
+  "main": "src/main.js",
+  "dependencies": {
+    "node-appwrite": "^17.0.0"
+  }
+}
