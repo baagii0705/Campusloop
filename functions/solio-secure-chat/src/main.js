@@ -9,8 +9,8 @@ module.exports=async({req,res,log,error})=>{
   if(!jwt)return fail(401,'Нэвтэрч дахин оролдоно уу.');
   const caller=new Client().setEndpoint(endpoint).setProject(project).setJWT(jwt);
   const me=await new Account(caller).get();
-  const adminKey=process.env.APPWRITE_API_KEY;
-  if(!adminKey)return fail(503,'Chat server API key is not configured');
+  const adminKey=req.headers['x-appwrite-key'];
+  if(!adminKey)return fail(503,'Chat execution API key is not available');
   const admin=new Databases(new Client().setEndpoint(endpoint).setProject(project).setKey(adminKey));
   const input=JSON.parse(req.bodyText||'{}');
   if(input.action==='createThread'){
