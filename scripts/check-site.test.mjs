@@ -75,3 +75,15 @@ test('Wanted has its own page and remains separate from Search and Community',()
   assert.ok(js.includes('if(location.hash==="#wanted")'));
   assert.ok(js.includes('function openSolioWanted()'));
 });
+
+test('profile modal sits above sticky header and close button stays visible on iPhone',()=>{
+  assert.ok(markup.includes('id="modal" role="presentation"'));
+  assert.ok(markup.includes('class="dialog" role="dialog" aria-modal="true"'));
+  assert.ok(markup.includes('class="close" type="button" aria-label="Цонх хаах"'));
+  assert.ok(markup.includes('onclick="closeModal()"'));
+  const style=html.slice(0,html.indexOf('</style>'));
+  assert.ok(style.includes('#modal{z-index:1000!important'));
+  assert.ok(style.includes('#modal>.dialog>.close{'));
+  assert.ok(style.includes('position:sticky!important'));
+  assert.ok(style.includes('max-height:calc(100dvh - 24px)!important'));
+});
