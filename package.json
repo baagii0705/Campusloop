@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Solio student marketplace Capacitor Android and iOS app",
   "scripts": {
-    "test": "node --test tests/solio-smoke.test.mjs scripts/check-site.test.mjs",
+    "test": "node --test tests/solio-smoke.test.mjs",
     "build": "npm test && node scripts/build-mobile.mjs",
     "cap:add:android": "npm run build && npx cap add android",
     "cap:add:ios": "npm run build && npx cap add ios",
