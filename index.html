@@ -1488,7 +1488,97 @@ document.getElementById("postForm").onsubmit=e=>{e.preventDefault();saveListing(
 }
 
 async function authAction(mode){const email=document.getElementById("authEmail").value.trim(),password=document.getElementById("authPass").value,msg=document.getElementById("authMessage"),btn=document.getElementById("authSubmit");if(!email||!document.getElementById("authEmail").validity.valid){msg.textContent="Зөв имэйл хаяг оруулна уу.";return}if(mode!=="reset"&&password.length<6){msg.textContent="Нууц үг хамгийн багадаа 6 тэмдэгт байх ёстой.";return}if(mode==="register"&&password!==document.getElementById("authConfirm").value){msg.textContent="Нууц үгүүд хоорондоо таарахгүй байна.";return}btn.disabled=true;const original=btn.textContent;btn.textContent="Түр хүлээнэ үү...";msg.textContent="";try{let result;if(mode==="register")result=await appwriteAuth.signUp({email,password,options:{emailRedirectTo:location.origin+"/"}});else if(mode==="reset")result=await appwriteAuth.resetPasswordForEmail(email,{redirectTo:location.origin+"/"});else result=await Promise.race([appwriteAuth.signInWithPassword({email,password}),new Promise((_,reject)=>setTimeout(()=>reject(new Error('Нэвтрэх хүсэлт удааширлаа. Интернэт холболтоо шалгаад дахин оролдоно уу.')),15000))]);if(result.error){const message=result.error.message||"";msg.textContent=/invalid login credentials/i.test(message)?"Имэйл эсвэл нууц үг буруу байна.":/email not confirmed/i.test(message)?"Имэйл хаягаа баталгаажуулсны дараа нэвтэрнэ үү.":/rate limit|too many requests|email rate limit exceeded|over_email_send_rate_limit/i.test(message)?"Олон хүсэлт илгээсэн байна. Түр хүлээгээд дахин оролдоно уу.":message;return}if(mode==="reset"){msg.textContent="Хэрэв энэ имэйл бүртгэлтэй бол сэргээх холбоос илгээгдэнэ.";return}if(mode==="register"&&!result.data?.session){msg.textContent="Бүртгэлийн хүсэлт илгээгдлээ. Имэйлээ шалгаж баталгаажуулна уу.";return}const resumePost=solioPendingPostAfterAuth;solioPendingPostAfterAuth=false;closeModal();toast(mode==="register"?"Амжилттай бүртгүүллээ!":"Амжилттай нэвтэрлээ!");if(resumePost)openModal("post")}catch(e){msg.textContent=e?.message||"Холболтын алдаа. Интернэтээ шалгаад дахин оролдоно уу."}finally{btn.disabled=false;btn.textContent=original}}
-async function saveListing(id){const form=document.getElementById("postForm"),submit=form.querySelector('[type="submit"]');submit.disabled=true;submit.textContent="Хадгалж байна...";try{let image=document.getElementById("newImage").value.trim();const files=[...(document.getElementById("newImageFile").files||[])];if(files.length>10)throw Error("10 хүртэл зураг сонгоно уу");let uploaded=[];if(image&&!image.startsWith("https://"))throw Error("Зургийн холбоос HTTPS байх ёстой");for(const file of files){if(file.size>5242880||!["image/jpeg","image/png","image/webp","image/gif"].includes(file.type))throw Error("Зураг 5 MB-аас бага JPG, PNG, WebP эсвэл GIF байх ёстой");const ext=({ "image/jpeg":"jpg","image/png":"png","image/webp":"webp","image/gif":"gif"})[file.type];const path=Appwrite.ID.unique();const {error:uploadError}=await db.storage.from("listing-images").upload(path,file,{contentType:file.type,upsert:false});if(uploadError)throw uploadError;uploaded.push(db.storage.from("listing-images").getPublicUrl(path).data.publicUrl)}if(uploaded.length)image=uploaded[0];const title=document.getElementById("newTitle").value.trim(),price=Number(document.getElementById("newPrice").value),description=document.getElementById("newDesc").value.trim(),phone=document.getElementById("newPhone").value.trim(),instagram=document.getElementById("newInstagram").value.trim().replace(/^@/,"").replace(/^https?:\/\/(www\.)?instagram\.com\//i,"").replace(/\/$/,""),meetingPlace=document.getElementById("newMeetingPlace").value.trim();const obj={user_id:session.user.id,title,price,school:document.getElementById("newSchool").value,category:document.getElementById("newCategory").value,description,created_at:id?(listings.find(z=>z.id===id)?.created_at||new Date().toISOString()):new Date().toISOString()};if(image)obj.image_url=image;if(phone)obj.phone=phone;if(instagram)obj.instagram=instagram;if(meetingPlace)obj.meeting_place=meetingPlace;if(instagram&&!/^[a-zA-Z0-9._]{1,30}$/.test(instagram))return toast("Instagram нэрээ зөв оруулна уу");if(phone&&!/^[+0-9 ()-]{6,25}$/.test(phone))return toast("Утасны дугаараа зөв оруулна уу");if(title.length<3||!Number.isFinite(price)||price<0)return toast("Барааны нэр болон үнийг шалгана уу");const {error}=id?await db.from("listings").update(obj).eq("id",id).eq("user_id",session.user.id):await db.from("listings").insert({...obj,user_id:session.user.id});if(error)throw error;closeModal();toast("Зар зурагтайгаа амжилттай хадгалагдлаа");await loadListings()}catch(e){toast("Алдаа: "+(e.message||"Дахин оролдоно уу"))}finally{submit.disabled=false;submit.textContent=id?"Хадгалах":"Зар нийтлэх"}}
+async function saveListing(id){
+  const form=document.getElementById("postForm");
+  if(!form||!session?.user?.id)return;
+  const submit=form.querySelector('[type="submit"]'),status=document.getElementById("postStatus");
+  if(submit.disabled)return;
+  const original=submit.textContent;
+  const showStatus=(message,isError=false)=>{
+    if(status){status.textContent=message;status.classList.toggle("is-error",isError)}
+    if(isError)toast(message);
+  };
+  const title=document.getElementById("newTitle").value.trim();
+  const priceText=document.getElementById("newPrice").value,price=Number(priceText);
+  const school=document.getElementById("newSchool").value,category=document.getElementById("newCategory").value;
+  const description=document.getElementById("newDesc").value.trim();
+  const phone=document.getElementById("newPhone").value.trim();
+  const instagram=document.getElementById("newInstagram").value.trim().replace(/^@/,"").replace(/^https?:\/\/(www\.)?instagram\.com\//i,"").replace(/\/$/,"");
+  const meetingPlace=document.getElementById("newMeetingPlace").value.trim();
+  const imageInput=document.getElementById("newImage");
+  let image=imageInput.value.trim();
+  const files=[...(document.getElementById("newImageFile").files||[])];
+  const fail=(message,input)=>{
+    showStatus(message,true);
+    if(input){if(input.closest("#quickPostExtras"))document.getElementById("quickPostExtras").open=true;input.focus()}
+  };
+  // Validate BEFORE starting any network upload.
+  if(title.length<3){fail("Барааны нэр хамгийн багадаа 3 тэмдэгт байна.",document.getElementById("newTitle"));return}
+  if(priceText===""||!Number.isSafeInteger(price)||price<0){fail("Үнийг зөв оруулна уу.",document.getElementById("newPrice"));return}
+  if(!school){fail("Сургуулиа сонгоно уу.",document.getElementById("newSchool"));return}
+  if(!category){fail("Ангиллаа сонгоно уу.",document.getElementById("newCategory"));return}
+  if(instagram&&!/^[a-zA-Z0-9._]{1,30}$/.test(instagram)){fail("Instagram нэрээ зөв оруулна уу.",document.getElementById("newInstagram"));return}
+  if(phone&&!/^[+0-9 ()-]{6,25}$/.test(phone)){fail("Утасны дугаараа зөв оруулна уу.",document.getElementById("newPhone"));return}
+  if(image&&!/^https:\/\//i.test(image)){fail("Зургийн холбоос HTTPS байх ёстой.",imageInput);return}
+  if(files.length>10){fail("10 хүртэл зураг сонгоно уу.",document.getElementById("newImageFile"));return}
+  if(files.some(file=>file.size>5242880||!["image/jpeg","image/png","image/webp","image/gif"].includes(file.type))){
+    fail("Зураг бүр 5 MB-аас бага JPG, PNG, WebP эсвэл GIF байх ёстой.",document.getElementById("newImageFile"));return;
+  }
+  const previous=id?listings.find(x=>x.id===id):null;
+  const obj={user_id:session.user.id,title,price,school,category,description,
+    created_at:previous?.created_at||new Date().toISOString()};
+  if(phone||previous?.phone)obj.phone=phone;
+  if(instagram||previous?.instagram)obj.instagram=instagram;
+  if(meetingPlace||previous?.meeting_place)obj.meeting_place=meetingPlace;
+  submit.disabled=true;
+  submit.textContent=files.length?"Зураг бэлдэж байна…":"Нийтэлж байна…";
+  showStatus("");
+  try{
+    if(files.length){
+      const urls=new Array(files.length);
+      let nextIndex=0,finished=0;
+      const workers=Array.from({length:Math.min(3,files.length)},async()=>{
+        while(nextIndex<files.length){
+          const index=nextIndex++,file=files[index],path=Appwrite.ID.unique();
+          const bucket=db.storage.from("listing-images");
+          const {error}=await bucket.upload(path,file,{contentType:file.type,upsert:false});
+          if(error)throw error;
+          urls[index]=bucket.getPublicUrl(path).data.publicUrl;
+          finished++;
+          showStatus("Зураг ачаалж байна: "+finished+"/"+files.length);
+        }
+      });
+      await Promise.all(workers);
+      image=urls[0];
+      obj.image_url=image;
+      obj.image_urls=JSON.stringify(urls);
+    }else if(image!==String(previous?.image_url||"")){
+      obj.image_url=image||null;
+      obj.image_urls=JSON.stringify(image?[image]:[]);
+    }else if(!id&&image){
+      obj.image_url=image;
+      obj.image_urls=JSON.stringify([image]);
+    }
+    submit.textContent=id?"Хадгалж байна…":"Зар нийтэлж байна…";
+    showStatus("Зарыг хадгалж байна…");
+    const {error}=id
+      ?await db.from("listings").update(obj).eq("id",id).eq("user_id",session.user.id)
+      :await db.from("listings").insert(obj);
+    if(error)throw error;
+    try{
+      localStorage.setItem("solio_last_school",school);
+      localStorage.setItem("solio_last_category",category);
+    }catch(e){}
+    closeModal();
+    toast(id?"Зар амжилттай шинэчлэгдлээ!":"Зар амжилттай нийтлэгдлээ!");
+    await loadListings();
+  }catch(error){
+    showStatus("Алдаа: "+(error.message||"Дахин оролдоно уу."),true);
+  }finally{
+    submit.disabled=false;
+    submit.textContent=original;
+  }
+}
 async function deleteListing(id){if(!confirm("Энэ зарыг устгах уу?"))return;const {error}=await db.from("listings").delete().eq("id",id).eq("user_id",session.user.id);if(error)toast(error.message);else{toast("Зар устгагдлаа");await loadListings()}}
 function toggleMyListings(){if(!session){openModal('login');return}onlyMine=!onlyMine;render()}
 function resetMarketFilters(){school='Бүх сургууль';category='Бүх ангилал';onlyMine=false;document.getElementById('search').value='';document.getElementById('sort').value='new';document.getElementById('solioListingFilter').value='all';savedOnly=false;render()}
