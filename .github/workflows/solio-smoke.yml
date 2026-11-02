@@ -1,0 +1,25 @@
+name: Solio code checks
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main, feat/community-dedicated-page-20261102]
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    name: Test Solio website and mobile bundle
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Check JavaScript and site structure
+        run: npm test
+      - name: Check mobile site build
+        run: node scripts/build-mobile.mjs
