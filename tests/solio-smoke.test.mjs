@@ -119,8 +119,13 @@ test('iPhone modal is above sticky header with accessible close button', () => {
 
 
 test('quick-post form keeps essential fields, optional details and mobile submit',()=>{
+  const start=inlineScript.indexOf('const listingFormHTML=');
+  const end=inlineScript.indexOf(';\nbody.innerHTML=',start);
+  assert.ok(start>=0&&end>start,'post markup exists');
+  const literal=inlineScript.slice(start+'const listingFormHTML='.length,end);
+  const formMarkup=JSON.parse(literal);
   for(const field of ['newTitle','newPrice','newSchool','newCategory','newImageFile','newImage','newPhone','newInstagram','newDesc','newMeetingPlace']){
-    assert.ok(inlineScript.includes('id=\"'+field+'\"'),field);
+    assert.ok(formMarkup.includes('id=\"'+field+'\"'),field);
   }
   assert.match(inlineScript,/quickPostExtras/);
   assert.match(inlineScript,/postFreeToggle/);
