@@ -84,3 +84,35 @@ test('PWA cache is refreshed for the redesigned UI', () => {
   const sw = readFileSync(new URL('../sw.js', import.meta.url), 'utf8');
   assert.match(sw, /solio-shell-v5/);
 });
+
+test('DOM element IDs are unique', () => {
+  const ids=[...staticHtml.matchAll(/\bid="([^"]+)"/g)].map(match=>match[1]);
+  assert.ok(ids.length>40, 'main application DOM is present');
+  assert.equal(ids.length,new Set(ids).size);
+});
+
+test('essential marketplace destinations remain in the page', () => {
+  for(const id of ['market','cards','schoolHub','schoolHubGrid','solioSearchPage',
+    'solioSearchSchools','solioSearchListings','socialHub','communityPanel',
+    'wantedPanel','bottomHome','bottomSchools','bottomWanted','bottomSearch',
+    'bottomCommunity','bottomAccount']){
+    assert.ok(staticHtml.includes('id="'+id+'"'),id);
+  }
+});
+
+test('profile notifications are not duplicated in marketplace feed', () => {
+  assert.ok(inlineScript.includes('id="profileNotifications"'));
+  assert.ok(!staticHtml.includes('id="solioNotifCount"'));
+  assert.ok(!staticHtml.includes('onclick="showSolioMatches()"'));
+  assert.ok(inlineScript.includes('if(page)page.hidden=true'));
+});
+
+test('iPhone modal is above sticky header with accessible close button', () => {
+  assert.ok(staticHtml.includes('id="modal" role="presentation"'));
+  assert.ok(staticHtml.includes('class="dialog" role="dialog" aria-modal="true"'));
+  assert.ok(staticHtml.includes('class="close" type="button" aria-label="Цонх хаах"'));
+  assert.ok(staticHtml.includes('onclick="closeModal()"'));
+  assert.ok(staticHtml.includes('#modal{z-index:1000!important'));
+  assert.ok(staticHtml.includes('#modal>.dialog>.close{'));
+  assert.ok(staticHtml.includes('max-height:calc(100dvh - 24px)!important'));
+});
