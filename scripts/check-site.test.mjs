@@ -72,6 +72,6 @@ test('Wanted has its own page and remains separate from Search and Community',()
   assert.ok(nav.includes('onclick="goMobileSearch()"'));
   assert.ok(nav.includes('onclick="openSolioCommunity()"'));
   assert.ok(markup.includes('id="wantedPanel"'));
-  assert.ok(js.includes("if(location.hash==="#wanted")"));
+  assert.ok(js.includes('if(location.hash==="#wanted")'));
   assert.ok(js.includes('function openSolioWanted()'));
 });
