@@ -21,7 +21,7 @@ test('DOM ids are unique',()=>{
 test('all essential pages and tabs exist',()=>{
   const ids=['market','cards','schoolHub','schoolHubGrid','solioSearchPage',
     'solioSearchSchools','solioSearchListings','socialHub','communityPanel',
-    'bottomHome','bottomSchools','bottomWanted','bottomCommunity','bottomAccount'];
+    'bottomHome','bottomSchools','bottomWanted','bottomSearch','bottomCommunity','bottomAccount'];
   for(const id of ids) assert.ok(markup.includes('id="'+id+'"'),id);
 });
 
@@ -59,4 +59,19 @@ test('listing image loading, search and card actions are guarded',()=>{
     'function loadListings(reset=true)',
     'class="solioListingError"',
   ]) assert.ok(html.includes(part),part);
+});
+
+test('Wanted has its own page and remains separate from Search and Community',()=>{
+  const nav=markup.slice(markup.indexOf('<nav class="mobileBottomNav"'),markup.indexOf('</nav>',markup.indexOf('<nav class="mobileBottomNav"'))+6);
+  const school=nav.indexOf('id="bottomSchools"');
+  const wanted=nav.indexOf('id="bottomWanted"');
+  const post=nav.indexOf('class="bottomPost"');
+  const search=nav.indexOf('id="bottomSearch"');
+  assert.ok(school>=0&&school<wanted&&wanted<post&&post<search);
+  assert.ok(nav.includes('onclick="openSolioWanted()"'));
+  assert.ok(nav.includes('onclick="goMobileSearch()"'));
+  assert.ok(nav.includes('onclick="openSolioCommunity()"'));
+  assert.ok(markup.includes('id="wantedPanel"'));
+  assert.ok(js.includes("if(location.hash==="#wanted")"));
+  assert.ok(js.includes('function openSolioWanted()'));
 });
