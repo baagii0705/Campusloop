@@ -1,8 +1,24 @@
+# Dependencies and generated website output
 node_modules/
 dist/
+coverage/
+
+# Generated native app projects (created locally with Capacitor)
 android/
 ios/
-.DS_Store
+
+# Local environment and credentials (never commit)
+.env
+.env.*
+!.env.example
 *.keystore
 *.jks
-.env
+*.p12
+*.mobileprovision
+
+# Local tooling and operating system files
+.DS_Store
+.idea/
+.vscode/
+*.log
+npm-debug.log*
