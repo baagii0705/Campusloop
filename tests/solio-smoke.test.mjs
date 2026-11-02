@@ -17,14 +17,21 @@ test('Solio JavaScript can be parsed', () => {
   assert.doesNotThrow(() => new Script(inlineScript, { filename: 'index.html' }));
 });
 
-test('Mobile has six unique working destinations', () => {
+test('Mobile has seven distinct working destinations, Wanted beside Schools', () => {
   const nav = section('<nav class="mobileBottomNav"', '</nav>');
-  assert.equal((nav.match(/<button\b/g) || []).length, 6);
-  for (const id of ['bottomHome', 'bottomSchools', 'bottomWanted', 'bottomCommunity', 'bottomAccount']) {
+  assert.equal((nav.match(/<button\b/g) || []).length, 7);
+  const school = nav.indexOf('id="bottomSchools"');
+  const wanted = nav.indexOf('id="bottomWanted"');
+  const post = nav.indexOf('class="bottomPost"');
+  const search = nav.indexOf('id="bottomSearch"');
+  const community = nav.indexOf('id="bottomCommunity"');
+  assert.ok(school > 0 && school < wanted && wanted < post && post < search && search < community);
+  for (const id of ['bottomHome', 'bottomSchools', 'bottomWanted', 'bottomSearch', 'bottomCommunity', 'bottomAccount']) {
     assert.equal((nav.match(new RegExp('id="' + id + '"', 'g')) || []).length, 1);
   }
+  assert.match(nav, /onclick="openSolioWanted\(\)"/);
+  assert.match(nav, /onclick="goMobileSearch\(\)"/);
   assert.match(nav, /onclick="openSolioCommunity\(\)"/);
-  assert.match(nav, /onclick="goMobileWanted\(\)"/);
 });
 
 test('Home contains only one Add listing button and no redundant Community shortcut', () => {
@@ -42,9 +49,13 @@ test('Marketplace uses one accessible category selector', () => {
   assert.match(market, /id="sort"/);
 });
 
-test('Schools and Community have dedicated pages', () => {
+test('Schools, Wanted and Community have dedicated pages', () => {
   assert.match(staticHtml, /id="schoolHubGrid"/);
+  assert.match(staticHtml, /id="wantedPanel"/);
   assert.match(staticHtml, /id="communityPanel"/);
+  assert.match(inlineScript, /function openSolioWanted\(\)/);
+  assert.match(inlineScript, /solioWantedPage/);
+  assert.match(inlineScript, /location.hash==="#wanted"/);
   assert.match(staticHtml, /id="solioSearchPage"[^>]*hidden/);
   assert.match(inlineScript, /function leaveSolioSearch\(\)[\s\S]*?page.hidden=true/);
 });
@@ -71,5 +82,5 @@ test('Card price formatting handles free and invalid prices', () => {
 
 test('PWA cache is refreshed for the redesigned UI', () => {
   const sw = readFileSync(new URL('../sw.js', import.meta.url), 'utf8');
-  assert.match(sw, /solio-shell-v3/);
+  assert.match(sw, /solio-shell-v4/);
 });
