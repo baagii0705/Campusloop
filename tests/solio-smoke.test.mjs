@@ -82,7 +82,7 @@ test('Card price formatting handles free and invalid prices', () => {
 
 test('PWA cache is refreshed for the redesigned UI', () => {
   const sw = readFileSync(new URL('../sw.js', import.meta.url), 'utf8');
-  assert.match(sw, /solio-shell-v5/);
+  assert.match(sw, /solio-shell-v6/);
 });
 
 test('DOM element IDs are unique', () => {
