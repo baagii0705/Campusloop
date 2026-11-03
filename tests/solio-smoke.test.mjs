@@ -209,8 +209,8 @@ test('quick-post validates before uploading and saves multiple images in order',
   assert.equal(inserted.title,'iPad 9');
   assert.equal(inserted.price,450000);
   assert.equal(inserted.image_url,'https://images.example/1');
-  assert.equal(JSON.parse(inserted.image_urls).length,2);
-  assert.equal(JSON.parse(inserted.image_urls)[1],'https://images.example/2');
+  assert.equal(inserted.image_urls.length,2);
+  assert.equal(inserted.image_urls[1],'https://images.example/2');
   assert.equal(closed,1);
   assert.equal(refreshed,1);
 });
