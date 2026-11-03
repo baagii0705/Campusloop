@@ -1453,7 +1453,7 @@ if(solioCardsRoot){
 function solioListingGallery(x){
   let stored=[];
   try{
-    const parsed=JSON.parse(x.image_urls||"[]");
+    const parsed=Array.isArray(x.image_urls)?x.image_urls:JSON.parse(x.image_urls||"[]");
     if(Array.isArray(parsed))stored=parsed;
   }catch(e){}
   return [...new Set([x.image_url,...stored,...(Array.isArray(x.images)?x.images:[])]
@@ -1693,13 +1693,13 @@ async function saveListing(id){
       await Promise.all(workers);
       image=urls[0];
       obj.image_url=image;
-      obj.image_urls=JSON.stringify(urls);
+      obj.image_urls=urls;
     }else if(image!==String(previous?.image_url||"")){
       obj.image_url=image||null;
-      obj.image_urls=JSON.stringify(image?[image]:[]);
+      obj.image_urls=image?[image]:[];
     }else if(!id&&image){
       obj.image_url=image;
-      obj.image_urls=JSON.stringify([image]);
+      obj.image_urls=[image];
     }
     submit.textContent=id?"Хадгалж байна…":"Зар нийтэлж байна…";
     showStatus("Зарыг хадгалж байна…");
