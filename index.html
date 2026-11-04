@@ -1481,7 +1481,22 @@ async function loadListings(reset=true){
   }
   try{
     const pageSize=24;
-    const {data,error}=await db.from('listings').select('*').order('created_at',{ascending:false}).range(listingPage*pageSize,(listingPage+1)*pageSize-1);
+    let data,error=null;
+    try{
+      // Public marketplace feed is loaded through the same-origin Cloudflare API.
+      // This is independent of sponsored_ads and does not change any listing.
+      const response=await fetch('/api/public/listings?offset='+(listingPage*pageSize)+'&limit='+pageSize,{credentials:'omit',cache:'no-store'});
+      if(!response.ok)throw new Error('Public listings API HTTP '+response.status);
+      const payload=await response.json();
+      if(!Array.isArray(payload.documents))throw new Error('Public listings API returned invalid data');
+      data=payload.documents.map(normalizeAppwriteDocument);
+    }catch(proxyError){
+      console.warn('Solio public listings API:',proxyError);
+      const fallback=await db.from('listings').select('*').order('created_at',{ascending:false}).range(listingPage*pageSize,(listingPage+1)*pageSize-1);
+      data=fallback.data;
+      error=fallback.error;
+      if(error)error=new Error('Cloudflare: '+String(proxyError.message||proxyError)+'; Appwrite: '+String(error.message||error));
+    }
     if(error)throw error;
     const page=Array.isArray(data)?data:[];
     if(reset)listings=page;
