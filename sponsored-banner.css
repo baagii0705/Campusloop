@@ -1,5 +1,5 @@
 /* Sponsored banner above Solio's mobile bottom navigation */
-#solioSponsorBar{display:none;position:fixed;left:12px;right:12px;bottom:var(--solio-nav-height,94px);z-index:24;background:#fff;border:1px solid #e9ddf5;border-radius:16px;box-shadow:0 4px 18px #29114b20;padding:7px 36px 7px 9px;align-items:center;gap:10px;min-height:66px;max-width:600px;margin:0 auto}
+#solioSponsorBar{display:none;position:fixed;left:12px;right:12px;bottom:calc(var(--solio-nav-height,94px) + 16px);z-index:24;background:#fff;border:1px solid #e9ddf5;border-radius:16px;box-shadow:0 4px 18px #29114b20;padding:7px 36px 7px 9px;align-items:center;gap:10px;min-height:66px;max-width:600px;margin:0 auto}
 #solioSponsorBar.is-visible{display:flex}
 #solioSponsorBar .sponsorLink{display:flex;align-items:center;gap:10px;min-width:0;flex:1;text-decoration:none;color:#292339}
 #solioSponsorBar .sponsorImage{width:66px;height:48px;object-fit:cover;border-radius:9px;background:#f3edf8;flex:none}
