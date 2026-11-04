@@ -1819,7 +1819,7 @@ if(solioSearchSchoolsRoot)solioSearchSchoolsRoot.addEventListener('click',event=
 function goMobileSpace(){leaveSolioCommunity();leaveSolioSearch();leaveMobileSchools();if(!session){openModal("login");return}updateBottomTabs("bottomAccount");openSolioProfile()}
 function goMyListings(){if(!session){openModal("login");return}leaveSolioSearch();leaveSolioCommunity();leaveMobileSchools();if(["#search","#schools","#community","#wanted"].includes(location.hash))history.replaceState(null,"",location.pathname+location.search);savedOnly=false;onlyMine=true;render();updateBottomTabs("bottomHome");document.getElementById("market").scrollIntoView({behavior:"smooth"})}
 
-function isCampusAdmin(){return !!(session?.user?.app_metadata?.sevgui_admin===true)}
+function isCampusAdmin(){return session?.user?.labels?.includes('admin')===true}
 function syncAdminNav(){const btn=document.getElementById("adminNavBtn");if(btn)btn.hidden=!isCampusAdmin();if(!isCampusAdmin())closeAdminPanel()}
 function closeAdminPanel(){const p=document.getElementById("adminPanel");if(p)p.hidden=true}
 let adminListingRows=[],adminReportRows=[];
