@@ -1515,7 +1515,7 @@ async function loadListings(reset=true){
     toast('Зар ачаалахад алдаа гарлаа. Дахин оролдоно уу.');
     if(reset&&!listings.length){
       const root=document.getElementById('cards');
-      if(root)root.innerHTML='<div class="solioListingError" role="alert"><p>Заруудыг ачаалж чадсангүй.</p><button type="button" onclick="loadListings(true)">Дахин оролдох ↻</button></div>';
+      if(root){root.innerHTML='<div class="solioListingError" role="alert"><p>Заруудыг ачаалж чадсангүй.</p><p id="solioListingErrorDetail" style="font-size:12px;overflow-wrap:anywhere"></p><button type="button" onclick="loadListings(true)">Дахин оролдох ↻</button></div>';const detail=document.getElementById('solioListingErrorDetail');if(detail)detail.textContent='Алдааны мэдээлэл: '+String(error?.message||error?.code||'Тодорхойгүй алдаа').slice(0,300);}
     }
   }finally{
     loadingListings=false;
