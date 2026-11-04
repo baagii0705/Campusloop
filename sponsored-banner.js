@@ -12,10 +12,26 @@ function syncPosition(){if(!nav)return;const h=Math.ceil(nav.getBoundingClientRe
 syncPosition();window.addEventListener('resize',syncPosition);if(nav&&window.ResizeObserver)new ResizeObserver(syncPosition).observe(nav);
 function show(){
  const ad=ads[current];if(!ad||closed){bar.classList.remove('is-visible');document.body.classList.remove('solio-sponsor-visible');return}
- const href=validUrl(ad.target_url),img=validUrl(ad.image_url);if(!href||!img){bar.classList.remove('is-visible');document.body.classList.remove('solio-sponsor-visible');return}
- bar.querySelector('.sponsorLink').href=href;
- bar.querySelector('.sponsorImage').src=img;
- bar.querySelector('.sponsorName').textContent=String(ad.name||'Байгууллагын сурталчилгаа');
+ const placeholder=ad.$id==='solio_welcome_demo';
+ const href=validUrl(ad.target_url),img=validUrl(ad.image_url);
+ if(!placeholder&&(!href||!img)){bar.classList.remove('is-visible');document.body.classList.remove('solio-sponsor-visible');return}
+ const link=bar.querySelector('.sponsorLink');
+ const photo=bar.querySelector('.sponsorImage');
+ bar.classList.toggle('is-placeholder',placeholder);
+ photo.hidden=placeholder;
+ if(placeholder){
+  photo.removeAttribute('src');
+  link.removeAttribute('href');
+  link.removeAttribute('target');
+  link.setAttribute('aria-label','Энд таны зар байрлана');
+ }else{
+  link.href=href;
+  link.target='_blank';
+  link.removeAttribute('aria-label');
+  photo.src=img;
+ }
+ bar.querySelector('.sponsorTag').textContent=placeholder?'Сурталчилгааны талбай':'Ивээн тэтгэсэн';
+ bar.querySelector('.sponsorName').textContent=placeholder?'Энд таны зар байрлана':String(ad.name||'Байгууллагын сурталчилгаа');
  bar.classList.add('is-visible');document.body.classList.add('solio-sponsor-visible');syncPosition();
 }
 bar.querySelector('.sponsorClose').addEventListener('click',()=>{closed=true;show()});
