@@ -21,7 +21,14 @@ function show(){
 bar.querySelector('.sponsorClose').addEventListener('click',()=>{closed=true;show()});
 async function load(){
  try{
-  const response=await appwriteDatabases.listDocuments(APPWRITE_CONFIG.databaseId,COLLECTION,[Appwrite.Query.limit(100)]);
+  let response;
+  try{
+   const request=await fetch('/api/public/sponsored_ads?limit=100',{credentials:'omit',cache:'no-store'});
+   if(!request.ok)throw new Error('Sponsored banner API HTTP '+request.status);
+   response=await request.json();
+  }catch(proxyError){
+   response=await appwriteDatabases.listDocuments(APPWRITE_CONFIG.databaseId,COLLECTION,[Appwrite.Query.limit(100)]);
+  }
   const now=Date.now();
   ads=(response.documents||[]).filter(ad=>ad.active===true&&(!ad.start_at||Date.parse(ad.start_at)<=now)&&(!ad.end_at||Date.parse(ad.end_at)>now)&&validUrl(ad.target_url)&&validUrl(ad.image_url));
   current=0;show();
