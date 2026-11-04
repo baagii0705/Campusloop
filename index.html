@@ -1828,12 +1828,12 @@ async function openAdminPanel(){
  const p=document.getElementById("adminPanel");p.hidden=false;p.scrollIntoView({behavior:"smooth"});
  document.getElementById("adminReports").textContent="Ачаалж байна...";
  document.getElementById("adminListings").textContent="Ачаалж байна...";
- const [ls,rs]=await Promise.all([db.from("listings").select("id,title,price,school,created_at").order("created_at",{ascending:false}).limit(200),db.from("listing_reports").select("id,listing_id,reason,details,status,created_at").order("created_at",{ascending:false}).limit(200)]);
+ const [ls,rs]=await Promise.all([db.from("listings").select("id,title,price,school,created_at").order("created_at",{ascending:false}).limit(200),db.from("listing_reports").select("id,listing_id,reason,created_at").order("created_at",{ascending:false}).limit(200)]);
  if(ls.error||rs.error){toast("Админ мэдээлэл авахад алдаа гарлаа");document.getElementById("adminReports").textContent=rs.error?.message||"";return}
  adminListingRows=ls.data||[];adminReportRows=rs.data||[];
  document.getElementById("adminListingsCount").textContent=adminListingRows.length+(adminListingRows.length===200?"+":"");
  document.getElementById("adminReportsCount").textContent=adminReportRows.length+(adminReportRows.length===200?"+":"");
- document.getElementById("adminOpenCount").textContent=adminReportRows.filter(x=>x.status==="open").length;
+ document.getElementById("adminOpenCount").textContent=adminReportRows.length;
  renderAdminReports();renderAdminListings()
 }
 function adminText(tag,textValue,className){const el=document.createElement(tag);el.textContent=String(textValue??"");if(className)el.className=className;return el}
@@ -1842,15 +1842,14 @@ function renderAdminReports(){
  if(!adminReportRows.length){root.append(adminText("p","Гомдол алга байна."));return}
  for(const r of adminReportRows){
  const row=document.createElement("article");row.className="adminRow";
- row.append(adminText("small",new Date(r.created_at).toLocaleDateString("mn-MN")+" · "+r.status));
+ row.append(adminText("small",new Date(r.created_at).toLocaleDateString("mn-MN")+" · Шинэ"));
  row.append(adminText("strong",r.reason));
- if(r.details)row.append(adminText("p",r.details));
+ 
  const linked=adminListingRows.find(x=>x.id===r.listing_id);
  row.append(adminText("p","Зар: "+(linked?.title||r.listing_id)));
  const actions=document.createElement("div");actions.className="adminRowActions";
  if(linked){const view=adminText("button","Зар харах");view.onclick=()=>{closeAdminPanel();openListing(r.listing_id)};actions.append(view)}
- for(const [status,label] of [["reviewed","Шалгасан"],["dismissed","Хэрэгсэхгүй"]]){
- const btn=adminText("button",label);btn.disabled=r.status===status;btn.onclick=()=>updateAdminReport(r.id,status);actions.append(btn)}
+ 
  row.append(actions);root.append(row)
  }
 }
@@ -1871,7 +1870,7 @@ function renderAdminListings(){
  row.append(adminText("p",Number(x.price).toLocaleString("mn-MN")+" ₮"));
  const actions=document.createElement("div");actions.className="adminRowActions";
  const view=adminText("button","Харах");view.onclick=()=>{closeAdminPanel();openListing(x.id)};actions.append(view);
- const remove=adminText("button","Устгах");remove.className="danger";remove.onclick=()=>adminDeleteListing(x.id,x.title);actions.append(remove);
+
  row.append(actions);root.append(row)
  }
 }
