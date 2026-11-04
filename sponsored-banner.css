@@ -6,6 +6,11 @@
 #solioSponsorBar .sponsorCopy{min-width:0;display:grid;gap:3px}
 #solioSponsorBar .sponsorTag{font-size:10px;color:#7c42bb;font-weight:700}
 #solioSponsorBar .sponsorName{font-size:13px;font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#solioSponsorBar.is-placeholder{justify-content:center;background:#faf6ff;border:1px dashed #ac82df;min-height:64px}
+#solioSponsorBar.is-placeholder .sponsorLink{justify-content:center;text-align:center}
+#solioSponsorBar.is-placeholder .sponsorCopy{justify-items:center;gap:2px}
+#solioSponsorBar.is-placeholder .sponsorName{font-size:15px;font-weight:750;color:#6e35ad}
+#solioSponsorBar.is-placeholder .sponsorTag{font-size:10px;color:#8c70ab}
 #solioSponsorBar .sponsorClose{position:absolute;right:7px;top:8px;border:0;background:#f5f0f9;border-radius:50%;width:26px;height:26px;color:#564b64;font-size:17px}
 body.solio-sponsor-visible{padding-bottom:var(--solio-sponsor-extra,78px)}
 #solioSponsorAdmin{margin:16px 0;padding:16px;background:#fff;border:1px solid #e8ddf4;border-radius:16px}
