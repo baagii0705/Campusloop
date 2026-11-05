@@ -12,7 +12,7 @@ export async function onRequestPost({request,env}){
   if(company.length<2||contact_name.length<2||!/^\S+@\S+\.\S+$/.test(email)||!phone&&email.length<5||image_url===null||target_url===null)return response({error:'Байгууллагын нэр, холбоо барих хүн, имэйл болон HTTPS холбоосуудыг шалгана уу'},400);
   if(!phone&&!email)return response({error:'Холбоо барих мэдээлэл оруулна уу'},400);
   const db=binding({env});
-  const recent=await db.prepare("SELECT COUNT(*) AS count FROM sponsor_requests WHERE email=? AND created_at >= datetime('now','-24 hours')").bind(email).first();
+  const recent=await db.prepare("SELECT COUNT(*) AS count FROM sponsor_requests WHERE email=? AND datetime(created_at) >= datetime('now','-24 hours')").bind(email).first();
   if((recent?.count||0)>=3)return response({error:'Энэ имэйлээс 24 цагт 3-аас олон хүсэлт илгээх боломжгүй'},429);
   const id=crypto.randomUUID();
   await db.prepare('INSERT INTO sponsor_requests(id,company,contact_name,email,phone,message,image_url,target_url,start_at,end_at) VALUES(?,?,?,?,?,?,?,?,?,?)').bind(id,company,contact_name,email,phone,message,image_url,target_url,start_at,end_at).run();
