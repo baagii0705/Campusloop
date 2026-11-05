@@ -105,7 +105,7 @@ async function adminList(root){
 function setupAdmin(){
  const panel=document.getElementById('adminPanel');if(!panel||document.getElementById('solioSponsorAdmin'))return;
  const root=document.createElement('section');root.id='solioSponsorAdmin';
- root.innerHTML='<h3>Байгууллагын сурталчилгаа</h3><p>Доод цэсний дээр харагдах баннер удирдах</p><form id="solioSponsorForm"><div class="sponsorAdminFields"><input name="name" placeholder="Байгууллагын нэр" maxlength="100" required><input name="image_url" type="url" placeholder="Зургийн HTTPS URL" required><input name="target_url" type="url" placeholder="Очих HTTPS холбоос" required><label>Эхлэх хугацаа<input name="start_at" type="datetime-local"></label><label>Дуусах хугацаа<input name="end_at" type="datetime-local"></label></div><p><button type="submit">Сурталчилгаа нэмэх</button></p></form><div id="solioSponsorAdminList"></div>';
+ root.innerHTML='<h3>Хуучин Appwrite баннерууд</h3><p>Зөвхөн хуучин баннерын удирдлага. Шинэ сурталчилгаа болон статистикийг дээд хэсгээс удирдана.</p><form id="solioSponsorForm"><div class="sponsorAdminFields"><input name="name" placeholder="Байгууллагын нэр" maxlength="100" required><input name="image_url" type="url" placeholder="Зургийн HTTPS URL" required><input name="target_url" type="url" placeholder="Очих HTTPS холбоос" required><label>Эхлэх хугацаа<input name="start_at" type="datetime-local"></label><label>Дуусах хугацаа<input name="end_at" type="datetime-local"></label></div><p><button type="submit">Сурталчилгаа нэмэх</button></p></form><div id="solioSponsorAdminList"></div>';
  panel.appendChild(root);
  root.querySelector('form').addEventListener('submit',async event=>{
  event.preventDefault();if(!isCampusAdmin())return;
