@@ -6,7 +6,13 @@ const bar=document.createElement('aside');bar.id='solioSponsorBar';bar.setAttrib
 bar.innerHTML='<a class="sponsorLink" target="_blank" rel="noopener noreferrer sponsored"><img class="sponsorImage" alt=""><span class="sponsorCopy"><span class="sponsorTag">Ивээн тэтгэсэн</span><span class="sponsorName"></span></span></a><button type="button" class="sponsorClose" aria-label="Сурталчилгааг хаах">×</button>';
 document.body.appendChild(bar);
 const nav=document.querySelector('.mobileBottomNav');
-let ads=[],current=0,closed=false,rotateTimer=null;
+let ads=[],current=0,feedAds=[],feedCurrent=0,closed=false,rotateTimer=null;
+let sponsorRates={
+ feed:{label:'Зарын дунд — өргөн баннер',description:'Бүтэн өргөн',prices:{7:15000,30:45000}},
+ bottom:{label:'Утасны доод баннер',description:'Доод цэсний дээр',prices:{7:10000,30:30000}},
+ both:{label:'Хоёр байрлалд зэрэг',description:'Хоёр газарт зэрэг',prices:{7:22000,30:60000}}
+};
+import('/sponsor-pricing.js').then(m=>{sponsorRates=m.SPONSOR_RATES;refreshInFeed(true)}).catch(e=>console.warn('Sponsor pricing unavailable:',e.message));
 let sessionId;
 try{sessionId=sessionStorage.getItem('solioSponsorSession');if(!sessionId){sessionId=crypto.randomUUID();sessionStorage.setItem('solioSponsorSession',sessionId)}}catch{sessionId=crypto.randomUUID()}
 function track(kind,id){
@@ -79,15 +85,29 @@ function makeInFeedCard(ad){
  const mark=sponsoredElement('span','solioFeedSponsorTag',isPlaceholder?'СУРТАЛЧИЛГААНЫ ТАЛБАЙ':'ИВЭЭН ТЭТГЭСЭН');
  card.append(mark);
  if(isPlaceholder){
-  const art=sponsoredElement('div','solioFeedSponsorArt');
-  const circle=sponsoredElement('span','solioFeedSponsorArtSymbol','+');circle.setAttribute('aria-hidden','true');
-  art.append(circle);
-  const headline=sponsoredElement('h3','','Энд таны зар байрлана');
-  const summary=sponsoredElement('p','','Оюутнуудад байгууллагаа сурталчлаарай.');
-  const action=sponsoredElement('button','solioFeedSponsorAction','Сурталчилгаа байрлуулах');
-  action.type='button';
-  action.addEventListener('click',()=>{if(typeof window.SolioSponsorOpen==='function')window.SolioSponsorOpen();else location.assign('/?sponsor=1')});
-  card.append(art,headline,summary,action);
+  const intro=sponsoredElement('div','solioFeedSponsorIntro');
+  const copy=sponsoredElement('div','solioFeedSponsorCopy');
+  copy.append(sponsoredElement('h3','','Энд таны байгууллагын зар байрлана'),sponsoredElement('p','','Заруудын дунд бүтэн өргөнөөр, эсвэл утасны доод хэсэгт сурталчилгаа байрлуулаарай.'));
+  intro.append(copy);
+  card.append(intro);
+  const offers=sponsoredElement('div','solioFeedSponsorRates');
+  for(const [placement,plan] of Object.entries(sponsorRates)){
+   const offer=sponsoredElement('button','solioFeedSponsorOffer');
+   offer.type='button';
+   const title=sponsoredElement('strong','',plan.label);
+   const days7=sponsoredElement('span','','7 хоног — '+Number(plan.prices[7]).toLocaleString('en-US')+' ₮');
+   const days30=sponsoredElement('span','','30 хоног — '+Number(plan.prices[30]).toLocaleString('en-US')+' ₮');
+   offer.append(title,days7,days30);
+   offer.addEventListener('click',()=>{if(typeof window.SolioSponsorOpen==='function')window.SolioSponsorOpen(placement);else location.assign('/?sponsor=1&placement='+encodeURIComponent(placement))});
+   offers.append(offer);
+  }
+  card.append(offers);
+  const actions=sponsoredElement('div','solioFeedSponsorBottom');
+  const note=sponsoredElement('small','','Танилцуулах тариф · Төлбөр автоматаар авахгүй');
+  const button=sponsoredElement('button','solioFeedSponsorAction','Байршил сонгож хүсэлт илгээх');
+  button.type='button';
+  button.addEventListener('click',()=>{if(typeof window.SolioSponsorOpen==='function')window.SolioSponsorOpen('feed');else location.assign('/?sponsor=1&placement=feed')});
+  actions.append(note,button);card.append(actions);
  }else{
   const link=sponsoredElement('a','solioFeedSponsorLink');
   link.href=validUrl(ad.target_url);
@@ -132,7 +152,7 @@ function refreshInFeed(force=false){
   if(existing)existing.remove();
   stopInFeedView();inFeedCard=null;return;
  }
- const ad=ads[current]||{$id:'solio_welcome_demo',name:'Энд таны зар байрлана'};
+ const ad=feedAds[feedCurrent]||{$id:'solio_welcome_demo',name:'Энд таны зар байрлана'};
  if(existing&&!force&&existing.dataset.sponsorId===ad.$id)return;
  if(existing)existing.remove();
  stopInFeedView();
@@ -168,11 +188,16 @@ async function load(){
   const now=Date.now();
   const accepted=ad=>ad.active===true&&(!ad.start_at||Date.parse(ad.start_at)<=now)&&(!ad.end_at||Date.parse(ad.end_at)>now)&&validUrl(ad.target_url)&&validUrl(ad.image_url);
   d1=d1.filter(accepted);legacy=legacy.filter(accepted);
-  const actual=[...d1,...legacy.filter(ad=>ad.$id!=='solio_welcome_demo')];
-  ads=actual.length?actual:legacy.filter(ad=>ad.$id==='solio_welcome_demo');
-  current=0;show();refreshInFeed(true);
+  const bottomActive=[...d1.filter(ad=>ad.placement==='bottom'||ad.placement==='both'),...legacy.filter(ad=>ad.$id!=='solio_welcome_demo')];
+  ads=bottomActive.length?bottomActive:legacy.filter(ad=>ad.$id==='solio_welcome_demo');
+  feedAds=d1.filter(ad=>ad.placement==='feed'||ad.placement==='both');
+  current=0;feedCurrent=0;show();refreshInFeed(true);
   clearInterval(rotateTimer);
-  if(ads.length>1)rotateTimer=setInterval(()=>{if(!document.hidden){current=(current+1)%ads.length;if(!closed)show();refreshInFeed(true)}},9000);
+  if(ads.length>1||feedAds.length>1)rotateTimer=setInterval(()=>{
+   if(document.hidden)return;
+   if(ads.length>1){current=(current+1)%ads.length;if(!closed)show()}
+   if(feedAds.length>1){feedCurrent=(feedCurrent+1)%feedAds.length;refreshInFeed(true)}
+  },9000);
   }catch(e){console.warn('Solio sponsored ads unavailable:',e.message);ads=[];show();refreshInFeed(true)}
 }
 async function adminList(root){
