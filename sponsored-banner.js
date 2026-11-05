@@ -153,17 +153,25 @@ function refreshInFeed(force=false){
   stopInFeedView();inFeedCard=null;return;
  }
  const ad=feedAds[feedCurrent]||{$id:'solio_welcome_demo',name:'Энд таны зар байрлана'};
- if(existing&&!force&&existing.dataset.sponsorId===ad.$id)return;
+ // A wide banner starts on a full row at every screen width.
+ const columns=Math.max(1,getComputedStyle(marketplaceRoot).gridTemplateColumns.split(' ').length);
+ const target=Math.min(6,Math.floor(items.length/2));
+ const slot=Math.min(items.length,Math.max(columns,Math.floor(target/columns)*columns));
+ const previous=items[slot-1];
+ if(existing&&!force&&existing.dataset.sponsorId===ad.$id){
+  if(previous.nextElementSibling!==existing)previous.after(existing);
+  return;
+ }
  if(existing)existing.remove();
  stopInFeedView();
- const slot=Math.min(6,Math.max(2,Math.floor(items.length/2)));
  inFeedCard=makeInFeedCard(ad);
- items[slot-1].after(inFeedCard);
+ previous.after(inFeedCard);
  observeInFeedView(inFeedCard,ad);
 }
 if(marketplaceRoot){
  const feedMutationObserver=new MutationObserver(()=>refreshInFeed());
  feedMutationObserver.observe(marketplaceRoot,{childList:true});
+ if(window.ResizeObserver)new ResizeObserver(()=>refreshInFeed()).observe(marketplaceRoot);
  refreshInFeed();
 }
 

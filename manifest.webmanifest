@@ -2,12 +2,12 @@
   "id": "/",
   "name": "Solio — Оюутны онлайн зах",
   "short_name": "Solio",
-  "description": "Ол. Солилц. Дахин хэрэглэ.",
+  "description": "Оюутны зарын самбар",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#F9F6FF",
-  "theme_color": "#7654C7",
+  "background_color": "#f8f7f2",
+  "theme_color": "#f8f7f2",
   "lang": "mn",
   "icons": [
     {
