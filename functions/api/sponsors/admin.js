@@ -1,14 +1,21 @@
 import {response,readJSON,clean,safeURL,safeDate,checkDateRange,requireAdmin,binding,originOK} from '../../../sponsor-api-utils.js';
+import {sponsorQuote} from '../../../sponsor-pricing.js';
 const LIMIT=100;
 const campaignFields=(input,source={})=>{
  const company=clean(input.company??source.company,100);
  const image_url=safeURL(input.image_url??source.image_url);
  const target_url=safeURL(input.target_url??source.target_url);
- const start_at=safeDate(input.start_at!==undefined?input.start_at:source.start_at);
- const end_at=safeDate(input.end_at!==undefined?input.end_at:source.end_at);
+ const placement=clean(input.placement??source.placement??'both',12);
+ const duration_days=Number(input.duration_days??source.duration_days??7);
+ const quoted_price=sponsorQuote(placement,duration_days);
+ if(quoted_price===null)throw Error('Байршил ба хугацааг зөв сонгоно уу');
+ const start_at=safeDate(input.start_at!==undefined?input.start_at:source.start_at)||new Date().toISOString();
+ let end_at=safeDate(input.end_at!==undefined?input.end_at:source.end_at);
+ if(!end_at)end_at=new Date(Date.parse(start_at)+duration_days*86400000).toISOString();
  checkDateRange(start_at,end_at);
+ if(Date.parse(end_at)<=Date.now())throw Error('Дуусах хугацаа ирээдүйд байх ёстой');
  if(company.length<2||!image_url||!target_url)throw Error('Байгууллагын нэр, баннер зураг болон очих HTTPS URL шаардлагатай');
- return {company,image_url,target_url,start_at,end_at};
+ return {company,image_url,target_url,start_at,end_at,placement,duration_days,quoted_price};
 };
 export async function onRequestGet(context){
  if(!await requireAdmin(context.request))return response({error:'Админ нэвтрэлт шаардлагатай'},403);
@@ -35,7 +42,7 @@ export async function onRequestPost(context){
    const c=campaignFields(input,item);
    const recordId=item.id;
    await db.batch([
-    db.prepare('INSERT INTO sponsor_campaigns(id,request_id,company,image_url,target_url,active,start_at,end_at) VALUES(?,?,?,?,?,1,?,?)').bind(recordId,item.id,c.company,c.image_url,c.target_url,c.start_at,c.end_at),
+    db.prepare('INSERT INTO sponsor_campaigns(id,request_id,company,image_url,target_url,active,start_at,end_at,placement,duration_days,quoted_price) VALUES(?,?,?,?,?,1,?,?,?,?,?)').bind(recordId,item.id,c.company,c.image_url,c.target_url,c.start_at,c.end_at,c.placement,c.duration_days,c.quoted_price),
     db.prepare("UPDATE sponsor_requests SET status='approved',reviewed_at=strftime('%Y-%m-%dT%H:%M:%fZ','now'),campaign_id=?,admin_notes=? WHERE id=? AND status='pending'").bind(recordId,clean(input.admin_notes,500),id)
    ]);
    return response({ok:true,campaign_id:recordId});
@@ -48,7 +55,7 @@ export async function onRequestPost(context){
   if(action==='create'){
    const c=campaignFields(input);
    const created=crypto.randomUUID();
-   await db.prepare('INSERT INTO sponsor_campaigns(id,company,image_url,target_url,active,start_at,end_at) VALUES(?,?,?,?,1,?,?)').bind(created,c.company,c.image_url,c.target_url,c.start_at,c.end_at).run();
+   await db.prepare('INSERT INTO sponsor_campaigns(id,company,image_url,target_url,active,start_at,end_at,placement,duration_days,quoted_price) VALUES(?,?,?,?,1,?,?,?,?,?)').bind(created,c.company,c.image_url,c.target_url,c.start_at,c.end_at,c.placement,c.duration_days,c.quoted_price).run();
    return response({ok:true,campaign_id:created},201);
   }
   if(action==='toggle'){
@@ -61,7 +68,7 @@ export async function onRequestPost(context){
    const existing=await db.prepare('SELECT * FROM sponsor_campaigns WHERE id=?').bind(id).first();
    if(!existing)return response({error:'Зар олдсонгүй'},404);
    const c=campaignFields(input,existing);
-   await db.prepare("UPDATE sponsor_campaigns SET company=?,image_url=?,target_url=?,start_at=?,end_at=?,updated_at=strftime('%Y-%m-%dT%H:%M:%fZ','now') WHERE id=?").bind(c.company,c.image_url,c.target_url,c.start_at,c.end_at,id).run();
+   await db.prepare("UPDATE sponsor_campaigns SET company=?,image_url=?,target_url=?,start_at=?,end_at=?,placement=?,duration_days=?,quoted_price=?,updated_at=strftime('%Y-%m-%dT%H:%M:%fZ','now') WHERE id=?").bind(c.company,c.image_url,c.target_url,c.start_at,c.end_at,c.placement,c.duration_days,c.quoted_price,id).run();
    return response({ok:true});
   }
   return response({error:'Үйлдэл танигдсангүй'},400);
