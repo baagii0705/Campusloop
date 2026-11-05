@@ -82,7 +82,9 @@ test('Card price formatting handles free and invalid prices', () => {
 
 test('PWA cache is refreshed for the redesigned UI', () => {
   const sw = readFileSync(new URL('../sw.js', import.meta.url), 'utf8');
-  assert.match(sw, /solio-shell-v6/);
+  assert.match(sw, /solio-shell-v7/);
+  assert.ok(sw.includes("'/board.css'"));
+  assert.ok(staticHtml.includes('href="/board.css"'));
 });
 
 test('DOM element IDs are unique', () => {
@@ -155,6 +157,24 @@ test('listing gallery returns all valid stored image URLs without duplicates',()
   assert.equal(urls.length,2);
   assert.equal(urls[1],'https://img/2.jpg');
   assert.equal(gallery({image_url:'https://img/1.jpg',image_urls:'corrupt'}).length,1);
+});
+
+test('legacy gallery covers fall back to the next photo and then the text notice',()=>{
+  const start=inlineScript.indexOf('function solioCoverImage(');
+  const end=inlineScript.indexOf('function openListing(',start);
+  const item={id:'old',image_urls:JSON.stringify(['https://img/1.jpg','https://img/2.jpg'])};
+  let handleError;
+  const cover=runInNewContext(inlineScript.slice(start,end)+';solioCoverImage',{
+    escapeHTML:String, listings:[item],
+    document:{addEventListener(type,callback){if(type==='error')handleError=callback;}}
+  });
+  assert.match(cover(item,'boardPhoto'),/src="https:\/\/img\/1\.jpg"/);
+  assert.equal(cover({id:'no-photo'},'boardPhoto'),'');
+  const target={matches:()=>true,dataset:{coverId:'old',photoIndex:'0'}};
+  handleError({target});
+  assert.equal(target.src,'https://img/2.jpg');
+  handleError({target});
+  assert.equal(target.hidden,true);
 });
 
 test('quick-post validates before uploading and saves multiple images in order',async()=>{

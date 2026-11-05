@@ -1,0 +1,184 @@
+/* Solio's campus noticeboard */
+:root {
+  --board-paper: #f8f7f2;
+  --board-ink: #282522;
+  --board-muted: #645f58;
+  --board-rule: #d9d5cb;
+  --board-purple: #58358c;
+  --board-serif: Georgia, 'Times New Roman', serif;
+  --board-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+}
+body { background: var(--board-paper) !important; color: var(--board-ink) !important; }
+.boardTop, .boardMasthead, .boardMarket { font-family: var(--board-sans); }
+.boardSymbols { position: absolute; overflow: hidden; pointer-events: none; }
+.boardIcon { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+:is(.boardTop,.boardMasthead,.boardMarket) :is(a,button,summary,input,select,[data-open]):focus-visible { outline: 2px solid var(--board-purple); outline-offset: 3px; }
+.boardTop [hidden], .boardMarket [hidden], img[data-cover-id][hidden] { display: none !important; }
+
+/* The masthead stays small enough to keep the listings in view. */
+.boardTop { position: sticky; top: 0; z-index: 30; background: var(--board-paper); border-bottom: 1px solid var(--board-rule); }
+.boardNav { display: flex; align-items: center; gap: clamp(16px, 4vw, 64px); min-height: 64px; }
+.boardWordmark { color: var(--board-ink); font: 800 35px/1 Arial, sans-serif; letter-spacing: -.085em; text-decoration: none; }
+.boardWordmark span { color: var(--board-purple); }
+.boardLinks, .boardAccount { display: flex; align-items: center; gap: 6px; }
+.boardLinks { flex: 1; gap: clamp(4px, 1vw, 18px); }
+.boardLinks button, .boardAccount button {
+  min-height: 42px; padding: 0 8px; border: 0; background: transparent; color: var(--board-muted); font: 600 14px/1.2 var(--board-sans); cursor: pointer;
+}
+.boardLinks button:hover, .boardLinks button.is-active, .boardAccount button:hover { color: var(--board-purple); }
+.boardLinks button.is-active { text-decoration: underline; text-underline-offset: 7px; text-decoration-thickness: 2px; }
+.boardAccount .boardSaved { display: inline-flex; align-items: center; gap: 7px; font-variant-numeric: tabular-nums; }
+.boardAccount #boardAccountButton { margin-left: 5px; border-left: 1px solid var(--board-rule); padding-left: 17px; color: var(--board-ink); }
+.marketHome.boardMasthead { display: flex !important; align-items: center !important; gap: 32px !important; padding: 29px 0 19px !important; margin: 0; }
+.boardMasthead::before, .boardMasthead::after { content: none; }
+.boardMasthead h1 { margin: 0; color: var(--board-ink); font: 500 clamp(38px,4.2vw,60px)/1.08 var(--board-serif); letter-spacing: -.047em; }
+.boardMasthead em { font-weight: inherit; }
+.boardPost { display: inline-flex; align-items: center; gap: 12px; margin-left: auto; flex: none; padding: 0 17px 0 12px; height: 44px; border: 1px solid var(--board-purple); border-radius: 4px; background: var(--board-purple); color: white; font: 650 15px/1 var(--board-sans); cursor: pointer; }
+.boardPost .boardIcon { box-sizing: content-box; width: 18px; height: 20px; padding: 3px 10px 3px 0; border-right: 1px dashed #b49ece; }
+.boardPost:hover { background: #472971; }
+
+/* Find a listing */
+#market.boardMarket { margin: 0; padding: 0 0 42px; scroll-margin-top: 85px; }
+.boardFind { display: grid; grid-template-columns: minmax(0,1fr) minmax(178px,22%); gap: 10px; }
+.boardSearch, .boardSchool { box-sizing: border-box; display: flex; min-width: 0; height: 47px; align-items: center; gap: 11px; border: 1px solid #bcb7ae; border-radius: 5px; padding: 0 15px; background: #fffefa; color: var(--board-ink); }
+.boardSearch:focus-within { outline: 2px solid var(--board-purple); outline-offset: 1px; }
+.boardSearch input { width: 100%; min-width: 0; height: 100%; margin: 0; padding: 0; background: transparent; color: var(--board-ink); border: 0; box-shadow: none; outline: 0 !important; font: 400 16px/1.2 var(--board-sans); }
+.boardSearch input::placeholder { color: #726e67; opacity: 1; }
+.boardSchool { font: 600 14px/1.25 var(--board-sans); text-align: left; cursor: pointer; }
+.boardSchool span { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.boardSchool .boardIcon:last-child { margin-left: auto; width: 16px; }
+.boardSchool:hover { border-color: var(--board-purple); }
+.boardCategories { display: flex; align-items: stretch; gap: clamp(16px,2.2vw,34px); margin-top: 8px; border-bottom: 1px solid var(--board-rule); overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: thin; scrollbar-color: var(--board-rule) transparent; }
+.boardCategories button { flex: none; position: relative; min-height: 48px; padding: 0 1px; background: transparent; border: 0; color: var(--board-muted); font: 550 14px/1.3 var(--board-sans); white-space: nowrap; cursor: pointer; }
+.boardCategories button:hover, .boardCategories button[aria-pressed=true] { color: var(--board-purple); }
+.boardCategories button[aria-pressed=true]::after { content: ''; position: absolute; bottom: 0; height: 3px; left: 0; right: 0; background: currentColor; }
+.boardCategories button:focus-visible { outline-offset: -3px; }
+.boardFeedHead, .boardCount, .boardRefine { display: flex; align-items: center; }
+.boardFeedHead { justify-content: space-between; gap: 12px; padding: 15px 0 13px; }
+.boardCount { column-gap: 12px; flex-wrap: wrap; min-width: 0; }
+.boardCount h2 { margin: 0; font: 600 clamp(21px,2.3vw,30px)/1.2 var(--board-serif); letter-spacing: -.028em; color: var(--board-ink); }
+.boardCount #results { color: var(--board-muted); white-space: nowrap; font: 500 13px/1.3 var(--board-sans); }
+.boardRefine { gap: 10px; }
+.boardFilter { position: relative; }
+.boardFilter summary, #boardReset { display: inline-flex; align-items: center; gap: 7px; min-height: 40px; padding: 0 4px; color: var(--board-ink); background: transparent; border: 0; cursor: pointer; font: 600 14px/1.2 var(--board-sans); white-space: nowrap; }
+.boardFilter summary { list-style: none; }
+.boardFilter summary::-webkit-details-marker { display: none; }
+.boardFilter[open] summary, #boardReset { color: var(--board-purple); }
+#boardReset { text-decoration: underline; font-weight: 500; }
+.boardFilterPanel { position: absolute; z-index: 12; top: calc(100% + 4px); right: 0; display: grid; gap: 13px; width: min(255px, calc(100vw - 36px)); padding: 15px; border: 1px solid #c8c2b8; border-radius: 5px; background: #fffefa; box-shadow: 0 6px 18px #28221a1a; }
+.boardFilterPanel label { display: grid; gap: 4px; font: 600 12px/1.35 var(--board-sans); color: var(--board-muted); }
+.boardFilterPanel select, #myListings { width: 100%; min-height: 42px; border: 1px solid var(--board-rule); border-radius: 3px; padding: 0 9px; background: white; color: var(--board-ink); font: 500 14px/1.3 var(--board-sans); }
+#myListings { cursor: pointer; }
+#myListings[aria-pressed=true] { border-color: var(--board-purple); color: var(--board-purple); background: #f1ebf7; }
+
+/* A photo when the seller supplied one; otherwise their own notice on paper. */
+.boardGrid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 26px 20px; align-items: start; }
+@media (min-width:1100px) { .boardGrid { grid-template-columns: repeat(4,minmax(0,1fr)); } }
+.boardListing { display: block; min-width: 0; background: transparent; cursor: pointer; }
+.boardMedia { position: relative; isolation: isolate; overflow: hidden; aspect-ratio: 4/3; background: #eae5d9; border-radius: 4px; }
+.boardMedia[data-category="Ном, сурах бичиг"], .boardMedia[data-category="Бие даалт"] { background: #e9e2cf; }
+.boardMedia[data-category="Электрон хэрэгсэл"], .boardMedia[data-category="Хичээлийн хэрэгсэл"] { background: #dee6df; }
+.boardMedia[data-category="Хувцас, хэрэглээ"], .boardMedia[data-category="Дотуур байр"] { background: #ece1db; }
+.boardPaper { position: absolute; inset: 0; display: flex; flex-direction: column; gap: 12px; justify-content: center; padding: clamp(14px,2.05vw,28px); color: #4b463d; }
+.boardPaper > span { align-self: flex-start; max-width: calc(100% - 24px); padding-bottom: 5px; border-bottom: 1px solid #726b6066; font: 650 11px/1.3 var(--board-sans); letter-spacing: .045em; }
+.boardPaper p { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; margin: 0; font: 400 clamp(17px,1.65vw,23px)/1.28 var(--board-serif); }
+.boardPaper > .boardIcon { width: 30px; height: 30px; color: #777268; stroke-width: 1.2; }
+.boardMedia:has(.boardPhoto:not([hidden])) .boardPaper { visibility: hidden; }
+.boardPhoto { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: #eeeae2; }
+.boardHeart { position: absolute; z-index: 1; top: 5px; right: 5px; display: grid; place-items: center; width: 42px; height: 42px; padding: 0; border: 0; background: transparent; color: #3b343c; cursor: pointer; }
+.boardHeart::before { content: ''; position: absolute; inset: 5px; z-index: -1; background: #fffefaed; border: 1px solid #332d2b30; border-radius: 50%; }
+.boardHeart .boardIcon { width: 17px; height: 17px; }
+.boardHeart[aria-pressed=true] { color: var(--board-purple); }
+.boardHeart[aria-pressed=true] .boardIcon { fill: currentColor; }
+.boardMedia > :is(.solioStatusSold,.solioStatusReserved,.solioStatusFree) { position: absolute; bottom: 7px; left: 8px; padding: 4px 7px; border-radius: 2px; font: 650 11px/1.3 var(--board-sans); }
+.boardMedia > .solioStatusSold { background: #373330; color: white; }
+.boardMedia > .solioStatusReserved { background: #f9e6b7; color: #503711; }
+.boardMedia > .solioStatusFree { background: #e3eedf; color: #265238; }
+.boardListingInfo { display: grid; gap: 3px; padding: 10px 1px 0; }
+.boardPrice { color: var(--board-ink); font: 730 clamp(18px,1.65vw,23px)/1.2 var(--board-sans); letter-spacing: -.035em; font-variant-numeric: tabular-nums; }
+.boardListingInfo h3 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; margin: 0; overflow: hidden; overflow-wrap: anywhere; color: var(--board-ink); font: 550 16px/1.35 var(--board-sans); }
+.boardListingLink { display: inline; margin: 0; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: inherit; cursor: pointer; }
+.boardListing:has(.boardListingLink:focus-visible) { outline: 2px solid var(--board-purple); outline-offset: 3px; }
+@media (hover:hover) { .boardListing:hover .boardListingInfo h3 { text-decoration: underline; text-underline-offset: 3px; } }
+.boardMeta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 6px; color: var(--board-muted); font: 400 12px/1.5 var(--board-sans); }
+.boardMeta span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
+.boardMeta span + time::before { content: '·'; margin-right: 6px; }
+.boardMore { display: block; margin: 25px auto 0; min-height: 44px; padding: 0 18px; background: transparent; border: 1px solid var(--board-rule); border-radius: 4px; color: var(--board-ink); font: 600 14px var(--board-sans); cursor: pointer; }
+.boardEmpty, .boardGrid .solioLoadingListings, .boardGrid .solioListingError { grid-column: 1/-1; text-align: center; color: var(--board-muted); background: transparent; border: 0; padding: 36px 12px; font-size: 15px; }
+
+/* Secondary destinations use the same ink, paper and type. */
+:is(#schoolHub,#socialHub,.solioSearchPage) :is(.schoolHubHead h2,.solioCommunityHeading h2,.solioWantedHeading h2,.solioSearchHead h1) { color: var(--board-ink) !important; font: 500 clamp(31px,3.5vw,43px)/1.16 var(--board-serif) !important; letter-spacing: -.035em; margin: 0 0 12px; }
+#schoolHub .schoolHubCard, .solioSearchPage .solioSearchSchools button, #socialHub .communityCard, #socialHub .socialItem { border: 1px solid var(--board-rule) !important; border-radius: 5px !important; background: #fffefa !important; box-shadow: none !important; }
+#schoolHub .schoolHubCard.selected { border-color: var(--board-purple) !important; }
+#socialHub .socialBar p { margin: 0; color: var(--board-muted); }
+.solioSearchPage .solioSearchResultImage { position: relative; background: #e8e3d8; color: var(--board-muted); border-radius: 4px; }
+.solioSearchPage .boardSearchPhoto { position: absolute; inset: 0; }
+.solioSearchPage .solioSearchListings button[data-listing-search] { border-radius: 5px !important; background: #fffefa !important; border-color: var(--board-rule) !important; }
+.boardDetailMedia { position: relative; }
+.boardDetailMedia img.detailPhoto { object-fit: contain !important; background: #f0ede6 !important; border-radius: 4px !important; }
+.boardDetailNoPhoto { display: flex; align-items: center; gap: 9px; padding: 15px; background: #efece3; color: var(--board-muted); font: 500 14px var(--board-sans); }
+.boardDetailMedia:has(.detailPhoto:not([hidden])) .boardDetailNoPhoto { display: none; }
+#cards > .solioFeedSponsor { border-radius: 5px; }
+#cards > .solioFeedSponsor.is-placeholder { background: #f1ede4; border: 1px solid var(--board-rule); }
+#cards .solioFeedSponsorOffer { background: #fffefa; border-radius: 4px; border-color: var(--board-rule); }
+#cards .solioFeedSponsorIntro h3 { font-family: var(--board-serif); color: var(--board-ink); }
+#solioSponsorBar.is-placeholder { border-radius: 5px; border-color: var(--board-rule); background: #fffefa; box-shadow: none; }
+.footer { display: flex; flex-direction: column; align-items: center; gap: 14px; margin: 20px 0 0; padding: 22px 0; border-top: 1px solid var(--board-rule) !important; background: var(--board-paper); color: var(--board-muted); }
+.footer .wrap { display: flex; align-items: baseline; justify-content: center; flex-wrap: wrap; gap: 5px 16px; padding-block: 0; }
+.footer .wrap b { color: var(--board-ink) !important; letter-spacing: -.07em; }
+.footer .wrap p { margin: 0; color: var(--board-muted); font-size: 12px !important; }
+.footer #solioSponsorFooterCta { order: 1; margin: 0; min-height: 42px; padding: 0 9px; background: transparent; color: var(--board-purple); border: 0; border-radius: 3px; text-decoration: underline; text-underline-offset: 3px; }
+#modal > .dialog:is(.authDialog,.quickPostDialog,.detailDialog) { border-radius: 8px !important; }
+#modal .authHeader #authTitle, #modal .quickPostHead h2 { color: var(--board-ink) !important; font-family: var(--board-serif) !important; letter-spacing: -.03em; }
+#modal #authSubtitle:empty { display: none; }
+#modal .authTabs { background: #f0ede6 !important; border-color: var(--board-rule); border-radius: 5px !important; }
+#modal .authTab, #modal .authExperience .authWide, #modal .authExperience #authForm input { border-radius: 4px !important; }
+#modal .authExperience .authWide { background: var(--board-purple) !important; box-shadow: none !important; }
+
+@media (max-width:900px) and (min-width:769px) {
+  .boardNav, .boardLinks { gap: 4px; }
+  .boardWordmark { margin-right: 12px; }
+  .boardLinks button, .boardAccount button { padding-inline: 6px; font-size: 13px; }
+}
+@media (max-width:768px) {
+  .boardTop { position: static; }
+  .boardNav { min-height: 47px; gap: 8px; justify-content: space-between; }
+  .boardWordmark { font-size: 30px; }
+  .boardLinks { display: none; }
+  .boardAccount { gap: 0; }
+  .boardAccount #boardAccountButton { padding-left: 11px; }
+  .marketHome.boardMasthead { padding: 17px 0 14px !important; }
+  .boardMasthead h1 { font-size: clamp(30px,7.7vw,42px); }
+  .boardPost { display: none; }
+  #market.boardMarket { scroll-margin-top: 12px; }
+  .boardFind { grid-template-columns: minmax(0,1fr) minmax(125px,34%); gap: 6px; }
+  .boardSearch, .boardSchool { height: 43px; padding: 0 9px; gap: 6px; }
+  .boardSearch .boardIcon, .boardSchool .boardIcon { width: 17px; height: 17px; }
+  .boardSchool { font-size: 12px; }
+  .boardSchool .boardIcon:last-child { display: none; }
+  .boardCategories { margin-top: 1px; gap: 19px; scrollbar-width: none; }
+  .boardCategories::-webkit-scrollbar { display: none; }
+  .boardCategories button { min-height: 44px; font-size: 13px; }
+  .boardFeedHead { gap: 7px; padding: 6px 0; }
+  .boardCount { column-gap: 7px; }
+  .boardCount h2 { font-size: 22px; }
+  .boardCount #results { font-size: 12px; }
+  .boardRefine { gap: 4px; }
+  .boardFilter summary, #boardReset { min-height: 44px; font-size: 12px; }
+  .boardGrid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 19px 11px; }
+  .boardPaper { gap: 7px; padding: 13px; }
+  .boardPaper > span { font-size: 10px; padding-bottom: 3px; }
+  .boardPaper p { font-size: clamp(15px,3.8vw,21px); line-height: 1.18; }
+  .boardListingInfo { padding-top: 7px; }
+  .boardListingInfo h3 { font-size: 14px; }
+  .boardMeta { font-size: 11px; }
+  .mobileBottomNav { background: #fffefa !important; border-color: var(--board-rule) !important; box-shadow: 0 -1px 5px #2d271011 !important; border-radius: 9px !important; }
+  .mobileBottomNav .bottomPost .bottomIcon { background: var(--board-purple) !important; box-shadow: none !important; }
+}
+@media (max-width:365px) {
+  .boardSchool .boardIcon:first-child { display: none; }
+  .boardFind { grid-template-columns: minmax(0,1fr) 107px; }
+  .boardCount h2 { font-size: 19px; }
+  .boardCount { column-gap: 5px; }
+  .boardPaper p { -webkit-line-clamp: 2; }
+}
