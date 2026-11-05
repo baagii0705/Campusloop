@@ -57,6 +57,96 @@ bar.querySelector('.sponsorLink').addEventListener('keydown',event=>{
  if(ads[current]?.$id==='solio_welcome_demo'&&(event.key==='Enter'||event.key===' ')){event.preventDefault();window.SolioSponsorOpen?.()}
 });
 window.SolioSponsorRefresh=()=>load();
+
+// Marketplace sponsored slot — never added to Appwrite listings or marketplace counts.
+const marketplaceRoot=document.getElementById('cards');
+let inFeedCard=null,inFeedViewObserver=null,inFeedViewTimer=null;
+function stopInFeedView(){
+ if(inFeedViewObserver){inFeedViewObserver.disconnect();inFeedViewObserver=null}
+ if(inFeedViewTimer){clearTimeout(inFeedViewTimer);inFeedViewTimer=null}
+}
+function sponsoredElement(tag,className,textValue){
+ const el=document.createElement(tag);
+ if(className)el.className=className;
+ if(textValue!==undefined)el.textContent=String(textValue);
+ return el;
+}
+function makeInFeedCard(ad){
+ const isPlaceholder=ad.$id==='solio_welcome_demo';
+ const card=sponsoredElement('article','solioFeedSponsor'+(isPlaceholder?' is-placeholder':''));
+ card.setAttribute('aria-label',isPlaceholder?'Сурталчилгаа байрлуулах боломж':'Ивээн тэтгэсэн сурталчилгаа');
+ card.dataset.sponsorId=ad.$id;
+ const mark=sponsoredElement('span','solioFeedSponsorTag',isPlaceholder?'СУРТАЛЧИЛГААНЫ ТАЛБАЙ':'ИВЭЭН ТЭТГЭСЭН');
+ card.append(mark);
+ if(isPlaceholder){
+  const art=sponsoredElement('div','solioFeedSponsorArt');
+  const circle=sponsoredElement('span','solioFeedSponsorArtSymbol','+');circle.setAttribute('aria-hidden','true');
+  art.append(circle);
+  const headline=sponsoredElement('h3','','Энд таны зар байрлана');
+  const summary=sponsoredElement('p','','Оюутнуудад байгууллагаа сурталчлаарай.');
+  const action=sponsoredElement('button','solioFeedSponsorAction','Сурталчилгаа байрлуулах');
+  action.type='button';
+  action.addEventListener('click',()=>{if(typeof window.SolioSponsorOpen==='function')window.SolioSponsorOpen();else location.assign('/?sponsor=1')});
+  card.append(art,headline,summary,action);
+ }else{
+  const link=sponsoredElement('a','solioFeedSponsorLink');
+  link.href=validUrl(ad.target_url);
+  link.target='_blank';
+  link.rel='noopener noreferrer sponsored';
+  const photo=sponsoredElement('div','solioFeedSponsorPhoto');
+  const image=document.createElement('img');
+  image.src=validUrl(ad.image_url);image.alt='';
+  image.loading='lazy';image.decoding='async';
+  image.onerror=()=>{image.hidden=true;photo.classList.add('solioFeedImageFailed')};
+  photo.append(image);
+  link.append(photo,sponsoredElement('h3','',ad.name||'Байгууллагын сурталчилгаа'),sponsoredElement('span','solioFeedSponsorVisit','Дэлгэрэнгүй үзэх ↗'));
+  link.addEventListener('click',()=>{if(ad._d1)track('click',ad.$id)});
+  card.append(link);
+ }
+ return card;
+}
+function observeInFeedView(card,ad){
+ stopInFeedView();
+ if(!ad._d1||typeof IntersectionObserver==='undefined')return;
+ inFeedViewObserver=new IntersectionObserver(entries=>{
+  const entry=entries[0];
+  if(!entry||!entry.isIntersecting||entry.intersectionRatio<0.5||document.hidden)return;
+  if(inFeedViewTimer)return;
+  inFeedViewTimer=setTimeout(()=>{
+   inFeedViewTimer=null;
+   if(!card.isConnected||document.hidden)return;
+   const r=card.getBoundingClientRect();
+   if(r.width>0&&r.height>0&&r.top<innerHeight*.85&&r.bottom>innerHeight*.15)track('view',ad.$id);
+  },1100);
+  inFeedViewObserver?.disconnect();
+ },{threshold:[0.5]});
+ inFeedViewObserver.observe(card);
+}
+function refreshInFeed(force=false){
+ if(!marketplaceRoot)return;
+ const existing=marketplaceRoot.querySelector('.solioFeedSponsor');
+ const items=Array.from(marketplaceRoot.querySelectorAll(':scope > article.solioProductCard'));
+ // Private "My listings" and saved-only views must show only the user's actual items.
+ const privateMode=(typeof onlyMine!=='undefined'&&onlyMine)||(typeof savedOnly!=='undefined'&&savedOnly);
+ if(items.length<4||privateMode){
+  if(existing)existing.remove();
+  stopInFeedView();inFeedCard=null;return;
+ }
+ const ad=ads[current]||{$id:'solio_welcome_demo',name:'Энд таны зар байрлана'};
+ if(existing&&!force&&existing.dataset.sponsorId===ad.$id)return;
+ if(existing)existing.remove();
+ stopInFeedView();
+ const slot=Math.min(6,Math.max(2,Math.floor(items.length/2)));
+ inFeedCard=makeInFeedCard(ad);
+ items[slot-1].after(inFeedCard);
+ observeInFeedView(inFeedCard,ad);
+}
+if(marketplaceRoot){
+ const feedMutationObserver=new MutationObserver(()=>refreshInFeed());
+ feedMutationObserver.observe(marketplaceRoot,{childList:true});
+ refreshInFeed();
+}
+
 async function load(){
  try{
   let d1=[],legacy=[];
@@ -80,10 +170,10 @@ async function load(){
   d1=d1.filter(accepted);legacy=legacy.filter(accepted);
   const actual=[...d1,...legacy.filter(ad=>ad.$id!=='solio_welcome_demo')];
   ads=actual.length?actual:legacy.filter(ad=>ad.$id==='solio_welcome_demo');
-  current=0;show();
+  current=0;show();refreshInFeed(true);
   clearInterval(rotateTimer);
-  if(ads.length>1)rotateTimer=setInterval(()=>{if(!document.hidden&&!closed){current=(current+1)%ads.length;show()}},9000);
- }catch(e){console.warn('Solio sponsored ads unavailable:',e.message);ads=[];show()}
+  if(ads.length>1)rotateTimer=setInterval(()=>{if(!document.hidden){current=(current+1)%ads.length;if(!closed)show();refreshInFeed(true)}},9000);
+  }catch(e){console.warn('Solio sponsored ads unavailable:',e.message);ads=[];show();refreshInFeed(true)}
 }
 async function adminList(root){
  const list=root.querySelector('#solioSponsorAdminList');list.textContent='Ачаалж байна...';
