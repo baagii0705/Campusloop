@@ -214,3 +214,26 @@ test('quick-post validates before uploading and saves multiple images in order',
   assert.equal(closed,1);
   assert.equal(refreshed,1);
 });
+
+test('listing uploads grant public read and retain owner-only modification',async()=>{
+  const source=inlineScript.slice(inlineScript.indexOf('const appwriteStorageApi='),inlineScript.indexOf('const db='));
+  let args;
+  const api=runInNewContext(source+';appwriteStorageApi',{
+    APPWRITE_CONFIG:{storageBucketId:'photos'},session:{user:{id:'seller'}},
+    Appwrite:{Permission:{read:r=>'read:'+r,update:r=>'update:'+r,delete:r=>'delete:'+r},Role:{any:()=>'any',user:id=>id}},
+    appwriteStorage:{createFile:async(...values)=>{args=values;return {$id:'photo'}}}
+  });
+  const result=await api.from('listing-images').upload('photo',{});
+  assert.equal(result.error,null);
+  assert.deepEqual(Array.from(args[3]),['read:any','update:seller','delete:seller']);
+});
+
+test('rejected image selection remains available for submit validation',()=>{
+  const source=inlineScript.slice(inlineScript.indexOf('document.getElementById("newImageFile").onchange='),inlineScript.indexOf('document.getElementById("postForm").onsubmit='));
+  const input={},note={},grid={replaceChildren(){}};
+  runInNewContext(source,{document:{getElementById:id=>id==='newImageFile'?input:id==='postImageNote'?note:grid},toast(){}});
+  const target={value:'large-photo.jpg',files:[{size:6000000,type:'image/jpeg'}]};
+  input.onchange({target});
+  assert.equal(target.value,'large-photo.jpg');
+  assert.match(note.textContent,/Дахин сонгоно уу/);
+});
