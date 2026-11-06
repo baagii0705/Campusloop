@@ -82,7 +82,7 @@ test('Card price formatting handles free and invalid prices', () => {
 
 test('PWA cache is refreshed for the redesigned UI', () => {
   const sw = readFileSync(new URL('../sw.js', import.meta.url), 'utf8');
-  assert.match(sw, /solio-shell-v7/);
+  assert.match(sw, /solio-shell-v8/);
   assert.ok(sw.includes("'/board.css'"));
   assert.ok(staticHtml.includes('href="/board.css"'));
 });
@@ -160,12 +160,12 @@ test('listing gallery returns all valid stored image URLs without duplicates',()
 });
 
 test('legacy gallery covers fall back to the next photo and then the text notice',()=>{
-  const start=inlineScript.indexOf('function solioCoverImage(');
+  const start=inlineScript.indexOf('function solioCardImageUrl(');
   const end=inlineScript.indexOf('function openListing(',start);
   const item={id:'old',image_urls:JSON.stringify(['https://img/1.jpg','https://img/2.jpg'])};
   let handleError;
   const cover=runInNewContext(inlineScript.slice(start,end)+';solioCoverImage',{
-    escapeHTML:String, listings:[item],
+    escapeHTML:String, listings:[item], URL,
     document:{addEventListener(type,callback){if(type==='error')handleError=callback;}}
   });
   assert.match(cover(item,'boardPhoto'),/src="https:\/\/img\/1\.jpg"/);
@@ -216,7 +216,7 @@ test('quick-post validates before uploading and saves multiple images in order',
   };
   let nextId=0;
   const make=new Function('document','session','listings','Appwrite','db','toast','closeModal','loadListings','localStorage',
-    inlineScript.slice(start,end)+';return saveListing');
+    inlineScript.slice(start,end).replace("await import('/image-upload.mjs')","({optimizeListingImage:async file=>file})")+';return saveListing');
   const post=make(doc,{user:{id:'user-1'}},[],{ID:{unique:()=>String(++nextId)}},
     db,()=>{},()=>{closed++},async()=>{refreshed++},{setItem(){}});
   fields.newTitle.value='No';
@@ -256,4 +256,73 @@ test('rejected image selection remains available for submit validation',()=>{
   input.onchange({target});
   assert.equal(target.value,'large-photo.jpg');
   assert.match(note.textContent,/Дахин сонгоно уу/);
+});
+
+test('card variants are restricted to verified files and preserve original detail images',()=>{
+  const start=inlineScript.indexOf('function solioCardImageUrl(');
+  const end=inlineScript.indexOf('function openListing(',start);
+  const original='https://sgp.cloud.appwrite.io/v1/storage/buckets/6ae3b5970003d472ee8f/files/6aed36e60012f3e2230b/view?project=6ae367b80007a4d31918';
+  let onError;
+  const {cover,url}=runInNewContext(inlineScript.slice(start,end)+';({cover:solioCoverImage,url:solioCardImageUrl})',{
+    URL,escapeHTML:String,listings:[],document:{addEventListener(type,callback){if(type==='error')onError=callback;}}
+  });
+  assert.ok(url(original).includes('/6aed36e60012f3e2230b_card/view'));
+  assert.equal(url(original.replace('sgp.cloud.appwrite.io','example.com')),original.replace('sgp.cloud.appwrite.io','example.com'));
+  assert.equal(url(original.replace('6aed36e60012f3e2230b','unknown')),original.replace('6aed36e60012f3e2230b','unknown'));
+  assert.match(cover({id:'test',image_url:original},'boardPhoto',true),/_card\/view/);
+  assert.doesNotMatch(cover({id:'test',image_url:original},'detailPhoto',true),/_card\/view/);
+  const img={matches:()=>true,dataset:{original,coverId:'test',photoIndex:'0'}};
+  onError({target:img});
+  assert.equal(img.src,original);
+  assert.equal(img.dataset.photoIndex,'0','try original before advancing gallery');
+  assert.equal(img.dataset.original,undefined);
+});
+
+test('offscreen images do not start requests until they approach the viewport',()=>{
+  const start=inlineScript.indexOf('function solioCardImageUrl(');
+  const end=inlineScript.indexOf('function openListing(',start);
+  let callback,options;const watched=[];const unwatched=[];
+  const api=runInNewContext(inlineScript.slice(start,end)+';({cover:solioCoverImage,observe:observeSolioImages})',{
+    URL,escapeHTML:String,listings:[],document:{addEventListener(){}},
+    IntersectionObserver:class {constructor(cb,opts){callback=cb;options=opts}observe(img){watched.push(img)}unobserve(img){unwatched.push(img)}}
+  });
+  const markup=api.cover({id:'test',image_url:'https://images.example/photo.jpg'},'boardPhoto');
+  assert.match(markup,/ data-src=/);
+  assert.doesNotMatch(markup,/ src=/);
+  assert.match(api.cover({id:'test',image_url:'https://images.example/photo.jpg'},'boardPhoto',true),/ src=/);
+  const img={dataset:{src:'https://images.example/photo.jpg'}};
+  api.observe({querySelectorAll:()=>[img]});
+  assert.equal(options.rootMargin,'180px 0px');
+  callback([{target:img,isIntersecting:false}]);assert.equal(img.src,undefined);
+  callback([{target:img,isIntersecting:true}]);assert.equal(img.src,'https://images.example/photo.jpg');
+  assert.equal(img.dataset.src,undefined);assert.equal(unwatched.length,1);
+});
+
+test('large uploads shrink without upscaling and decoding failure retains the file',async()=>{
+  const source=readFileSync(new URL('../image-upload.mjs',import.meta.url),'utf8').replace('export async function','async function');
+  let canvas,revoked=0,failDecode=false,encodedSize=60000;
+  class ImageMock{naturalWidth=3024;naturalHeight=4032;set src(value){if(failDecode)this.onerror();else this.onload()}}
+  class FileMock{constructor(blobs,name,options){this.size=blobs[0].size;this.name=name;Object.assign(this,options)}}
+  const optimize=runInNewContext(source+';optimizeListingImage',{
+    URL:{createObjectURL:()=> 'blob:test',revokeObjectURL:()=>revoked++},Image:ImageMock,File:FileMock,
+    document:{createElement(){canvas={getContext:()=>({drawImage(image,x,y,w,h){canvas.output=[w,h]}}),toBlob(cb){cb({size:encodedSize,type:'image/webp'})}};return canvas}}
+  });
+  const file={name:'phone.jpg',type:'image/jpeg',size:2400000,lastModified:123};
+  const result=await optimize(file);
+  assert.equal(result.size,60000);assert.equal(result.name,'phone.webp');
+  assert.deepEqual(Array.from(canvas.output),[1200,1600]);assert.equal(revoked,1);
+  encodedSize=3000000;assert.equal(await optimize(file),file,'never upload a larger conversion');
+  failDecode=true;assert.equal(await optimize(file),file,'decoder failure must not lose the selected photo');
+  const gif={...file,type:'image/gif'};assert.equal(await optimize(gif),gif,'keep animation');
+  const small={...file,size:120000};assert.equal(await optimize(small),small);
+});
+
+test('public feed starts without waiting for account or hidden community requests',()=>{
+  const start=inlineScript.indexOf('// Public listings do not depend');
+  const end=inlineScript.indexOf('// PWA registration',start);
+  const startup=inlineScript.slice(start,end);
+  assert.ok(startup.indexOf('loadListings();')<startup.indexOf('appwriteAuth.getSession()'));
+  const setup=inlineScript.slice(inlineScript.indexOf('function setupSocial()'),inlineScript.indexOf('async function loadSocialPosts()'));
+  assert.doesNotMatch(setup,/loadSocialPosts\(/);
+  assert.doesNotMatch(startup,/setInterval|refreshSolioNotificationCount/);
 });
