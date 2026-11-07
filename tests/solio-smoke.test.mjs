@@ -82,7 +82,7 @@ test('Card price formatting handles free and invalid prices', () => {
 
 test('PWA cache is refreshed for the redesigned UI', () => {
   const sw = readFileSync(new URL('../sw.js', import.meta.url), 'utf8');
-  assert.match(sw, /solio-shell-v8/);
+  assert.match(sw, /solio-shell-v9/);
   assert.ok(sw.includes("'/board.css'"));
   assert.ok(staticHtml.includes('href="/board.css"'));
 });
@@ -114,9 +114,10 @@ test('iPhone modal is above sticky header with accessible close button', () => {
   assert.ok(staticHtml.includes('class="dialog" role="dialog" aria-modal="true"'));
   assert.ok(staticHtml.includes('class="close" type="button" aria-label="Цонх хаах"'));
   assert.ok(staticHtml.includes('onclick="solioPendingPostAfterAuth=false;closeModal()"'));
-  assert.ok(staticHtml.includes('#modal{z-index:1000!important'));
-  assert.ok(staticHtml.includes('#modal>.dialog>.close{'));
-  assert.ok(staticHtml.includes('max-height:calc(100dvh - 24px)!important'));
+  const uiCss=readFileSync(new URL('../ui.css',import.meta.url),'utf8');
+  assert.ok(uiCss.includes('#modal{z-index:1000!important'));
+  assert.ok(uiCss.includes('#modal>.dialog>.close{'));
+  assert.ok(uiCss.includes('max-height:calc(100dvh - 24px)!important'));
 });
 
 
@@ -133,7 +134,7 @@ test('quick-post form keeps essential fields, optional details and mobile submit
   assert.match(inlineScript,/postFreeToggle/);
   assert.match(inlineScript,/solio_last_school/);
   assert.match(inlineScript,/solio_last_category/);
-  assert.match(staticHtml,/#modal \.quickPostFooter\{position:sticky/);
+  assert.match(readFileSync(new URL('../ui.css',import.meta.url),'utf8'),/#modal \.quickPostFooter\{position:sticky/);
   assert.doesNotMatch(inlineScript.slice(inlineScript.indexOf('const listingFormHTML='),inlineScript.indexOf('async function authAction(')),/id=\"newStatus\"|id=\"newCondition\"/);
 });
 
@@ -145,7 +146,7 @@ test('registration keeps Appwrite session flow and enforces 8 characters',()=>{
   assert.match(inlineScript,/signUp\(\{email,password/);
   assert.match(inlineScript,/signInWithPassword\(\{email,password/);
   assert.match(inlineScript,/resetPasswordForEmail\(/);
-  assert.match(staticHtml,/#modal \.authExperience \.authWide/);
+  assert.match(readFileSync(new URL('../ui.css',import.meta.url),'utf8'),/#modal \.authExperience \.authWide/);
 });
 
 test('listing gallery returns all valid stored image URLs without duplicates',()=>{

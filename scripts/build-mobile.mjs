@@ -30,10 +30,10 @@ html=html.replace('<script src="https://unpkg.com/appwrite@17.0.0/dist/iife/sdk.
 const early="<script>window.solioFeedRequest=fetch('/api/public/listings?offset=0&limit=24',{credentials:'omit',cache:'no-store'}).catch(()=>null);</script>";
 html=html.replace('</head>',early+'</head>');
 await writeFile(resolve(dist,'index.html'),html);
-const files=['manifest.webmanifest','solio-icon.svg','board.css','sponsored-banner.css','sponsored-banner.js','sponsor-dashboard.js','sponsor-pricing.js'];
+const files=['manifest.webmanifest','solio-icon.svg','ui.css','board.css','sponsored-banner.css','sponsored-banner.js','sponsor-dashboard.js','sponsor-pricing.js'];
 for(const file of files)await copyFile(resolve(root,file),resolve(dist,file));
 let sw=await readFile(resolve(root,'sw.js'),'utf8');
-sw=sw.replace('solio-shell-v8','solio-shell-v8-'+createHash('sha256').update(assets.join(',')).digest('hex').slice(0,12));
+sw=sw.replace('solio-shell-v9','solio-shell-v9-'+createHash('sha256').update(assets.join(',')).digest('hex').slice(0,12));
 sw=sw.replace("'/board.css']","'/board.css',"+assets.map(name=>JSON.stringify(name)).join(',')+"]");
 await writeFile(resolve(dist,'sw.js'),sw);
 await writeFile(resolve(dist,'_headers'),'/assets/*\n  Cache-Control: public, max-age=31536000, immutable\n');

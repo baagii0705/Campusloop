@@ -7,12 +7,6 @@ bar.innerHTML='<a class="sponsorLink" target="_blank" rel="noopener noreferrer s
 document.body.appendChild(bar);
 const nav=document.querySelector('.mobileBottomNav');
 let ads=[],current=0,feedAds=[],feedCurrent=0,closed=false,rotateTimer=null;
-let sponsorRates={
- feed:{label:'Зарын дунд — өргөн баннер',description:'Бүтэн өргөн',prices:{7:15000,30:45000}},
- bottom:{label:'Утасны доод баннер',description:'Доод цэсний дээр',prices:{7:10000,30:30000}},
- both:{label:'Хоёр байрлалд зэрэг',description:'Хоёр газарт зэрэг',prices:{7:22000,30:60000}}
-};
-import('/sponsor-pricing.js').then(m=>{sponsorRates=m.SPONSOR_RATES;refreshInFeed(true)}).catch(e=>console.warn('Sponsor pricing unavailable:',e.message));
 let sessionId;
 try{sessionId=sessionStorage.getItem('solioSponsorSession');if(!sessionId){sessionId=crypto.randomUUID();sessionStorage.setItem('solioSponsorSession',sessionId)}}catch{sessionId=crypto.randomUUID()}
 function track(kind,id){
@@ -87,27 +81,13 @@ function makeInFeedCard(ad){
  if(isPlaceholder){
   const intro=sponsoredElement('div','solioFeedSponsorIntro');
   const copy=sponsoredElement('div','solioFeedSponsorCopy');
-  copy.append(sponsoredElement('h3','','Энд таны байгууллагын зар байрлана'),sponsoredElement('p','','Заруудын дунд бүтэн өргөнөөр, эсвэл утасны доод хэсэгт сурталчилгаа байрлуулаарай.'));
+  copy.append(sponsoredElement('h3','','Энд таны байгууллагын зар байрлана'),sponsoredElement('p','','Оюутнуудад хүрэх сурталчилгааны байршил, үнийн мэдээлэл.'));
   intro.append(copy);
   card.append(intro);
-  const offers=sponsoredElement('div','solioFeedSponsorRates');
-  for(const [placement,plan] of Object.entries(sponsorRates)){
-   const offer=sponsoredElement('button','solioFeedSponsorOffer');
-   offer.type='button';
-   const title=sponsoredElement('strong','',plan.label);
-   const days7=sponsoredElement('span','','7 хоног — '+Number(plan.prices[7]).toLocaleString('en-US')+' ₮');
-   const days30=sponsoredElement('span','','30 хоног — '+Number(plan.prices[30]).toLocaleString('en-US')+' ₮');
-   offer.append(title,days7,days30);
-   offer.addEventListener('click',()=>{if(typeof window.SolioSponsorOpen==='function')window.SolioSponsorOpen(placement);else location.assign('/?sponsor=1&placement='+encodeURIComponent(placement))});
-   offers.append(offer);
-  }
-  card.append(offers);
-  const actions=sponsoredElement('div','solioFeedSponsorBottom');
-  const note=sponsoredElement('small','','Танилцуулах тариф · Төлбөр автоматаар авахгүй');
-  const button=sponsoredElement('button','solioFeedSponsorAction','Байршил сонгож хүсэлт илгээх');
+  const button=sponsoredElement('button','solioFeedSponsorAction','Байршил, үнэ үзэх →');
   button.type='button';
   button.addEventListener('click',()=>{if(typeof window.SolioSponsorOpen==='function')window.SolioSponsorOpen('feed');else location.assign('/?sponsor=1&placement=feed')});
-  actions.append(note,button);card.append(actions);
+  card.append(button);
  }else{
   const link=sponsoredElement('a','solioFeedSponsorLink');
   link.href=validUrl(ad.target_url);
@@ -155,7 +135,7 @@ function refreshInFeed(force=false){
  const ad=feedAds[feedCurrent]||{$id:'solio_welcome_demo',name:'Энд таны зар байрлана'};
  // A wide banner starts on a full row at every screen width.
  const columns=Math.max(1,getComputedStyle(marketplaceRoot).gridTemplateColumns.split(' ').length);
- const target=Math.min(6,Math.floor(items.length/2));
+ const target=Math.min(10,items.length);
  const slot=Math.min(items.length,Math.max(columns,Math.floor(target/columns)*columns));
  const previous=items[slot-1];
  if(existing&&!force&&existing.dataset.sponsorId===ad.$id){
@@ -197,7 +177,7 @@ async function load(){
   const accepted=ad=>ad.active===true&&(!ad.start_at||Date.parse(ad.start_at)<=now)&&(!ad.end_at||Date.parse(ad.end_at)>now)&&validUrl(ad.target_url)&&validUrl(ad.image_url);
   d1=d1.filter(accepted);legacy=legacy.filter(accepted);
   const bottomActive=[...d1.filter(ad=>ad.placement==='bottom'||ad.placement==='both'),...legacy.filter(ad=>ad.$id!=='solio_welcome_demo')];
-  ads=bottomActive.length?bottomActive:legacy.filter(ad=>ad.$id==='solio_welcome_demo');
+  ads=bottomActive;
   feedAds=d1.filter(ad=>ad.placement==='feed'||ad.placement==='both');
   current=0;feedCurrent=0;show();refreshInFeed(true);
   clearInterval(rotateTimer);
