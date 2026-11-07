@@ -25,6 +25,7 @@ npm run dev
 | --- | --- |
 | `index.html` | Marketplace, accounts, Wanted and Community UI/logic |
 | `board.css` | Shared base, forms, supporting screens and marketplace identity |
+| `usability.js` | Shared feature menu, creation chooser, help and listing action forms |
 | `feature-loader.js` | On-demand school, club/event and sponsor management screens |
 | `campus-hub.js`, `campus-hub.css` | Unified school board and student deals |
 | `societies.js`, `societies.css` | Club directory, event agenda, bookmarks, submissions and moderation |
@@ -58,3 +59,9 @@ Student deal and sponsor applications have independent approval workflows. See [
 The old `ui.css` has been consolidated into `board.css`, with unused legacy catalog/advertising selectors removed. Dead chat insertion branches and the unreachable Smart Match screen are removed. The build no longer publishes duplicate unhashed JS/CSS copies.
 
 Keep the API handlers, migrations, tests, build/preview scripts, Capacitor config and both workflows. `node_modules/`, `dist/`, native generated projects, credentials and logs stay out of Git. Files that are used only for development or mobile builds are still necessary source files.
+
+## Navigation and usability
+
+Mobile navigation has five entry points: Home, Search, Add, All features and My account. All features exposes every student and business destination with a short explanation. Add opens a chooser for listings, Wanted requests, posts, events and clubs. Authentication resumes only the requested UI after a successful login; closing the dialog cancels that intent and never submits content automatically.
+
+Listing details retain the underlying search or feature page. Offers, reports and owner status changes use labelled Mongolian forms. Public search states when its results cover only the loaded listing pages and passes the query to Wanted, Community or clubs/events on request. Feature bundles remain lazy loaded.

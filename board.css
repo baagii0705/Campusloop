@@ -947,13 +947,13 @@ body:has(#modal.show){ overflow: hidden; }
   .footer .wrap p:last-of-type{ margin-left: 0; }
   .footer .wrap p:nth-child(2){ flex: 1; }
   .footer #solioSponsorFooterCta{ flex-basis: 100%; text-align: left; }
-  .mobileBottomNav{ position: fixed !important; z-index: 25; left: 0 !important; right: 0 !important; bottom: 0 !important; display: grid !important; grid-template-columns: repeat(7,minmax(0,1fr)) !important; align-items: center; gap: 0; width: 100% !important; max-width: none !important; min-height: 66px; height: auto; padding: 5px 7px calc(6px + env(safe-area-inset-bottom,0px)); border: 0; border-top: 1px solid var(--board-rule); border-radius: 0; background: var(--board-paper); box-shadow: 0 -2px 12px #29241306; }
+  .mobileBottomNav{ position: fixed !important; z-index: 25; left: 0 !important; right: 0 !important; bottom: 0 !important; display: grid !important; grid-template-columns: repeat(5,minmax(0,1fr)) !important; align-items: center; gap: 0; width: 100% !important; max-width: none !important; min-height: 66px; height: auto; padding: 5px 7px calc(6px + env(safe-area-inset-bottom,0px)); border: 0; border-top: 1px solid var(--board-rule); border-radius: 0; background: var(--board-paper); box-shadow: 0 -2px 12px #29241306; }
   .mobileBottomNav > button{ display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 0; min-height: 52px; gap: 4px; padding: 0; border: 0; background: transparent; color: #a79e8b; }
   .mobileBottomNav > button.active{ color: var(--board-ink); }
   .mobileBottomNav .bottomIcon{ display: grid; place-items: center; width: 30px; height: 28px; border-radius: 8px; background: transparent; color: inherit; box-shadow: none; }
   .mobileBottomNav .bottomIcon svg{ width: 21px; height: 21px; }
   .mobileBottomNav > button.bottomPost > .bottomIcon{ width: 32px; height: 30px; border-radius: 9px; background: var(--board-accent); color: white; }
-  .mobileBottomNav .bottomLabel{ max-width: 100%; color: inherit; font-size: 9px; font-weight: 500; line-height: 1.2; white-space: nowrap; letter-spacing: -.025em; }
+  .mobileBottomNav .bottomLabel{ max-width: 100%; color: inherit; font-size: 11px; font-weight: 600; line-height: 1.2; white-space: nowrap; letter-spacing: -.025em; }
   .mobileBottomNav .bottomPost .bottomLabel{ color: var(--board-accent); }
 }
 @media (max-width:365px) {
@@ -985,3 +985,59 @@ body:has(#modal.show){ overflow: hidden; }
   .boardCategories button{ min-height: 40px; }
   .boardQuickFilters button{ min-height: 40px; }
 }
+
+/* Task-oriented navigation, shared forms and readable small-screen controls. */
+.boardMenuButton{display:none}
+.s1CampusRoutes button>span:nth-child(2){min-width:0}
+.s1CampusRoutes small{display:block;font-size:11px;font-weight:400;line-height:1.4;color:#726b5d;letter-spacing:0;margin-top:5px}
+#modal>.dialog.easyDialog{width:min(730px,calc(100vw - 24px))!important;max-width:730px!important;padding:30px!important;background:var(--board-paper)!important}
+.easySheet{color:var(--board-ink);min-width:0}
+.easyKicker{font-size:10px;font-weight:700;letter-spacing:.09em;color:#736b5d;display:block;padding-right:32px}
+.easySheet h2{font-size:clamp(25px,4vw,34px);line-height:1.2;letter-spacing:-.035em;margin:12px 0}
+.easyIntro{color:#686257;font-size:14px;line-height:1.6;margin:0 0 20px;overflow-wrap:anywhere}
+.easyMenuSearch{display:block;font-size:12px;font-weight:650}
+.easyMenuSearch input{display:block;width:100%;box-sizing:border-box;margin-top:7px;min-height:46px;padding:10px 13px;border:1px solid var(--board-rule);border-radius:8px;background:#fffdf8;font:inherit;font-size:16px;color:var(--board-ink)}
+.easyMenuGroup{margin:22px 0}
+.easyMenuGroup h3{font-size:11px;letter-spacing:.06em;color:#736b5d;margin:0 0 10px}
+.easyChoices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+#modal .easyChoice{display:flex;align-items:center;gap:12px;padding:15px 12px;min-height:82px;border:1px solid var(--board-rule);border-radius:8px;background:#fffdf8;color:var(--board-ink);text-align:left;min-width:0}
+#modal .easyChoice:hover{border-color:var(--board-accent);background:#fff5e8}
+.easyChoice>.boardIcon{flex:0 0 23px;color:var(--board-accent)}
+.easyChoice>span:nth-child(2){min-width:0;flex:1}
+.easyChoice strong{display:block;font-size:14px;font-weight:700;line-height:1.35}
+.easyChoice small{display:block;color:#736b5d;font-size:12px;line-height:1.5;margin-top:5px}
+.easyArrow{font-size:18px;flex:0 0 12px}
+.easyCreate{grid-template-columns:1fr}
+.easyHelp{border-top:1px solid var(--board-rule);padding-top:14px;font-size:13px;line-height:1.7}
+.easyHelp summary{cursor:pointer;min-height:44px;display:list-item;align-content:center;font-weight:700}
+.easyHelp p{margin:10px 0;color:#686257}
+.easySearchRoutes{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.easySearchRoutes button,.easyTextButton{min-height:44px;padding:10px 14px;background:#fffdf8;border:1px solid var(--board-rule);border-radius:7px;color:var(--board-ink);font-size:13px;font-weight:600}
+.easyTextButton{margin-top:8px}
+.easyHint,.solioSearchHead>p{font-size:13px;color:#736b5d;line-height:1.6}
+.easyActionForm{display:grid;gap:18px}
+.easyActionForm label{display:grid;gap:8px;font-size:14px;font-weight:600}
+.easyActionForm input,.easyActionForm select,.easyActionForm textarea{box-sizing:border-box;width:100%;min-height:48px;border:1px solid var(--board-rule);border-radius:8px;padding:11px;font:inherit;font-size:16px;background:#fffdf8;color:var(--board-ink)}
+.easyFormActions{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between}
+.easyFormActions button{min-height:46px;border:1px solid var(--board-rule);border-radius:8px;padding:10px 15px;font-size:14px;background:#fffdf8}
+.easyFormActions .easyPrimary{background:var(--board-accent);color:#fff;border-color:var(--board-accent);font-weight:700}
+#easyActionStatus{font-size:13px;line-height:1.5;color:#a44224;margin:0}
+#easyActionStatus:empty{display:none}
+#toast{max-width:calc(100vw - 32px);overflow-wrap:anywhere;box-sizing:border-box}
+body :is(button,a,input,select,textarea,summary):focus-visible{outline:3px solid #ab4823;outline-offset:3px}
+body button:disabled{cursor:wait;opacity:.6}
+@media(max-width:768px){
+ .boardMenuButton{display:block}
+ .boardAccount .boardSaved{display:none}
+ .mobileBottomNav>button{color:#756d5e}
+ .mobileBottomNav>button.active .bottomIcon{background:#f1e5d4}
+ .s1CampusRoutes small{font-size:10px;max-width:115px}
+ .s1CampusRoutes button{min-height:78px}
+ #modal>.dialog.easyDialog{padding:22px 16px!important}
+ .easyChoices{grid-template-columns:1fr}
+ #modal .easyChoice{min-height:74px}
+ .easySheet h2{padding-right:25px}
+ #modal input:not([type=file]):not([type=checkbox]),#modal select,#modal textarea,.socialForm input,.socialForm select,.socialForm textarea{font-size:16px!important}
+ .solioSearchPage #solioGlobalSearch{font-size:16px!important}
+}
+@media(prefers-reduced-motion:reduce){html,body,*{scroll-behavior:auto!important}}

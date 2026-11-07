@@ -21,9 +21,9 @@ async function load(name){
  })().catch(error=>{pending.delete(name);throw error});
  pending.set(name,promise);return promise;
 }
-async function invoke(name,fn){try{await load(name);fn()}catch{toast('Хэсгийг ачаалж чадсангүй. Товчийг дахин дарж оролдоно уу.')}}
-window.SolioCampus={open:()=>navigate('campus',()=>window.SolioCampus.open()),deals:()=>navigate('campus',()=>window.SolioCampus.deals()),leave(){},restoreModalRoute(){}};
-window.SolioSocieties={open:options=>navigate('societies',()=>window.SolioSocieties.open(options)),leave(){},restoreModalRoute(){}};
+async function invoke(name,fn){try{if(!ready.has(name))toast('Хэсгийг нээж байна…');await load(name);fn()}catch{toast('Хэсгийг ачаалж чадсангүй. Товчийг дахин дарж оролдоно уу.')}}
+window.SolioCampus={open:()=>navigate('campus',()=>window.SolioCampus.open()),deals:()=>navigate('campus',()=>window.SolioCampus.deals()),apply:()=>navigate('campus',()=>window.SolioCampus.apply()),leave(){},restoreModalRoute(){}};
+window.SolioSocieties={open:options=>navigate('societies',()=>window.SolioSocieties.open(options)),create:kind=>navigate('societies',()=>window.SolioSocieties.create(kind)),leave(){},restoreModalRoute(){}};
 window.SolioSponsorOpen=placement=>invoke('sponsor',()=>window.SolioSponsorOpen(placement));
 function route(){const hash=location.hash;if(['#campus','#deals'].includes(hash)&&!ready.has('campus'))invoke('campus',()=>{});if((hash==='#societies'||hash.startsWith('#societies/'))&&!ready.has('societies'))invoke('societies',()=>{})}
 window.addEventListener('popstate',route);route();

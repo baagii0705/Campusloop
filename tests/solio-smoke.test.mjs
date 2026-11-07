@@ -17,21 +17,15 @@ test('Solio JavaScript can be parsed', () => {
   assert.doesNotThrow(() => new Script(inlineScript, { filename: 'index.html' }));
 });
 
-test('Mobile has seven distinct working destinations, Wanted beside Schools', () => {
+test('Mobile has five readable entry points and a shared feature menu', () => {
   const nav = section('<nav class="mobileBottomNav"', '</nav>');
-  assert.equal((nav.match(/<button\b/g) || []).length, 7);
-  const school = nav.indexOf('id="bottomSchools"');
-  const wanted = nav.indexOf('id="bottomWanted"');
-  const post = nav.indexOf('class="bottomPost"');
-  const search = nav.indexOf('id="bottomSearch"');
-  const community = nav.indexOf('id="bottomCommunity"');
-  assert.ok(school > 0 && school < wanted && wanted < post && post < search && search < community);
-  for (const id of ['bottomHome', 'bottomSchools', 'bottomWanted', 'bottomSearch', 'bottomCommunity', 'bottomAccount']) {
+  assert.equal((nav.match(/<button\b/g) || []).length, 5);
+  for (const id of ['bottomHome','bottomSearch','bottomAdd','bottomMenu','bottomAccount']) {
     assert.equal((nav.match(new RegExp('id="' + id + '"', 'g')) || []).length, 1);
   }
-  assert.match(nav, /onclick="openSolioWanted\(\)"/);
+  assert.match(nav, /onclick="SolioUX.menu\(\)"/);
+  assert.match(nav, /onclick="SolioUX.create\(\)"/);
   assert.match(nav, /onclick="goMobileSearch\(\)"/);
-  assert.match(nav, /onclick="openSolioCommunity\(\)"/);
 });
 
 test('Campus home has one Add listing button and working community destinations', () => {
@@ -98,8 +92,8 @@ test('DOM element IDs are unique', () => {
 test('essential marketplace destinations remain in the page', () => {
   for(const id of ['market','cards','schoolHub','schoolHubGrid','solioSearchPage',
     'solioSearchSchools','solioSearchListings','socialHub','communityPanel',
-    'wantedPanel','bottomHome','bottomSchools','bottomWanted','bottomSearch',
-    'bottomCommunity','bottomAccount']){
+    'wantedPanel','bottomHome','bottomMenu','bottomAdd','bottomSearch',
+    'bottomAccount']){
     assert.ok(staticHtml.includes('id="'+id+'"'),id);
   }
 });
@@ -115,7 +109,7 @@ test('iPhone modal is above sticky header with accessible close button', () => {
   assert.ok(staticHtml.includes('id="modal" role="presentation"'));
   assert.ok(staticHtml.includes('class="dialog" role="dialog" aria-modal="true"'));
   assert.ok(staticHtml.includes('class="close" type="button" aria-label="Цонх хаах"'));
-  assert.ok(staticHtml.includes('onclick="solioPendingPostAfterAuth=false;closeModal()"'));
+  assert.ok(staticHtml.includes('onclick="closeModal()"'));
   const uiCss=readFileSync(new URL('../board.css',import.meta.url),'utf8');
   assert.ok(uiCss.includes('#modal{z-index:1000!important'));
   assert.ok(uiCss.includes('#modal>.dialog>.close{'));
@@ -144,7 +138,7 @@ test('registration keeps Appwrite session flow and enforces 8 characters',()=>{
   assert.match(inlineScript,/class=\"authExperience\"/);
   assert.match(inlineScript,/register\?8:6/);
   assert.match(inlineScript,/register\?"8-аас доошгүй тэмдэгт"/);
-  assert.match(inlineScript,/if\(resumePost\)openModal\("post"\)/);
+  assert.match(inlineScript,/finishSolioAuthentication\(\)/);
   assert.match(inlineScript,/signUp\(\{email,password/);
   assert.match(inlineScript,/signInWithPassword\(\{email,password/);
   assert.match(inlineScript,/resetPasswordForEmail\(/);

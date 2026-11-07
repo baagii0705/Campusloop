@@ -17,9 +17,9 @@ const sdkPath=await asset(sdk.outputFiles[0].text,'js',{initial:true});
 html=html.replace('<script src="https://unpkg.com/appwrite@17.0.0/dist/iife/sdk.js"></script>','<script src="'+sdkPath+'" defer></script>');
 // Secondary screens load only on navigation; the service worker also fetches them on demand.
 const pricingPath=await asset(await readFile('sponsor-pricing.js','utf8'),'js');
-for(const file of ['board.css','sponsored-banner.css','campus-hub.css','campus-hub.js','societies.css','societies.js','sponsored-banner.js','sponsor-dashboard.js']){
+for(const file of ['board.css','sponsored-banner.css','campus-hub.css','campus-hub.js','societies.css','societies.js','usability.js','sponsored-banner.js','sponsor-dashboard.js']){
  let content=await readFile(resolve(root,file),'utf8');if(file.endsWith('.js'))content=content.replace("import('/sponsor-pricing.js')","import('"+pricingPath+"')");
- const initial=['board.css','sponsored-banner.css','sponsored-banner.js'].includes(file),path=await asset(content,file.endsWith('.css')?'css':'js',{initial});paths.set('/'+file,path);
+ const initial=['board.css','sponsored-banner.css','sponsored-banner.js','usability.js'].includes(file),path=await asset(content,file.endsWith('.css')?'css':'js',{initial});paths.set('/'+file,path);
  html=html.replaceAll('href="/'+file+'"','href="'+path+'"').replaceAll('src="/'+file+'"','src="'+path+'"');
 }
 let loader=await readFile('feature-loader.js','utf8');for(const [file,path] of paths)loader=loader.replaceAll("'"+file+"'","'"+path+"'");
