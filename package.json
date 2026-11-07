@@ -16,12 +16,14 @@
     "dev": "node scripts/dev-server.mjs"
   },
   "dependencies": {
-    "@capacitor/core": "^7.4.0",
     "@capacitor/android": "^7.4.0",
+    "@capacitor/core": "^7.4.0",
     "@capacitor/ios": "^7.4.0"
   },
   "devDependencies": {
-    "@capacitor/cli": "^7.4.0"
+    "@capacitor/cli": "^7.4.0",
+    "appwrite": "17.0.0",
+    "esbuild": "0.25.12"
   },
   "engines": {
     "node": ">=20"

@@ -23,7 +23,7 @@ test('real approval, rejection and pause handlers govern public visibility witho
  const context=request=>({request,env:{SPONSOR_DB:DB}});
  const application=await apply(context(request('/apply',{...offer,start_at:'2020-01-01',contact_name:'Test Contact',email:'private@example.com'})));assert.equal(application.status,201);const {id}=await application.json();
  assert.equal((await (await dealsGet(context(request('')))).json()).deals.length,0);
- const original=globalThis.fetch;globalThis.fetch=async()=>Response.json({labels:['admin']});
+ const original=globalThis.fetch;globalThis.fetch=async()=>Response.json({$id:'test-admin',labels:['admin']});
  try{
   assert.equal((await adminPost(context(request('/admin',{id,action:'approve'},true)))).status,200);
   assert.equal((await adminPost(context(request('/admin',{id,action:'approve'},true)))).status,409);
@@ -31,6 +31,6 @@ test('real approval, rejection and pause handlers govern public visibility witho
   assert.equal(sqlite.prepare('SELECT status FROM student_deal_requests').get().status,'approved');
   assert.equal((await adminPost(context(request('/admin',{id,action:'toggle',active:false},true)))).status,200);
   assert.equal((await (await dealsGet(context(request('')))).json()).deals.length,0);
-  globalThis.fetch=async()=>Response.json({labels:[]});assert.equal((await adminPost(context(request('/admin',{id,action:'toggle',active:true},true)))).status,403);
+  globalThis.fetch=async()=>Response.json({$id:'test-user',labels:[]});assert.equal((await adminPost(context(request('/admin',{id,action:'toggle',active:true},true)))).status,403);
  }finally{globalThis.fetch=original;sqlite.close()}
 });

@@ -6,14 +6,17 @@ export const clean=(x,max=160)=>String(x??'').replace(/[\u0000-\u001F\u007F]/g,'
 export function safeURL(value,allowEmpty=false){const s=clean(value,2048);if(!s&&allowEmpty)return '';try{const u=new URL(s);if(u.protocol!=='https:'||u.username||u.password||['localhost','127.0.0.1','0.0.0.0','::1'].includes(u.hostname)||u.hostname.endsWith('.local'))return null;return u.href}catch{return null}}
 export function safeDate(s){if(s===null||s===undefined||s==='')return null;const d=new Date(s);if(!Number.isFinite(d.valueOf()))throw Error('Огноо буруу байна');return d.toISOString()}
 export function checkDateRange(start,end){if(start&&end&&end<=start)throw Error('Дуусах өдөр эхлэх өдрөөс хойш байх ёстой')}
-export async function requireAdmin(request){
+// Verify the JWT with Appwrite; never trust an owner ID or role from a request body.
+export async function verifiedUser(request){
  const bearer=request.headers.get('Authorization')||'';
- if(!/^Bearer [A-Za-z0-9._-]{20,3000}$/.test(bearer))return false;
+ if(!/^Bearer [A-Za-z0-9._-]{20,3000}$/.test(bearer))return null;
  try{
   const check=await fetch('https://sgp.cloud.appwrite.io/v1/account',{headers:{'X-Appwrite-Project':'6ae367b80007a4d31918','X-Appwrite-JWT':bearer.slice(7),'Accept':'application/json'},signal:AbortSignal.timeout(9000)});
-  if(!check.ok)return false;
+  if(!check.ok)return null;
   const user=await check.json();
-  return Array.isArray(user.labels)&&user.labels.includes('admin');
- }catch{return false}
+  return typeof user.$id==='string'&&user.$id?{id:user.$id,admin:Array.isArray(user.labels)&&user.labels.includes('admin')}:null;
+ }catch{return null}
 }
+export async function requireAdmin(request){return (await verifiedUser(request))?.admin===true}
+
 export function binding(context){if(!context.env?.SPONSOR_DB)throw Error('SPONSOR_DB binding missing');return context.env.SPONSOR_DB}

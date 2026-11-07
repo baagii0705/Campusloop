@@ -223,5 +223,7 @@ function setupAdmin(){
  const observer=new MutationObserver(()=>{if(!panel.hidden&&isCampusAdmin())adminList(root)});
  observer.observe(panel,{attributes:true,attributeFilter:['hidden']});
 }
-setupAdmin();load();setInterval(load,60000);
+setupAdmin();
+if('requestIdleCallback' in window)requestIdleCallback(()=>load(),{timeout:1500});else setTimeout(load,500);
+setInterval(()=>{if(!document.hidden)load()},60000);
 })();
