@@ -34,10 +34,12 @@ test('Mobile has seven distinct working destinations, Wanted beside Schools', ()
   assert.match(nav, /onclick="openSolioCommunity\(\)"/);
 });
 
-test('Home contains only one Add listing button and no redundant Community shortcut', () => {
+test('Campus home has one Add listing button and working community destinations', () => {
   const home = section('<section class="marketHome');
   assert.equal((home.match(/openModal\('post'\)/g) || []).length, 1);
-  assert.doesNotMatch(home, /openSolioCommunity\(\)|solioDiscovery|schoolHubGrid/);
+  assert.match(home, /onclick="openSolioCommunity\(\)"/);
+  assert.match(home, /onclick="openSolioWanted\(\)"/);
+  assert.doesNotMatch(home, /solioDiscovery|schoolHubGrid/);
 });
 
 test('Marketplace uses one accessible category selector', () => {

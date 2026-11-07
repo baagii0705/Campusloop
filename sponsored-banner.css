@@ -1,61 +1,61 @@
 /* Sponsored banner above Solio's mobile bottom navigation */
-#solioSponsorBar{display:none;position:fixed;left:12px;right:12px;bottom:calc(var(--solio-nav-height,94px) + 24px);z-index:24;background:#fff;border:1px solid #e4eeec;border-radius:16px;box-shadow:0 4px 18px #17453a20;padding:7px 36px 7px 9px;align-items:center;gap:10px;min-height:66px;max-width:600px;margin:0 auto}
+#solioSponsorBar{display:none;position:fixed;left:12px;right:12px;bottom:calc(var(--solio-nav-height,94px) + 24px);z-index:24;background:#fff;border:1px solid #eee7e4;border-radius:16px;box-shadow:0 4px 18px #45231720;padding:7px 36px 7px 9px;align-items:center;gap:10px;min-height:66px;max-width:600px;margin:0 auto}
 #solioSponsorBar.is-visible{display:flex}
-#solioSponsorBar .sponsorLink{display:flex;align-items:center;gap:10px;min-width:0;flex:1;text-decoration:none;color:#233934}
-#solioSponsorBar .sponsorImage{width:66px;height:48px;object-fit:cover;border-radius:9px;background:#f0f5f4;flex:none}
+#solioSponsorBar .sponsorLink{display:flex;align-items:center;gap:10px;min-width:0;flex:1;text-decoration:none;color:#392923}
+#solioSponsorBar .sponsorImage{width:66px;height:48px;object-fit:cover;border-radius:9px;background:#f5f1f0;flex:none}
 #solioSponsorBar .sponsorCopy{min-width:0;display:grid;gap:3px}
-#solioSponsorBar .sponsorTag{font-size:10px;color:#42bb9e;font-weight:700}
+#solioSponsorBar .sponsorTag{font-size:10px;color:#bb6342;font-weight:700}
 #solioSponsorBar .sponsorName{font-size:13px;font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#solioSponsorBar.is-placeholder{justify-content:center;background:#fafbfb;border:1px dashed #89d8c5;min-height:64px}
+#solioSponsorBar.is-placeholder{justify-content:center;background:#fbfafa;border:1px dashed #d89e89;min-height:64px}
 #solioSponsorBar.is-placeholder .sponsorLink{justify-content:center;text-align:center}
 #solioSponsorBar.is-placeholder .sponsorCopy{justify-items:center;gap:2px}
-#solioSponsorBar.is-placeholder .sponsorName{font-size:15px;font-weight:750;color:#38aa8e}
-#solioSponsorBar.is-placeholder .sponsorTag{font-size:10px;color:#70ab9d}
-#solioSponsorBar .sponsorClose{position:absolute;right:7px;top:8px;border:0;background:#f2f7f6;border-radius:50%;width:26px;height:26px;color:#4b645e;font-size:17px}
+#solioSponsorBar.is-placeholder .sponsorName{font-size:15px;font-weight:750;color:#aa5738}
+#solioSponsorBar.is-placeholder .sponsorTag{font-size:10px;color:#ab8070}
+#solioSponsorBar .sponsorClose{position:absolute;right:7px;top:8px;border:0;background:#f7f3f2;border-radius:50%;width:26px;height:26px;color:#64524b;font-size:17px}
 body.solio-sponsor-visible{padding-bottom:var(--solio-sponsor-extra,78px)}
-#solioSponsorAdmin{margin:16px 0;padding:16px;background:#fff;border:1px solid #e4edeb;border-radius:16px}
+#solioSponsorAdmin{margin:16px 0;padding:16px;background:#fff;border:1px solid #ede6e4;border-radius:16px}
 #solioSponsorAdmin .sponsorAdminFields{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:9px}
 #solioSponsorAdmin input{width:100%;padding:10px;border:1px solid #ddd;border-radius:9px}
-#solioSponsorAdmin button{padding:9px 12px;border:0;border-radius:9px;background:#40bea0;color:#fff}
+#solioSponsorAdmin button{padding:9px 12px;border:0;border-radius:9px;background:#be6240;color:#fff}
 #solioSponsorAdmin .sponsorAdminItem{padding:9px 0;border-bottom:1px solid #eee;display:flex;gap:8px;align-items:center;justify-content:space-between}
 @media(min-width:761px){#solioSponsorBar{display:none!important}body.solio-sponsor-visible{padding-bottom:0}}
 
 /* Independent sponsored application modal, protected management, and D1 statistics. */
 #solioSponsorBar.is-placeholder .sponsorLink{cursor:pointer}
-#solioSponsorBar.is-placeholder .sponsorLink:focus-visible{outline:2px solid #40c0a1;outline-offset:3px;border-radius:8px}
-.solioSponsorFooterCta{display:block;margin:12px 0;padding:12px 18px;background:#f9fbfb;color:#40aa91;border:1px solid #ccdfda;border-radius:12px;font-weight:700;cursor:pointer}
+#solioSponsorBar.is-placeholder .sponsorLink:focus-visible{outline:2px solid #c06340;outline-offset:3px;border-radius:8px}
+.solioSponsorFooterCta{display:block;margin:12px 0;padding:12px 18px;background:#fbfaf9;color:#aa5d40;border:1px solid #dfd1cc;border-radius:12px;font-weight:700;cursor:pointer}
 .solioSponsorOverlay[hidden]{display:none!important}
-.solioSponsorOverlay{position:fixed;inset:0;z-index:99999;background:#102f27b8;display:flex;align-items:center;justify-content:center;overflow-y:auto;padding:18px}
+.solioSponsorOverlay{position:fixed;inset:0;z-index:99999;background:#2f1810b8;display:flex;align-items:center;justify-content:center;overflow-y:auto;padding:18px}
 body.solioSponsorModalOpen{overflow:hidden}
-.solioSponsorDialog{position:relative;background:#fff;color:#223933;border-radius:22px;box-shadow:0 24px 95px #12352d70;width:min(100%,580px);max-height:calc(100dvh - 36px);overflow:auto;padding:25px}
-.solioSponsorDismiss{position:absolute;right:13px;top:11px;background:#edf4f2;border:0;border-radius:50%;width:36px;height:36px;font-size:24px;color:#46605a;cursor:pointer}
-.solioSponsorEyebrow{font-size:11px;font-weight:800;color:#55c6ab;letter-spacing:1px;margin-bottom:9px}
-.solioSponsorDialog h2{font-size:23px;line-height:1.25;margin:0 36px 9px 0;color:#184a3e}
-.solioSponsorDialog p{font-size:13px;line-height:1.5;color:#57726c}
+.solioSponsorDialog{position:relative;background:#fff;color:#392822;border-radius:22px;box-shadow:0 24px 95px #351b1270;width:min(100%,580px);max-height:calc(100dvh - 36px);overflow:auto;padding:25px}
+.solioSponsorDismiss{position:absolute;right:13px;top:11px;background:#f4efed;border:0;border-radius:50%;width:36px;height:36px;font-size:24px;color:#604d46;cursor:pointer}
+.solioSponsorEyebrow{font-size:11px;font-weight:800;color:#c67455;letter-spacing:1px;margin-bottom:9px}
+.solioSponsorDialog h2{font-size:23px;line-height:1.25;margin:0 36px 9px 0;color:#4a2618}
+.solioSponsorDialog p{font-size:13px;line-height:1.5;color:#725e57}
 .solioSponsorFields,.solioSponsorAdminForm{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.solioSponsorField{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:700;color:#49655e;min-width:0}
-.solioSponsorField input,.solioSponsorField textarea{width:100%;box-sizing:border-box;border:1px solid #d5e4e0;border-radius:10px;padding:11px;background:#fff;color:#1b2d29;font:inherit;font-size:13px}
-.solioSponsorField input:focus,.solioSponsorField textarea:focus{outline:2px solid #8bd8c6;outline-offset:1px}
+.solioSponsorField{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:700;color:#655149;min-width:0}
+.solioSponsorField input,.solioSponsorField textarea{width:100%;box-sizing:border-box;border:1px solid #e4d9d5;border-radius:10px;padding:11px;background:#fff;color:#2d201b;font:inherit;font-size:13px}
+.solioSponsorField input:focus,.solioSponsorField textarea:focus{outline:2px solid #d8a08b;outline-offset:1px}
 .solioSponsorDialog form>.solioSponsorField{margin-top:12px}
 .solioSponsorHoneypot{position:absolute!important;left:-9999px!important;opacity:0!important;height:1px!important}
-.solioSponsorPrivacy{color:#6b857f!important;font-size:11px!important;margin:12px 0}
+.solioSponsorPrivacy{color:#85726b!important;font-size:11px!important;margin:12px 0}
 .solioSponsorPrimary,.solioSponsorSecondary{border-radius:10px;padding:10px 14px;cursor:pointer;font-size:13px;font-weight:750}
-.solioSponsorPrimary{background:#56c6ab;color:#fff;border:1px solid #56c6ab}
+.solioSponsorPrimary{background:#c67456;color:#fff;border:1px solid #c67456}
 .solioSponsorPrimary:disabled{opacity:.6;cursor:wait}
-.solioSponsorSecondary{background:#f3f7f6;color:#35977f;border:1px solid #d0e1dd}
-.solioSponsorSuccess{color:#236c4d!important;font-weight:700}
+.solioSponsorSecondary{background:#f7f4f3;color:#974f35;border:1px solid #e1d5d0}
+.solioSponsorSuccess{color:#6c3723!important;font-weight:700}
 #solioSponsorApplyFeedback:not(:empty){padding:8px 0}
-.solioSponsorD1Admin{margin:22px 0;padding:18px;background:#fff;border:1px solid #dce8e5;border-radius:15px;color:#283d38}
+.solioSponsorD1Admin{margin:22px 0;padding:18px;background:#fff;border:1px solid #e8dfdc;border-radius:15px;color:#3d2e28}
 .solioSponsorD1Admin h3{font-size:21px;margin:0 0 8px}
 .solioSponsorD1Admin h4{font-size:17px;margin:25px 0 12px}
-.solioSponsorD1Admin>p{color:#556e68;font-size:13px}
+.solioSponsorD1Admin>p{color:#6e5c55;font-size:13px}
 .solioSponsorAdminTotals{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:15px 0}
-.solioSponsorAdminTotals>div{min-width:0;padding:11px;background:#f9fbfb;border:1px solid #eaf2f0;border-radius:12px;color:#597871;font-size:11px}
-.solioSponsorAdminTotals strong{display:block;font-size:24px;font-weight:850;margin-top:5px;color:#41a58d}
+.solioSponsorAdminTotals>div{min-width:0;padding:11px;background:#fbfaf9;border:1px solid #f2ecea;border-radius:12px;color:#786159;font-size:11px}
+.solioSponsorAdminTotals strong{display:block;font-size:24px;font-weight:850;margin-top:5px;color:#a55c41}
 .solioSponsorAdminRows{display:grid;gap:12px}
-.solioSponsorAdminCard{border:1px solid #dfeae8;border-radius:13px;padding:13px;background:#fcfdfd;overflow-wrap:anywhere}
-.solioSponsorAdminCard p{margin:8px 0;font-size:13px;color:#4b605b}
-.solioSponsorAdminCard small{color:#718d86;font-size:11px}
+.solioSponsorAdminCard{border:1px solid #eae2df;border-radius:13px;padding:13px;background:#fdfcfc;overflow-wrap:anywhere}
+.solioSponsorAdminCard p{margin:8px 0;font-size:13px;color:#60514b}
+.solioSponsorAdminCard small{color:#8d7971;font-size:11px}
 .solioSponsorCardHead{display:flex;flex-wrap:wrap;gap:7px;align-items:center;justify-content:space-between}
 .solioSponsorCardHead strong{font-size:16px}
 .solioSponsorAdminForm{margin:12px 0 0}
@@ -63,30 +63,30 @@ body.solioSponsorModalOpen{overflow:hidden}
 .solioSponsorAdminForm>.solioSponsorPrimary{align-self:end}
 .solioSponsorAdminCard details{margin-top:10px;padding:9px;background:#fff;border-radius:9px;font-size:12px}
 .solioSponsorAdminMessage[data-kind="error"]{color:#ad3030}
-.solioSponsorAdminMessage[data-kind="ok"]{color:#38644b}
+.solioSponsorAdminMessage[data-kind="ok"]{color:#644438}
 @media(max-width:600px){.solioSponsorDialog{padding:20px 16px;max-height:calc(100dvh - 20px)}.solioSponsorOverlay{padding:10px}.solioSponsorFields,.solioSponsorAdminForm{grid-template-columns:1fr}.solioSponsorAdminTotals{grid-template-columns:repeat(2,minmax(0,1fr))}.solioSponsorD1Admin{padding:13px}}
 
 
 /* Clearly labeled in-feed sponsor: a separate grid item, not a user listing. */
 #cards > .solioFeedSponsor{
  display:flex;flex-direction:column;position:relative;min-width:0;min-height:320px;
- padding:14px;background:#fff;border:1px solid #dde9e6;border-radius:19px;
- box-shadow:0 3px 15px #1a3b2508;overflow:hidden;gap:10px;color:#25403a;
+ padding:14px;background:#fff;border:1px solid #e9e0dd;border-radius:19px;
+ box-shadow:0 3px 15px #1a3b2508;overflow:hidden;gap:10px;color:#402c25;
 }
-#cards > .solioFeedSponsor.is-placeholder{background:linear-gradient(155deg,#f9fbfb 0%,#fff 88%);border:1px dashed #94dcca}
-.solioFeedSponsorTag{align-self:flex-start;display:inline-block;font-size:10px;letter-spacing:.65px;font-weight:850;line-height:1.25;color:#41ab92;background:#eef4f3;border-radius:7px;padding:7px 9px}
-.solioFeedSponsorArt{display:grid;place-items:center;flex:1;min-height:120px;background:linear-gradient(140deg,#eff4f3,#f7faf9);border-radius:12px}
-.solioFeedSponsorArtSymbol{display:grid;place-items:center;color:#55c6ab;border:2px dashed #a0dfd0;width:54px;height:54px;border-radius:50%;font-size:32px;font-weight:400}
-#cards .solioFeedSponsor h3{font-size:18px;line-height:1.3;letter-spacing:-.02em;margin:2px 0 0;font-weight:750;color:#318b75;min-height:0;overflow-wrap:anywhere}
-#cards .solioFeedSponsor p{font-size:12px;line-height:1.45;color:#658b82;margin:0}
-.solioFeedSponsorAction{align-self:stretch;border:0;background:#49bda1;border-radius:11px;color:#fff;font-size:12px;font-weight:750;padding:12px 10px;line-height:1.3;cursor:pointer}
-.solioFeedSponsorAction:hover{background:#36a288}
-.solioFeedSponsorAction:focus-visible,.solioFeedSponsorLink:focus-visible{outline:3px solid #6bceb6;outline-offset:2px}
-.solioFeedSponsorLink{display:flex;flex-direction:column;flex:1;gap:10px;min-height:0;text-decoration:none;color:#25403a}
-.solioFeedSponsorPhoto{min-height:150px;flex:1;background:#f0f6f4;border-radius:12px;display:grid;place-items:center;overflow:hidden}
+#cards > .solioFeedSponsor.is-placeholder{background:linear-gradient(155deg,#fbfaf9 0%,#fff 88%);border:1px dashed #dca794}
+.solioFeedSponsorTag{align-self:flex-start;display:inline-block;font-size:10px;letter-spacing:.65px;font-weight:850;line-height:1.25;color:#ab5e41;background:#f4f0ee;border-radius:7px;padding:7px 9px}
+.solioFeedSponsorArt{display:grid;place-items:center;flex:1;min-height:120px;background:linear-gradient(140deg,#f4f0ef,#faf8f7);border-radius:12px}
+.solioFeedSponsorArtSymbol{display:grid;place-items:center;color:#c67455;border:2px dashed #dfb1a0;width:54px;height:54px;border-radius:50%;font-size:32px;font-weight:400}
+#cards .solioFeedSponsor h3{font-size:18px;line-height:1.3;letter-spacing:-.02em;margin:2px 0 0;font-weight:750;color:#8b4931;min-height:0;overflow-wrap:anywhere}
+#cards .solioFeedSponsor p{font-size:12px;line-height:1.45;color:#8b6f65;margin:0}
+.solioFeedSponsorAction{align-self:stretch;border:0;background:#bd6849;border-radius:11px;color:#fff;font-size:12px;font-weight:750;padding:12px 10px;line-height:1.3;cursor:pointer}
+.solioFeedSponsorAction:hover{background:#a25336}
+.solioFeedSponsorAction:focus-visible,.solioFeedSponsorLink:focus-visible{outline:3px solid #ce866b;outline-offset:2px}
+.solioFeedSponsorLink{display:flex;flex-direction:column;flex:1;gap:10px;min-height:0;text-decoration:none;color:#402c25}
+.solioFeedSponsorPhoto{min-height:150px;flex:1;background:#f6f2f0;border-radius:12px;display:grid;place-items:center;overflow:hidden}
 .solioFeedSponsorPhoto img{width:100%;height:100%;max-height:230px;min-height:150px;object-fit:cover}
-.solioFeedSponsorPhoto.solioFeedImageFailed:after{content:'Байгууллагын сурталчилгаа';font-size:13px;color:#54a692;padding:20px;text-align:center}
-.solioFeedSponsorVisit{color:#42af95;font-size:12px;font-weight:750;margin-top:auto;padding-top:6px}
+.solioFeedSponsorPhoto.solioFeedImageFailed:after{content:'Байгууллагын сурталчилгаа';font-size:13px;color:#a66a54;padding:20px;text-align:center}
+.solioFeedSponsorVisit{color:#af5f42;font-size:12px;font-weight:750;margin-top:auto;padding-top:6px}
 @media(max-width:760px){
  #cards > .solioFeedSponsor{padding:10px;min-height:265px;gap:7px;border-radius:18px}
  .solioFeedSponsorTag{font-size:8px;letter-spacing:.2px;padding:6px}
@@ -101,18 +101,18 @@ body.solioSponsorModalOpen{overflow:hidden}
 
 /* Wide in-feed placement: full grid width, clearly separate from ordinary listings. */
 #cards > .solioFeedSponsor{grid-column:1/-1!important;width:100%;min-height:0;padding:22px 26px;gap:16px;border-radius:20px}
-#cards > .solioFeedSponsor.is-placeholder{background:linear-gradient(125deg,#f8fafa,#fff 60%,#f3f7f6);border:1px dashed #94dcca}
+#cards > .solioFeedSponsor.is-placeholder{background:linear-gradient(125deg,#faf9f8,#fff 60%,#f7f4f3);border:1px dashed #dca794}
 .solioFeedSponsorIntro{display:flex;align-items:center;justify-content:space-between;gap:16px}
-#cards .solioFeedSponsorIntro h3{font-size:clamp(21px,2.6vw,30px);margin:0 0 8px;color:#236a59}
-#cards .solioFeedSponsorIntro p{font-size:14px;color:#57776f}
+#cards .solioFeedSponsorIntro h3{font-size:clamp(21px,2.6vw,30px);margin:0 0 8px;color:#6a3623}
+#cards .solioFeedSponsorIntro p{font-size:14px;color:#776057}
 .solioFeedSponsorRates{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.solioFeedSponsorOffer{display:flex;flex-direction:column;align-items:flex-start;gap:7px;text-align:left;background:#fff;border:1px solid #dae7e4;color:#2d4c45;border-radius:14px;padding:15px;cursor:pointer;transition:background .14s,transform .14s}
-.solioFeedSponsorOffer:hover{background:#f1f6f5;transform:translateY(-2px)}
-.solioFeedSponsorOffer:focus-visible{outline:3px solid #52c3a8;outline-offset:2px}
-.solioFeedSponsorOffer strong{font-size:14px;color:#338874;line-height:1.3}
-.solioFeedSponsorOffer span{font-size:13px;color:#416159}
+.solioFeedSponsorOffer{display:flex;flex-direction:column;align-items:flex-start;gap:7px;text-align:left;background:#fff;border:1px solid #e7deda;color:#4c352d;border-radius:14px;padding:15px;cursor:pointer;transition:background .14s,transform .14s}
+.solioFeedSponsorOffer:hover{background:#f6f2f1;transform:translateY(-2px)}
+.solioFeedSponsorOffer:focus-visible{outline:3px solid #c37152;outline-offset:2px}
+.solioFeedSponsorOffer strong{font-size:14px;color:#884a33;line-height:1.3}
+.solioFeedSponsorOffer span{font-size:13px;color:#614a41}
 .solioFeedSponsorBottom{display:flex;justify-content:space-between;align-items:center;gap:15px}
-.solioFeedSponsorBottom small{color:#718e87;font-size:12px}
+.solioFeedSponsorBottom small{color:#8e7971;font-size:12px}
 #cards .solioFeedSponsorAction{flex:none;min-width:200px;padding:12px 17px;font-size:13px}
 #cards .solioFeedSponsor:not(.is-placeholder){padding:16px 20px;min-height:0}
 #cards .solioFeedSponsor:not(.is-placeholder) .solioFeedSponsorLink{display:grid;grid-template-columns:minmax(180px,.7fr) minmax(0,1fr);align-items:center;gap:14px;min-height:180px}
@@ -120,21 +120,21 @@ body.solioSponsorModalOpen{overflow:hidden}
 #cards .solioFeedSponsor:not(.is-placeholder) .solioFeedSponsorPhoto img{height:180px;max-height:180px;object-fit:cover}
 #cards .solioFeedSponsor:not(.is-placeholder) h3{font-size:clamp(20px,2.4vw,28px)}
 #cards .solioFeedSponsor:not(.is-placeholder) .solioFeedSponsorVisit{font-size:13px}
-.solioSponsorField select{width:100%;box-sizing:border-box;border:1px solid #d5e4e0;border-radius:10px;padding:11px;background:#fff;color:#1b2d29;font-size:13px}
-.solioSponsorPricePicker{border:1px solid #e2ecea;background:#fbfdfc;border-radius:15px;padding:15px;margin:12px 0 19px}
-.solioSponsorPricePicker h3{font-size:18px;margin:0 0 4px;color:#225e50}
+.solioSponsorField select{width:100%;box-sizing:border-box;border:1px solid #e4d9d5;border-radius:10px;padding:11px;background:#fff;color:#2d201b;font-size:13px}
+.solioSponsorPricePicker{border:1px solid #ece5e2;background:#fdfcfb;border-radius:15px;padding:15px;margin:12px 0 19px}
+.solioSponsorPricePicker h3{font-size:18px;margin:0 0 4px;color:#5e3222}
 .solioSponsorPricePicker>p{font-size:12px;margin:0 0 12px}
 .solioSponsorPriceCards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
-.solioSponsorPriceOption{display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:6px;padding:11px 9px;background:white;border:1px solid #dfebe8;border-radius:11px;cursor:pointer;color:#35675b;font-size:12px;min-width:0}
-.solioSponsorPriceOption strong{font-size:12px;color:#297764;line-height:1.3}
-.solioSponsorPriceOption small{color:#6a847e;font-size:10px;line-height:1.3}
+.solioSponsorPriceOption{display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:6px;padding:11px 9px;background:white;border:1px solid #ebe2df;border-radius:11px;cursor:pointer;color:#674235;font-size:12px;min-width:0}
+.solioSponsorPriceOption strong{font-size:12px;color:#773e29;line-height:1.3}
+.solioSponsorPriceOption small{color:#84716a;font-size:10px;line-height:1.3}
 .solioSponsorPriceOption span{font-size:11px}
-.solioSponsorPriceOption.selected{background:#eff5f3;border-color:#4bbda2;box-shadow:0 0 0 1px #4bbda2}
+.solioSponsorPriceOption.selected{background:#f5f1ef;border-color:#bd6a4b;box-shadow:0 0 0 1px #bd6a4b}
 .solioSponsorChoiceControls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
-.solioSponsorPriceTotal{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#e6efed;border-radius:11px;padding:12px 13px;color:#277663}
+.solioSponsorPriceTotal{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#efe8e6;border-radius:11px;padding:12px 13px;color:#763c27}
 .solioSponsorPriceTotal span{font-size:12px;font-weight:650}
 .solioSponsorPriceTotal strong{font-size:21px;white-space:nowrap}
-.solioSponsorPricePicker>small{display:block;color:#657b76;font-size:11px;margin-top:11px;line-height:1.45}
+.solioSponsorPricePicker>small{display:block;color:#7b6b65;font-size:11px;margin-top:11px;line-height:1.45}
 @media(max-width:760px){
  #cards > .solioFeedSponsor{grid-column:1/-1!important;padding:14px 13px;gap:11px;min-height:0}
  #cards .solioFeedSponsorIntro h3{font-size:21px;line-height:1.25}

@@ -1,13 +1,13 @@
 {
   "id": "/",
-  "name": "Solio — Оюутны онлайн зах",
-  "short_name": "Solio",
-  "description": "Оюутны зарын самбар",
+  "name": "sol1o — Оюутны амьдралын талбай",
+  "short_name": "sol1o",
+  "description": "Нэгэнд илүүдсэн. Нөгөөд хэрэгтэй.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#087e70",
+  "background_color": "#faf8f3",
+  "theme_color": "#f06435",
   "lang": "mn",
   "icons": [
     {
