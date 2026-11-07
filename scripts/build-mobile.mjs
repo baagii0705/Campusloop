@@ -16,7 +16,7 @@ let html=await readFile(resolve(root,'index.html'),'utf8');
 // Content-address linked styles and scripts too: returning visitors may still
 // have the previous service worker and its cached /board.css in their browser.
 const pricingModule=await asset(await readFile(resolve(root,'sponsor-pricing.js'),'utf8'),'js');
-for(const file of ['ui.css','board.css','sponsored-banner.css','sponsored-banner.js','sponsor-dashboard.js']){
+for(const file of ['ui.css','board.css','campus-hub.css','campus-hub.js','sponsored-banner.css','sponsored-banner.js','sponsor-dashboard.js']){
   let content=await readFile(resolve(root,file),'utf8');
   if(file.endsWith('.js'))content=content.replace("import('/sponsor-pricing.js')","import('"+pricingModule+"')");
   const name=await asset(content,file.endsWith('.css')?'css':'js');
@@ -39,7 +39,7 @@ html=html.replace('<script src="https://unpkg.com/appwrite@17.0.0/dist/iife/sdk.
 const early="<script>window.solioFeedRequest=fetch('/api/public/listings?offset=0&limit=24',{credentials:'omit',cache:'no-store'}).catch(()=>null);</script>";
 html=html.replace('</head>',early+'</head>');
 await writeFile(resolve(dist,'index.html'),html);
-const files=['manifest.webmanifest','solio-icon.svg','ui.css','board.css','sponsored-banner.css','sponsored-banner.js','sponsor-dashboard.js','sponsor-pricing.js'];
+const files=['manifest.webmanifest','solio-icon.svg','ui.css','board.css','campus-hub.css','campus-hub.js','sponsored-banner.css','sponsored-banner.js','sponsor-dashboard.js','sponsor-pricing.js'];
 for(const file of files)await copyFile(resolve(root,file),resolve(dist,file));
 let sw=await readFile(resolve(root,'sw.js'),'utf8');
 sw=sw.replace('solio-shell-v9','solio-shell-v9-'+createHash('sha256').update(assets.join(',')).digest('hex').slice(0,12));
