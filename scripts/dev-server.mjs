@@ -12,6 +12,12 @@ import {onRequestGet as societyMine} from '../functions/api/societies/mine.js';
 import {onRequestPost as societySubmit,onRequestPatch as societyWithdraw} from '../functions/api/societies/submit.js';
 import {onRequestGet as societyAdmin,onRequestPost as societyReview} from '../functions/api/societies/admin.js';
 import {onRequestGet as calendar} from '../functions/api/societies/calendar.js';
+import {onRequestGet as vipGet,onRequestPost as vipPost} from '../functions/api/vip/index.js';
+import {onRequestGet as summary} from '../functions/api/admin/summary.js';
+import {onRequestGet as sponsorsAdminGet,onRequestPost as sponsorsAdminPost} from '../functions/api/sponsors/admin.js';
+import {onRequestGet as sponsorsActive} from '../functions/api/sponsors/active.js';
+import {onRequestPost as sponsorsApply} from '../functions/api/sponsors/apply.js';
+import {onRequestPost as sponsorsEvent} from '../functions/api/sponsors/event.js';
 import {societyFields} from '../societies-data.js';
 const sqlite=new DatabaseSync(':memory:');
 for(const name of (await readdir('migrations')).filter(n=>n.endsWith('.sql')).sort())sqlite.exec(await readFile('migrations/'+name,'utf8'));
@@ -34,6 +40,8 @@ function seedPreview(){
  insert('event','preview-photo',{title:'Хотын гэрэл — фото алхалт',school:'',category:'Урлаг',club_id:'preview-art',description:'Энэ бол зөвхөн дотоод харагдац шалгах жишээ эвент. Бодит зар биш.',location:'Хотын төв, уулзах цэгийг холбоосоор харна.',starts_at:new Date(+start+86400000).toISOString(),ends_at:new Date(+end+86400000).toISOString(),price_note:'Үнэгүй'});
 }
 const routes={
+ '/api/vip':{GET:vipGet,POST:vipPost},'/api/admin/summary':{GET:summary},
+ '/api/sponsors/admin':{GET:sponsorsAdminGet,POST:sponsorsAdminPost},'/api/sponsors/active':{GET:sponsorsActive},'/api/sponsors/apply':{POST:sponsorsApply},'/api/sponsors/event':{POST:sponsorsEvent},
  '/api/campus':{GET:campus},'/api/deals':{GET:deals},'/api/deals/apply':{POST:apply},'/api/deals/admin':{GET:adminGet,POST:adminPost},
  '/api/societies':{GET:societies},'/api/societies/mine':{GET:societyMine},'/api/societies/submit':{POST:societySubmit,PATCH:societyWithdraw},'/api/societies/admin':{GET:societyAdmin,POST:societyReview},'/api/societies/calendar':{GET:calendar}
 };
@@ -45,7 +53,8 @@ http.createServer(async(req,res)=>{
   const request=new Request(url,{method:req.method,headers:req.headers,...(['GET','HEAD'].includes(req.method)?{}:{body:Buffer.concat(chunks)})}),context={request,env:{SPONSOR_DB:db}};
   let result;const route=routes[url.pathname];
   if(route)result=route[req.method]?await route[req.method](context):new Response('Method not allowed',{status:405});
-  else if(url.pathname.startsWith('/api/'))result=await fetch('https://sol1o.me'+url.pathname+url.search);
+  else if(url.pathname.startsWith('/api/public/')&&req.method==='GET')result=await fetch('https://sol1o.me'+url.pathname+url.search);
+  else if(url.pathname.startsWith('/api/'))result=new Response('Unknown local API',{status:404});
   if(result){res.writeHead(result.status,Object.fromEntries(result.headers));res.end(Buffer.from(await result.arrayBuffer()));return}
   const path=resolve(root,'.'+decodeURIComponent(url.pathname));if(path!==root&&!path.startsWith(root+sep)){res.writeHead(403);res.end();return}
   const file=(await stat(path)).isDirectory()?resolve(path,'index.html'):path;

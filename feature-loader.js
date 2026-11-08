@@ -4,7 +4,8 @@
 const features={
  campus:{script:'/campus-hub.js',style:'/campus-hub.css'},
  societies:{script:'/societies.js',style:'/societies.css'},
- sponsor:{script:'/sponsor-dashboard.js'}
+ sponsor:{script:'/sponsor-application.js'},
+ admin:{script:'/admin-dashboard.js',style:'/admin-dashboard.css'}
 };
 const pending=new Map(),ready=new Set();
 let intent=0;window.SolioCancelFeatureNavigation=()=>{intent++};
@@ -28,6 +29,5 @@ window.SolioSponsorOpen=placement=>invoke('sponsor',()=>window.SolioSponsorOpen(
 function route(){const hash=location.hash;if(['#campus','#deals'].includes(hash)&&!ready.has('campus'))invoke('campus',()=>{});if((hash==='#societies'||hash.startsWith('#societies/'))&&!ready.has('societies'))invoke('societies',()=>{})}
 window.addEventListener('popstate',route);route();
 if(new URLSearchParams(location.search).has('sponsor'))invoke('sponsor',()=>{});
-const panel=document.getElementById('adminPanel');
-new MutationObserver(()=>{if(!panel.hidden&&isCampusAdmin())for(const name of Object.keys(features))invoke(name,()=>{})}).observe(panel,{attributes:true,attributeFilter:['hidden']});
+window.SolioAdmin={open:()=>{if(isCampusAdmin())invoke('admin',()=>window.SolioAdmin.open())},close(){}};
 })();

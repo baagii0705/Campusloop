@@ -13,11 +13,6 @@
 #solioSponsorBar.is-placeholder .sponsorTag{font-size:10px;color:#ab8070}
 #solioSponsorBar .sponsorClose{position:absolute;right:7px;top:8px;border:0;background:#f7f3f2;border-radius:50%;width:26px;height:26px;color:#64524b;font-size:17px}
 body.solio-sponsor-visible{padding-bottom:var(--solio-sponsor-extra,78px)}
-#solioSponsorAdmin{margin:16px 0;padding:16px;background:#fff;border:1px solid #ede6e4;border-radius:16px}
-#solioSponsorAdmin .sponsorAdminFields{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:9px}
-#solioSponsorAdmin input{width:100%;padding:10px;border:1px solid #ddd;border-radius:9px}
-#solioSponsorAdmin button{padding:9px 12px;border:0;border-radius:9px;background:#be6240;color:#fff}
-#solioSponsorAdmin .sponsorAdminItem{padding:9px 0;border-bottom:1px solid #eee;display:flex;gap:8px;align-items:center;justify-content:space-between}
 @media(min-width:761px){#solioSponsorBar{display:none!important}body.solio-sponsor-visible{padding-bottom:0}}
 
 /* Independent sponsored application modal, protected management, and D1 statistics. */
@@ -32,7 +27,7 @@ body.solioSponsorModalOpen{overflow:hidden}
 .solioSponsorEyebrow{font-size:11px;font-weight:800;color:#c67455;letter-spacing:1px;margin-bottom:9px}
 .solioSponsorDialog h2{font-size:23px;line-height:1.25;margin:0 36px 9px 0;color:#4a2618}
 .solioSponsorDialog p{font-size:13px;line-height:1.5;color:#725e57}
-.solioSponsorFields,.solioSponsorAdminForm{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.solioSponsorFields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 .solioSponsorField{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:700;color:#655149;min-width:0}
 .solioSponsorField input,.solioSponsorField textarea{width:100%;box-sizing:border-box;border:1px solid #e4d9d5;border-radius:10px;padding:11px;background:#fff;color:#2d201b;font:inherit;font-size:13px}
 .solioSponsorField input:focus,.solioSponsorField textarea:focus{outline:2px solid #d8a08b;outline-offset:1px}
@@ -45,26 +40,7 @@ body.solioSponsorModalOpen{overflow:hidden}
 .solioSponsorSecondary{background:#f7f4f3;color:#974f35;border:1px solid #e1d5d0}
 .solioSponsorSuccess{color:#6c3723!important;font-weight:700}
 #solioSponsorApplyFeedback:not(:empty){padding:8px 0}
-.solioSponsorD1Admin{margin:22px 0;padding:18px;background:#fff;border:1px solid #e8dfdc;border-radius:15px;color:#3d2e28}
-.solioSponsorD1Admin h3{font-size:21px;margin:0 0 8px}
-.solioSponsorD1Admin h4{font-size:17px;margin:25px 0 12px}
-.solioSponsorD1Admin>p{color:#6e5c55;font-size:13px}
-.solioSponsorAdminTotals{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:15px 0}
-.solioSponsorAdminTotals>div{min-width:0;padding:11px;background:#fbfaf9;border:1px solid #f2ecea;border-radius:12px;color:#786159;font-size:11px}
-.solioSponsorAdminTotals strong{display:block;font-size:24px;font-weight:850;margin-top:5px;color:#a55c41}
-.solioSponsorAdminRows{display:grid;gap:12px}
-.solioSponsorAdminCard{border:1px solid #eae2df;border-radius:13px;padding:13px;background:#fdfcfc;overflow-wrap:anywhere}
-.solioSponsorAdminCard p{margin:8px 0;font-size:13px;color:#60514b}
-.solioSponsorAdminCard small{color:#8d7971;font-size:11px}
-.solioSponsorCardHead{display:flex;flex-wrap:wrap;gap:7px;align-items:center;justify-content:space-between}
-.solioSponsorCardHead strong{font-size:16px}
-.solioSponsorAdminForm{margin:12px 0 0}
-.solioSponsorAdminForm .solioSponsorAdminActions{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px}
-.solioSponsorAdminForm>.solioSponsorPrimary{align-self:end}
-.solioSponsorAdminCard details{margin-top:10px;padding:9px;background:#fff;border-radius:9px;font-size:12px}
-.solioSponsorAdminMessage[data-kind="error"]{color:#ad3030}
-.solioSponsorAdminMessage[data-kind="ok"]{color:#644438}
-@media(max-width:600px){.solioSponsorDialog{padding:20px 16px;max-height:calc(100dvh - 20px)}.solioSponsorOverlay{padding:10px}.solioSponsorFields,.solioSponsorAdminForm{grid-template-columns:1fr}.solioSponsorAdminTotals{grid-template-columns:repeat(2,minmax(0,1fr))}.solioSponsorD1Admin{padding:13px}}
+@media(max-width:600px){.solioSponsorDialog{padding:20px 16px;max-height:calc(100dvh - 20px)}.solioSponsorOverlay{padding:10px}.solioSponsorFields{grid-template-columns:1fr}}
 
 
 /* Clearly labeled in-feed sponsor: a separate grid item, not a user listing. */

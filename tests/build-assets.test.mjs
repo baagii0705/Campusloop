@@ -11,5 +11,5 @@ test('trimmed local Appwrite SDK preserves the services and query/permission API
 });
 test('optional features stay out of initial HTML and the service worker caches them on demand',async()=>{
  const html=await readFile('index.html','utf8'),loader=await readFile('feature-loader.js','utf8'),build=await readFile('scripts/build-mobile.mjs','utf8'),sw=await readFile('sw.js','utf8');
- assert.doesNotMatch(html,/<script src="\/(?:societies|campus-hub|sponsor-dashboard)\.js/);assert.match(loader,/societies\.js/);assert.match(build,/\.\.\.critical/);assert.match(sw,/caches\.match\(req\)/);assert.match(sw,/pathname\.startsWith\('\/api\/'\)/);assert.doesNotMatch(build,/copyFile.*ui\.css/);
+ assert.doesNotMatch(html,/<script src="\/(?:societies|campus-hub|sponsor-application|admin-dashboard)\.js/);assert.match(loader,/societies\.js/);assert.match(loader,/admin-dashboard\.js/);assert.doesNotMatch(loader,/MutationObserver/,'opening administration must not load every public feature');assert.match(build,/\.\.\.critical/);assert.match(sw,/caches\.match\(req\)/);assert.match(sw,/pathname\.startsWith\('\/api\/'\)/);assert.doesNotMatch(build,/copyFile.*ui\.css/);
 });

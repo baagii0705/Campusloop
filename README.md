@@ -26,7 +26,10 @@ npm run dev
 | `index.html` | Marketplace, accounts, Wanted and Community UI/logic |
 | `board.css` | Shared base, forms, supporting screens and marketplace identity |
 | `usability.js` | Shared feature menu, creation chooser, help and listing action forms |
-| `feature-loader.js` | On-demand school, club/event and sponsor management screens |
+| `feature-loader.js` | On-demand school, club/event, sponsor application and admin screens |
+| `admin-dashboard.js`, `admin-dashboard.css`, `admin-model.js` | Unified admin navigation, filters, moderation, confirmation dialogs and state rules |
+| `sponsor-application.js` | Public advertising request form and pricing |
+| `vip.js` | Public VIP labels and owner promotion requests |
 | `campus-hub.js`, `campus-hub.css` | Unified school board and student deals |
 | `societies.js`, `societies.css` | Club directory, event agenda, bookmarks, submissions and moderation |
 | `societies-data.js`, `event-calendar.js` | Server-side validation, public queries and calendar serialization |
@@ -42,13 +45,13 @@ Cloudflare build command: `npm run build`; output: `dist`. The GitHub integratio
 
 ## Clubs, events and student deals
 
-Apply `migrations/001-student-deals.sql` and `migrations/002-clubs-events.sql` to the existing D1 binding. They preserve all sponsor tables and Appwrite data.
+Apply `migrations/000-sponsors.sql` (the retained existing baseline), `migrations/001-student-deals.sql` and `migrations/002-clubs-events.sql` to the existing D1 binding. They preserve all sponsor tables and Appwrite data.
 
 Signed-in users submit clubs or independent events. A club-linked event must belong to the verified club owner (or an admin), and the club must already be published. Submissions stay pending until an Appwrite admin-label account approves them. Owners can withdraw a club or cancel an event in «Миний хүсэлтүүд»; admins can reject, publish or close them. Closing a club also hides its linked events from public reads. Private owner IDs/review notes are excluded from public feeds. New club/event submissions have a per-owner daily limit.
 
 Event dates are stored as UTC and displayed in Ulaanbaatar time. Only public events have downloadable calendars. Bookmarks are device-local, not server subscriptions or attendance confirmations. External registration/join links open the organizer’s own page; this site does not process event payments.
 
-Student deal and sponsor applications have independent approval workflows. See [SPONSORED-ADS-SETUP.md](SPONSORED-ADS-SETUP.md) for advertising setup and prices.
+Student deal and sponsor applications have independent approval workflows. The canonical advertising prices are in `sponsor-pricing.js`, validated by the server. New campaigns use D1 (`sponsor_requests`, `sponsor_campaigns`, `sponsor_events`). Existing Appwrite `sponsored_ads` remain readable and manageable in the legacy section; no new collection is required. The obsolete Appwrite-only setup document has been removed.
 
 ## Image loading
 
@@ -65,3 +68,11 @@ Keep the API handlers, migrations, tests, build/preview scripts, Capacitor confi
 Mobile navigation has five entry points: Home, Search, Add, All features and My account. All features exposes every student and business destination with a short explanation. Add opens a chooser for listings, Wanted requests, posts, events and clubs. Authentication resumes only the requested UI after a successful login; closing the dialog cancels that intent and never submits content automatically.
 
 Listing details retain the underlying search or feature page. Offers, reports and owner status changes use labelled Mongolian forms. Public search states when its results cover only the loaded listing pages and passes the query to Wanted, Community or clubs/events on request. Feature bundles remain lazy loaded.
+
+## Administration
+
+Open «Удирдлага» with an Appwrite `admin`-label account. Overview shows exact pending totals from a single authenticated D1 summary endpoint. Each category loads only when opened: VIP, listings, reports, clubs/events, deals, business campaigns, or legacy banners. Search and status filters operate on the loaded rows; Appwrite lists load 50 at a time with cursor pagination. D1 categories show up to 100 rows per source. Pending requests appear first. Dates shown in the lists use Ulaanbaatar time; date inputs use the administrator browser’s local time.
+
+Approvals, rejections, pauses and deletion use a labelled review dialog and block duplicate submits. Closing the dashboard or changing accounts discards its private DOM and in-memory data. Server-side Appwrite JWT checks and existing collection permissions remain authoritative. Reports have no status column: the UI lists received reports without pretending they are resolved or unresolved. Moderation can open older listings by ID.
+
+Apply `migrations/003-vip.sql` for timed VIP requests. Public badges appear only while approved and unexpired. Existing VIP requests, accounts, images and ads are retained. The old appended administration blocks and their unused styles have been removed; only the on-demand dashboard owns moderation UI.

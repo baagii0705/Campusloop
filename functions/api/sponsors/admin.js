@@ -22,7 +22,7 @@ export async function onRequestGet(context){
  try{
   const db=binding(context);
   const [requests,campaigns,daily]=await db.batch([
-   db.prepare('SELECT * FROM sponsor_requests ORDER BY created_at DESC LIMIT '+LIMIT),
+   db.prepare("SELECT * FROM sponsor_requests ORDER BY CASE status WHEN 'pending' THEN 0 ELSE 1 END,created_at DESC LIMIT "+LIMIT),
    db.prepare("SELECT c.*, (SELECT COUNT(*) FROM sponsor_events e WHERE e.campaign_id=c.id AND e.kind='view') AS views, (SELECT COUNT(*) FROM sponsor_events e WHERE e.campaign_id=c.id AND e.kind='click') AS clicks FROM sponsor_campaigns c ORDER BY created_at DESC LIMIT "+LIMIT),
    db.prepare("SELECT campaign_id,day,SUM(CASE WHEN kind='view' THEN 1 ELSE 0 END) AS views,SUM(CASE WHEN kind='click' THEN 1 ELSE 0 END) AS clicks FROM sponsor_events WHERE day >= date('now','-29 days') GROUP BY campaign_id,day ORDER BY day DESC LIMIT 500")
   ]);

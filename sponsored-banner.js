@@ -1,4 +1,4 @@
-/* Solio sponsored placements. Appwrite collection permissions enforce admin writes. */
+/* Public sponsored placements: approved campaigns and existing banners. */
 (function(){
 'use strict';
 const COLLECTION='sponsored_ads';
@@ -188,42 +188,6 @@ async function load(){
   },9000);
   }catch(e){console.warn('Solio sponsored ads unavailable:',e.message);ads=[];show();refreshInFeed(true)}
 }
-async function adminList(root){
- const list=root.querySelector('#solioSponsorAdminList');list.textContent='Ачаалж байна...';
- try{
- const response=await appwriteDatabases.listDocuments(APPWRITE_CONFIG.databaseId,COLLECTION,[Appwrite.Query.limit(100)]);
- list.replaceChildren();
- for(const ad of response.documents||[]){
- const item=document.createElement('div');item.className='sponsorAdminItem';
- const title=document.createElement('span');title.textContent=(ad.name||'Зар')+' — '+(ad.active?'Идэвхтэй':'Идэвхгүй');
- const actions=document.createElement('span');
- const toggle=document.createElement('button');toggle.type='button';toggle.textContent=ad.active?'Унтраах':'Идэвхжүүлэх';
- toggle.onclick=async()=>{try{await appwriteDatabases.updateDocument(APPWRITE_CONFIG.databaseId,COLLECTION,ad.$id,{active:!ad.active});await adminList(root);await load()}catch(e){alert(e.message)}};
- const remove=document.createElement('button');remove.type='button';remove.textContent='Устгах';remove.style.marginLeft='5px';
- remove.onclick=async()=>{if(!confirm('Энэ сурталчилгааг устгах уу?'))return;try{await appwriteDatabases.deleteDocument(APPWRITE_CONFIG.databaseId,COLLECTION,ad.$id);await adminList(root);await load()}catch(e){alert(e.message)}};
- actions.append(toggle,remove);item.append(title,actions);list.append(item);
- }
- }catch(e){list.textContent='Сурталчилгааны collection эсвэл админ эрхийг шалгана уу: '+e.message}
-}
-function setupAdmin(){
- const panel=document.getElementById('adminPanel');if(!panel||document.getElementById('solioSponsorAdmin'))return;
- const root=document.createElement('section');root.id='solioSponsorAdmin';
- root.innerHTML='<h3>Хуучин Appwrite баннерууд</h3><p>Зөвхөн хуучин баннерын удирдлага. Шинэ сурталчилгаа болон статистикийг дээд хэсгээс удирдана.</p><form id="solioSponsorForm"><div class="sponsorAdminFields"><input name="name" placeholder="Байгууллагын нэр" maxlength="100" required><input name="image_url" type="url" placeholder="Зургийн HTTPS URL" required><input name="target_url" type="url" placeholder="Очих HTTPS холбоос" required><label>Эхлэх хугацаа<input name="start_at" type="datetime-local"></label><label>Дуусах хугацаа<input name="end_at" type="datetime-local"></label></div><p><button type="submit">Сурталчилгаа нэмэх</button></p></form><div id="solioSponsorAdminList"></div>';
- panel.appendChild(root);
- root.querySelector('form').addEventListener('submit',async event=>{
- event.preventDefault();if(!isCampusAdmin())return;
- const f=new FormData(event.currentTarget);
- const name=String(f.get('name')||'').trim(),image_url=validUrl(f.get('image_url')),target_url=validUrl(f.get('target_url'));
- if(!image_url||!target_url){alert('Зөв http/https холбоос оруулна уу');return}
- const start=f.get('start_at'),end=f.get('end_at');
- const start_at=start?new Date(start).toISOString():null,end_at=end?new Date(end).toISOString():null;
- if(start_at&&end_at&&end_at<=start_at){alert('Дуусах хугацаа эхлэх хугацаанаас хойш байх ёстой');return}
- try{await appwriteDatabases.createDocument(APPWRITE_CONFIG.databaseId,COLLECTION,Appwrite.ID.unique(),{name,image_url,target_url,start_at,end_at,active:true});event.currentTarget.reset();await adminList(root);await load()}catch(e){alert('Зар нэмэх боломжгүй: '+e.message)}
- });
- const observer=new MutationObserver(()=>{if(!panel.hidden&&isCampusAdmin())adminList(root)});
- observer.observe(panel,{attributes:true,attributeFilter:['hidden']});
-}
-setupAdmin();
 if('requestIdleCallback' in window)requestIdleCallback(()=>load(),{timeout:1500});else setTimeout(load,500);
 setInterval(()=>{if(!document.hidden)load()},60000);
 })();

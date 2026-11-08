@@ -14,22 +14,3 @@ test('publishing with VIP requests promotion only after saving and keeps the lis
  checked=false;await fn();assert.equal(promoted,2);assert.equal(saved,3);
  checked=true;failSave=true;await fn();assert.equal(promoted,2);assert.equal(saved,3);
 });
-
-test('VIP admin is placed above listings, loads pending requests and recovers from errors',async()=>{
- const {readFileSync}=await import('node:fs');const {runInNewContext}=await import('node:vm');
- const nodes=new Map();const node=id=>{if(!nodes.has(id))nodes.set(id,{hidden:false,textContent:'',innerHTML:'',disabled:false});return nodes.get(id)};
- let inserted,fail=false,calls=0;const observers=[];
- node('adminPanel').querySelector=selector=>{assert.equal(selector,'.adminHeader');return {after:element=>inserted=element}};
- runInNewContext(readFileSync('vip.js','utf8'),{
- document:{getElementById:node,createElement:()=>({}),querySelectorAll:()=>[]},
- MutationObserver:class{constructor(fn){observers.push(fn)}observe(){}},setInterval(){},
- window:{},isCampusAdmin:()=>true,escapeHTML:s=>String(s).replaceAll('<','&lt;'),
- appwriteAccount:{createJWT:async()=>({jwt:'test-token'})},
- fetch:async(url,options)=>{if(!url.includes('mode=admin'))return {ok:true,json:async()=>({items:[]})};calls++;assert.equal(options.headers.Authorization,'Bearer test-token');return {ok:!fail,json:async()=>fail?{error:'Offline'}:{items:[{listing_id:'one',title:'<Book>',status:'pending'}]}}}
- });
- const flush=()=>new Promise(resolve=>setImmediate(resolve));await flush();
- assert.equal(inserted.id,'vipAdminPanel');assert.equal(calls,1);assert.match(node('vipRows').innerHTML,/&lt;Book>/);assert.match(node('vipRows').innerHTML,/data-vip="approve"/);assert.match(node('vipPendingCount').textContent,/1 хүлээгдэж буй/);
- fail=true;await node('vipRefresh').onclick();assert.match(node('vipAdminStatus').textContent,/Offline.*Шинэчлэх/);assert.equal(node('vipRefresh').disabled,false);
- fail=false;await node('vipRefresh').onclick();assert.equal(node('vipAdminStatus').textContent,'');
- observers[1]();await flush();assert.equal(calls,4);
-});

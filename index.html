@@ -107,7 +107,7 @@
   <button type="button" class="boardMore" id="loadMoreListings" onclick="loadListings(false)" hidden>Дараагийн зарууд ↓</button>
 </section>
 <section class="s1CampusNote" aria-labelledby="s1CampusNoteTitle"><div><span class="s1Eyebrow">ЗАРААС ЦААШ</span><h2 id="s1CampusNoteTitle">Сургуулийнхаа<br>ярианд нэгд.</h2><p>Асуулт, зөвлөгөө, хэрэгтэй мэдээлэл.<br>Бие биедээ хэрэг болох нэг булан.</p></div><div class="s1NoteActions"><svg class="s1NoteDrawing" viewBox="0 0 160 95" fill="none" aria-hidden="true"><path d="M18 12h103v51H56L33 80V63H18V12Z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M43 29h53M43 41h36M130 34h14v48h-15l-12 9V76H78V66" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg><button type="button" onclick="openSolioCommunity()">Оюутны булан руу <span aria-hidden="true"><svg class="boardIcon s1ArrowIcon" viewBox="0 0 24 24"><use href="#board-arrow"></use></svg></span></button></div></section>
-</main><section id="adminPanel" class="adminPanel wrap" hidden><div class="adminHeader"><div><small>ЗӨВХӨН АДМИН</small><h2>Удирдлагын хэсэг</h2><p>Зар, гомдлыг хянах</p></div><button class="btn soft" onclick="closeAdminPanel()">Хаах ✕</button></div><div class="adminStats"><div><span>Нийт зар</span><strong id="adminListingsCount">—</strong></div><div><span>Нийт гомдол</span><strong id="adminReportsCount">—</strong></div><div><span>Шийдээгүй</span><strong id="adminOpenCount">—</strong></div></div><div class="adminColumns"><div><h3>Ирсэн гомдлууд</h3><div id="adminReports" class="adminRows"></div></div><div><h3>Зарууд</h3><input id="adminSearch" type="search" placeholder="Зарын нэрээр хайх" oninput="renderAdminListings()" aria-label="Админ зар хайх"><div id="adminListings" class="adminRows"></div></div></div></section><nav class="mobileBottomNav" aria-label="Solio утасны үндсэн цэс"><button type="button" id="bottomHome" onclick="goMobileHome()" class="active"><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-home"></use></svg></i><small class="bottomLabel">Нүүр</small></button><button type="button" id="bottomSearch" onclick="goMobileSearch()" class=""><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-search"></use></svg></i><small class="bottomLabel">Хайх</small></button><button type="button" id="bottomAdd" onclick="SolioUX.create()" class="bottomPost"><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-plus"></use></svg></i><small class="bottomLabel">Нэмэх</small></button><button type="button" id="bottomMenu" onclick="SolioUX.menu()" class=""><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-grid"></use></svg></i><small class="bottomLabel">Бүх боломж</small></button><button type="button" id="bottomAccount" onclick="goMobileSpace()" class=""><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-person"></use></svg></i><small class="bottomLabel">Миний</small></button></nav><footer class="footer"><div class="wrap"><b>sol<span>1</span>o.</b><p>Нэгэнд илүүдсэн. Нөгөөд хэрэгтэй.</p><p>© 2026 sol1o</p><button type="button" onclick="SolioUX.menu()">Бүх боломж · Ашиглах заавар</button><button type="button" onclick="SolioSocieties.open()">Клуб, эвент</button><button type="button" onclick="SolioCampus.deals()">Оюутны хөнгөлөлт <svg class="s1HubArrow" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-arrow"></use></svg></button><button type="button" id="solioSponsorFooterCta" onclick="window.SolioSponsorOpen?.('feed')">Байгууллагын сурталчилгаа ↗</button></div></footer><div class="modal" id="modal" role="presentation"><div class="dialog" role="dialog" aria-modal="true" aria-label="Solio цонх"><button class="close" type="button" aria-label="Цонх хаах" title="Хаах" onclick="closeModal()">✕</button><div id="modalBody"></div></div></div><div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div><script src="https://unpkg.com/appwrite@17.0.0/dist/iife/sdk.js"></script><script>
+</main><section id="adminPanel" class="adminPanel wrap" aria-label="Удирдлагын хэсэг" hidden></section><nav class="mobileBottomNav" aria-label="Solio утасны үндсэн цэс"><button type="button" id="bottomHome" onclick="goMobileHome()" class="active"><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-home"></use></svg></i><small class="bottomLabel">Нүүр</small></button><button type="button" id="bottomSearch" onclick="goMobileSearch()" class=""><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-search"></use></svg></i><small class="bottomLabel">Хайх</small></button><button type="button" id="bottomAdd" onclick="SolioUX.create()" class="bottomPost"><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-plus"></use></svg></i><small class="bottomLabel">Нэмэх</small></button><button type="button" id="bottomMenu" onclick="SolioUX.menu()" class=""><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-grid"></use></svg></i><small class="bottomLabel">Бүх боломж</small></button><button type="button" id="bottomAccount" onclick="goMobileSpace()" class=""><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-person"></use></svg></i><small class="bottomLabel">Миний</small></button></nav><footer class="footer"><div class="wrap"><b>sol<span>1</span>o.</b><p>Нэгэнд илүүдсэн. Нөгөөд хэрэгтэй.</p><p>© 2026 sol1o</p><button type="button" onclick="SolioUX.menu()">Бүх боломж · Ашиглах заавар</button><button type="button" onclick="SolioSocieties.open()">Клуб, эвент</button><button type="button" onclick="SolioCampus.deals()">Оюутны хөнгөлөлт <svg class="s1HubArrow" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-arrow"></use></svg></button><button type="button" id="solioSponsorFooterCta" onclick="window.SolioSponsorOpen?.('feed')">Байгууллагын сурталчилгаа ↗</button></div></footer><div class="modal" id="modal" role="presentation"><div class="dialog" role="dialog" aria-modal="true" aria-label="Solio цонх"><button class="close" type="button" aria-label="Цонх хаах" title="Хаах" onclick="closeModal()">✕</button><div id="modalBody"></div></div></div><div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div><script src="https://unpkg.com/appwrite@17.0.0/dist/iife/sdk.js"></script><script>
 const APPWRITE_CONFIG={endpoint:"https://sgp.cloud.appwrite.io/v1",projectId:"6ae367b80007a4d31918",databaseId:"public",storageBucketId:"6ae3b5970003d472ee8f"};
 const appwriteClient=new Appwrite.Client().setEndpoint(APPWRITE_CONFIG.endpoint).setProject(APPWRITE_CONFIG.projectId);
 const appwriteAccount=new Appwrite.Account(appwriteClient);const appwriteDatabases=new Appwrite.Databases(appwriteClient);const appwriteStorage=new Appwrite.Storage(appwriteClient);const appwriteListeners=[];
@@ -869,66 +869,8 @@ async function goMyListings(){
 
 function isCampusAdmin(){return session?.user?.labels?.includes('admin')===true}
 function syncAdminNav(){const btn=document.getElementById("adminNavBtn");if(btn)btn.hidden=!isCampusAdmin();if(!isCampusAdmin())closeAdminPanel()}
-function closeAdminPanel(){const p=document.getElementById("adminPanel");if(p)p.hidden=true}
-let adminListingRows=[],adminReportRows=[];
-async function openAdminPanel(){
- if(!isCampusAdmin()){toast("Админ эрх шаардлагатай");return}
- const p=document.getElementById("adminPanel");p.hidden=false;p.scrollIntoView({behavior:"smooth"});
- document.getElementById("adminReports").textContent="Ачаалж байна...";
- document.getElementById("adminListings").textContent="Ачаалж байна...";
- const [ls,rs]=await Promise.all([db.from("listings").select("id,title,price,school,created_at").order("created_at",{ascending:false}).limit(200),db.from("listing_reports").select("id,listing_id,reason,created_at").order("created_at",{ascending:false}).limit(200)]);
- if(ls.error||rs.error){toast("Админ мэдээлэл авахад алдаа гарлаа");document.getElementById("adminReports").textContent=rs.error?.message||"";return}
- adminListingRows=ls.data||[];adminReportRows=rs.data||[];
- document.getElementById("adminListingsCount").textContent=adminListingRows.length+(adminListingRows.length===200?"+":"");
- document.getElementById("adminReportsCount").textContent=adminReportRows.length+(adminReportRows.length===200?"+":"");
- document.getElementById("adminOpenCount").textContent=adminReportRows.length;
- renderAdminReports();renderAdminListings()
-}
-function adminText(tag,textValue,className){const el=document.createElement(tag);el.textContent=String(textValue??"");if(className)el.className=className;return el}
-function renderAdminReports(){
- const root=document.getElementById("adminReports");root.replaceChildren();
- if(!adminReportRows.length){root.append(adminText("p","Гомдол алга байна."));return}
- for(const r of adminReportRows){
- const row=document.createElement("article");row.className="adminRow";
- row.append(adminText("small",new Date(r.created_at).toLocaleDateString("mn-MN")+" · Шинэ"));
- row.append(adminText("strong",r.reason));
- 
- const linked=adminListingRows.find(x=>x.id===r.listing_id);
- row.append(adminText("p","Зар: "+(linked?.title||r.listing_id)));
- const actions=document.createElement("div");actions.className="adminRowActions";
- if(linked){const view=adminText("button","Зар харах");view.onclick=()=>{closeAdminPanel();openListing(r.listing_id)};actions.append(view)}
- 
- row.append(actions);root.append(row)
- }
-}
-async function updateAdminReport(id,status){
- if(!isCampusAdmin())return;
- const {error}=await db.from("listing_reports").update({status}).eq("id",id);
- if(error){toast(error.message);return}toast("Гомдлын төлөв шинэчлэгдлээ");await openAdminPanel()
-}
-function renderAdminListings(){
- const root=document.getElementById("adminListings");root.replaceChildren();
- const query=document.getElementById("adminSearch").value.trim().toLowerCase();
- const items=adminListingRows.filter(x=>x.title.toLowerCase().includes(query));
- if(!items.length){root.append(adminText("p","Зар олдсонгүй."));return}
- for(const x of items){
- const row=document.createElement("article");row.className="adminRow";
- row.append(adminText("small",x.school||"Сургууль тодорхойгүй"));
- row.append(adminText("strong",x.title));
- row.append(adminText("p",Number(x.price).toLocaleString("mn-MN")+" ₮"));
- const actions=document.createElement("div");actions.className="adminRowActions";
- const view=adminText("button","Харах");view.onclick=()=>{closeAdminPanel();openListing(x.id)};actions.append(view);
- const remove=adminText("button","Устгах");remove.className="danger";remove.onclick=()=>adminDeleteListing(x.id,x.title);actions.append(remove);
- row.append(actions);root.append(row)
- }
-}
-async function adminDeleteListing(id,title){
- if(!isCampusAdmin())return;
- if(!confirm('"'+title+'" зарыг бүрмөсөн устгах уу? Энэ үйлдлийг буцаах боломжгүй.'))return;
- const {error}=await db.from("listings").delete().eq("id",id);
- if(error){toast("Устгаж чадсангүй: "+error.message);return}
- toast("Зар устгагдлаа");await loadListings();await openAdminPanel()
-}
+function closeAdminPanel(){const p=document.getElementById("adminPanel");if(p)p.hidden=true;window.SolioAdmin?.close?.()}
+function openAdminPanel(){if(!isCampusAdmin()){toast("Админ эрх шаардлагатай");return}window.SolioAdmin?.open()}
 
 document.getElementById("modal").addEventListener("click",e=>{if(e.target.id==="modal")closeModal()});
 appwriteAuth.onAuthStateChange((_event,s)=>{session=s;try{updateNav();syncAdminNav();render()}catch(err){console.error('Solio auth UI:',err)}});

@@ -199,42 +199,13 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 @media (max-width:600px){.wrap{padding-left:15px!important;padding-right:15px!important}
 
 }
-@media (prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
-.adminPanel[hidden],#adminNavBtn[hidden]{display:none!important}
-.adminPanel{padding-top:45px!important;padding-bottom:65px!important}
-.adminHeader{display:flex;justify-content:space-between;align-items:start;gap:20px;border-bottom:1px solid #e1ddd5;padding-bottom:25px}
-.adminHeader small{font-size:11px;letter-spacing:1px;color:#8b8074}
-.adminHeader h2{font-size:30px;font-weight:550;margin:8px 0}
-.adminHeader p{color:#777}
-.adminStats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px 0}
-.adminStats>div{background:#fff;border:1px solid #e9e5de;padding:22px;border-radius:6px;display:flex;flex-direction:column;gap:8px}
-.adminStats span{font-size:12px;color:#777}
-.adminStats strong{font-size:28px;font-weight:600}
-.adminColumns{display:grid;grid-template-columns:1fr 1fr;gap:25px}
-.adminColumns h3{font-size:19px;font-weight:550}
-.adminRows{display:grid;gap:10px;max-height:660px;overflow-y:auto}
-.adminRow{padding:16px;background:#fff;border:1px solid #e7e4de;border-radius:5px;display:flex;flex-direction:column;gap:8px;overflow-wrap:anywhere}
-.adminRow small{color:#8b8177;font-size:11px}
-.adminRow strong{font-weight:550}
-.adminRow p{margin:0;font-size:12px;line-height:1.5;color:#666;white-space:pre-wrap}
-.adminRowActions{display:flex;gap:7px;flex-wrap:wrap}
-.adminRowActions button{border:1px solid #e0dcd6;background:#f8f7f4;border-radius:4px;padding:8px 12px;font-size:12px;cursor:pointer}
-.adminRowActions button:disabled{opacity:.45;cursor:default}
-.adminRowActions .danger{color:#aa423a;border-color:#e7cac6}
-.adminColumns input{width:100%;padding:12px;border:1px solid #e3dfd7;border-radius:4px;margin-bottom:13px;background:#fff}
-@media (max-width:700px){.adminColumns{grid-template-columns:1fr}
-.adminStats{gap:6px}
-.adminStats>div{padding:13px}
-.adminStats strong{font-size:21px}
-.adminHeader h2{font-size:24px}}
+@media (prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}#adminNavBtn[hidden]{display:none!important}
+
 body{font-size:16px!important;line-height:1.65!important}
 .btn{font-size:14px!important}
 .dialog label{font-size:15px!important}
 .dialog input,.dialog select,.dialog textarea{font-size:16px!important}
 .footer p{font-size:15px!important}
-.adminHeader p,.adminRow p,.adminRowActions button{font-size:14px!important}
-.adminRow strong{font-size:16px!important}
-.adminStats span,.adminRow small{font-size:13px!important}
 @media (max-width:600px){body{font-size:15px!important}}
 @media (max-width:760px){
 
@@ -1042,8 +1013,8 @@ body button:disabled{cursor:wait;opacity:.6}
 }
 @media(prefers-reduced-motion:reduce){html,body,*{scroll-behavior:auto!important}}
 
-.vipListing{outline:2px solid #b58828;outline-offset:3px}.vipBadge{position:absolute;bottom:10px;left:10px;padding:7px 10px;background:#ffe8a0;color:#513c10;border-radius:5px;font-size:12px;font-weight:800;z-index:2}.vipAdminRow{padding:16px;margin:12px 0;border:1px solid #c5b58d;border-radius:8px}.vipAdminRow button,.vipAdminRow select{min-height:44px;margin:5px;padding:8px}
+.vipListing{outline:2px solid #b58828;outline-offset:3px}.vipBadge{position:absolute;bottom:10px;left:10px;padding:7px 10px;background:#ffe8a0;color:#513c10;border-radius:5px;font-size:12px;font-weight:800;z-index:2}
 
 #modal .quickPostVip{margin:16px 0;padding:15px;background:#fff8e6;border:1px solid #d8bd6a;border-radius:10px}#modal .quickPostVip[hidden]{display:none}#modal .quickPostVip label{display:flex;align-items:center;gap:12px;cursor:pointer;min-height:48px}#modal .quickPostVip input[type=checkbox]{width:22px!important;height:22px!important;min-width:22px;margin:0!important;padding:0!important;accent-color:#98701a}#modal .quickPostVip label>span{flex:1;min-width:0}#modal .quickPostVip strong{display:block;font-size:16px}#modal .quickPostVip small{display:block;font-size:12px;line-height:1.5;margin-top:4px;color:#67562c}#modal .quickPostVip p{font-size:12px;line-height:1.6;margin:10px 0 0;color:#67562c}.vipPreviewTag,.vipDetailBadge{display:inline-block;background:#f3d773;color:#513c10;padding:6px 9px;border-radius:5px;font-size:12px;font-weight:800}.vipDetailBadge{margin-bottom:12px}
 
-.vipAdminPanel{margin:22px 0;padding:20px;border:1px solid #c5b58d;border-radius:8px;background:#fffaf0}.vipAdminPanel h2{margin-top:0;font-size:22px}.vipAdminPanel h2 span{display:inline-block;font-size:14px;color:#735416}.vipAdminPanel>button{min-height:44px;padding:8px 16px}.vipAdminPanel #vipRows{max-height:600px;overflow:auto}.vipAdminPanel [role="status"]{overflow-wrap:anywhere}
+.adminPanel[hidden]{display:none!important}

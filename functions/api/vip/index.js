@@ -2,7 +2,7 @@ import {binding,response,originOK,readJSON,verifiedUser} from '../../../sponsor-
 export async function onRequestGet(c){
  try{
  const mode=new URL(c.request.url).searchParams.get('mode');
- if(mode==='admin'){const user=await verifiedUser(c.request);if(!user?.admin)return response({error:'Админ эрх шаардлагатай.'},403);return response({items:(await binding(c).prepare('SELECT * FROM vip_requests ORDER BY requested_at DESC LIMIT 100').all()).results})}
+ if(mode==='admin'){const user=await verifiedUser(c.request);if(!user?.admin)return response({error:'Админ эрх шаардлагатай.'},403);return response({items:(await binding(c).prepare("SELECT * FROM vip_requests ORDER BY CASE status WHEN 'pending' THEN 0 ELSE 1 END,requested_at DESC LIMIT 100").all()).results})}
  return response({items:(await binding(c).prepare("SELECT listing_id,expires_at FROM vip_requests WHERE status='active' AND expires_at>? ORDER BY requested_at DESC LIMIT 100").bind(new Date().toISOString()).all()).results});
  }catch{return response({error:'VIP мэдээлэл түр ачаалагдсангүй.'},503)}
 }
