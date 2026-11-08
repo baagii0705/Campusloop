@@ -179,7 +179,7 @@ test('quick-post validates before uploading and saves multiple images in order',
   const end=inlineScript.indexOf('async function deleteListing(',start);
   assert.ok(start>=0&&end>start,'saveListing region');
   const fields={
-    newTitle:{value:'iPad 9'},
+    newVip:{checked:false},newTitle:{value:'iPad 9'},
     newPrice:{value:'450000'},
     newSchool:{value:'МУИС'},
     newCategory:{value:'Электрон хэрэгсэл'},
