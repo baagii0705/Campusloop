@@ -1041,3 +1041,5 @@ body button:disabled{cursor:wait;opacity:.6}
  .solioSearchPage #solioGlobalSearch{font-size:16px!important}
 }
 @media(prefers-reduced-motion:reduce){html,body,*{scroll-behavior:auto!important}}
+
+.vipListing{outline:2px solid #b58828;outline-offset:3px}.vipBadge{position:absolute;bottom:10px;left:10px;padding:7px 10px;background:#ffe8a0;color:#513c10;border-radius:5px;font-size:12px;font-weight:800;z-index:2}.vipAdminRow{padding:16px;margin:12px 0;border:1px solid #c5b58d;border-radius:8px}.vipAdminRow button,.vipAdminRow select{min-height:44px;margin:5px;padding:8px}
