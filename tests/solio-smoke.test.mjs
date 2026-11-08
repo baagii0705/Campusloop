@@ -213,7 +213,7 @@ test('quick-post validates before uploading and saves multiple images in order',
   };
   let nextId=0;
   const make=new Function('document','session','listings','Appwrite','db','toast','closeModal','loadListings','localStorage',
-    inlineScript.slice(start,end).replace("await import('/image-upload.mjs')","({optimizeListingImage:async file=>file})")+';return saveListing');
+    inlineScript.slice(start,end).replace("await import('/image-upload.mjs')","({optimizeListingImage:async file=>file,uploadListingImageWithCard:async(bucket,path,file)=>{const result=await bucket.upload(path,file);if(result.error)throw result.error;}})")+';return saveListing');
   const post=make(doc,{user:{id:'user-1'}},[],{ID:{unique:()=>String(++nextId)}},
     db,()=>{},()=>{closed++},async()=>{refreshed++},{setItem(){}});
   fields.newTitle.value='No';
@@ -255,7 +255,7 @@ test('rejected image selection remains available for submit validation',()=>{
   assert.match(note.textContent,/Дахин сонгоно уу/);
 });
 
-test('card variants are restricted to verified files and preserve original detail images',()=>{
+test('card variants stay within the configured bucket and preserve original detail images',()=>{
   const start=inlineScript.indexOf('function solioCardImageUrl(');
   const end=inlineScript.indexOf('function openListing(',start);
   const original='https://sgp.cloud.appwrite.io/v1/storage/buckets/6ae3b5970003d472ee8f/files/6aed36e60012f3e2230b/view?project=6ae367b80007a4d31918';
@@ -265,7 +265,9 @@ test('card variants are restricted to verified files and preserve original detai
   });
   assert.ok(url(original).includes('/6aed36e60012f3e2230b_card/view'));
   assert.equal(url(original.replace('sgp.cloud.appwrite.io','example.com')),original.replace('sgp.cloud.appwrite.io','example.com'));
-  assert.equal(url(original.replace('6aed36e60012f3e2230b','unknown')),original.replace('6aed36e60012f3e2230b','unknown'));
+  assert.match(url(original.replace('6aed36e60012f3e2230b','newUpload')),/newUpload_card\/view/);
+  assert.equal(url(original.replace('6ae3b5970003d472ee8f','anotherBucket')),original.replace('6ae3b5970003d472ee8f','anotherBucket'));
+  assert.equal(url(url(original)),url(original),'never append _card twice');
   assert.match(cover({id:'test',image_url:original},'boardPhoto',true),/_card\/view/);
   assert.doesNotMatch(cover({id:'test',image_url:original},'detailPhoto',true),/_card\/view/);
   const img={matches:()=>true,dataset:{original,coverId:'test',photoIndex:'0'}};
@@ -296,7 +298,7 @@ test('offscreen images do not start requests until they approach the viewport',(
 });
 
 test('large uploads shrink without upscaling and decoding failure retains the file',async()=>{
-  const source=readFileSync(new URL('../image-upload.mjs',import.meta.url),'utf8').replace('export async function','async function');
+  const source=readFileSync(new URL('../image-upload.mjs',import.meta.url),'utf8').replaceAll('export async function','async function');
   let canvas,revoked=0,failDecode=false,encodedSize=60000;
   class ImageMock{naturalWidth=3024;naturalHeight=4032;set src(value){if(failDecode)this.onerror();else this.onload()}}
   class FileMock{constructor(blobs,name,options){this.size=blobs[0].size;this.name=name;Object.assign(this,options)}}
@@ -323,3 +325,4 @@ test('public feed starts without waiting for account or hidden community request
   assert.doesNotMatch(setup,/loadSocialPosts\(/);
   assert.doesNotMatch(startup,/setInterval|refreshSolioNotificationCount/);
 });
+
