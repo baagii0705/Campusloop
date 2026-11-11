@@ -103,6 +103,7 @@ function row(item){
   actions=status==='pending'?actionButton('approve',key,'Зөвшөөрч нийтлэх')+actionButton('reject',key,'Татгалзах'):status==='published'?actionButton('close',key,'Нийтлэлээс хасах',true):'';
  }else if(tab==='deals'){
   body=paragraph('Байгууллага:',item.company)+paragraph('Хөнгөлөлт:',item.benefit)+paragraph('Нөхцөл:',item.conditions)+paragraph('Хугацаа:',date(item.start_at)+' — '+date(item.end_at))+paragraph('Сургууль:',item.school||'Бүх сургууль')+paragraph('Байршил:',item.location)+paragraph('Код:',item.code)+safeLink(item.target_url,'Байгууллагын холбоос');
+  if(!item._request&&status==='active')body+=safeLink('https://sol1o.me/deals/'+encodeURIComponent(item.id),'Нийтэлсэн санал · холбоос, QR');
   if(item._request)body+=paragraph('Холбогдох:',[item.contact_name,item.email,item.phone].filter(Boolean).join(' · '));
   actions=item._request&&status==='pending'?actionButton('approve',key,'Зөвшөөрч нийтлэх')+actionButton('reject',key,'Татгалзах'):!item._request?actionButton('toggle',key,item.active?'Түр зогсоох':'Идэвхжүүлэх'):'';
  }else if(tab==='sponsors'){

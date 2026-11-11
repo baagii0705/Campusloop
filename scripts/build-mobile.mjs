@@ -2,6 +2,8 @@ import {mkdir,copyFile,readFile,writeFile,rm} from 'node:fs/promises';
 import {resolve} from 'node:path';
 import {createHash} from 'node:crypto';
 import {build,transform} from 'esbuild';
+import {partnerLanding,SITE_ORIGIN} from '../partner-pages.js';
+import {qrSvg} from '../offer-qr.js';
 const root=resolve('.'),dist=resolve(root,'dist');
 await rm(dist,{recursive:true,force:true});
 await mkdir(resolve(dist,'assets'),{recursive:true});
@@ -32,6 +34,11 @@ for(const match of [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)]){
 const early="<script>if(!/^#(?:campus|deals|societies)(?:\\/|$)/.test(location.hash))window.solioFeedRequest=fetch('/api/public/listings?offset=0&limit=24',{credentials:'omit',cache:'no-store'}).catch(()=>null);</script>";
 html=html.replace('</head>',early+'</head>');await writeFile(resolve(dist,'index.html'),html);
 for(const file of ['manifest.webmanifest','solio-icon.svg'])await copyFile(resolve(root,file),resolve(dist,file));
+// Share links and printable QR artwork work independently of the marketplace bundle.
+await mkdir(resolve(dist,'partner-assets'),{recursive:true});
+await writeFile(resolve(dist,'partners.html'),partnerLanding());
+await writeFile(resolve(dist,'partner-assets/deals-qr.svg'),qrSvg(SITE_ORIGIN+'/#deals'));
+for(const file of ['offers.css','share.js','social.png'])await copyFile(resolve(root,'partner-assets',file),resolve(dist,'partner-assets',file));
 // The BSD SDK license accompanies the bundled subset; no CDN dependency at runtime.
 await copyFile(resolve(root,'node_modules/appwrite/LICENSE'),resolve(dist,'THIRD-PARTY-LICENSE.txt'));
 let sw=await readFile('sw.js','utf8');sw=sw.replace('solio-shell-v9','solio-shell-v10-'+createHash('sha256').update(assets.map(a=>a.name).join(',')).digest('hex').slice(0,12));

@@ -4,3 +4,11 @@ body.s1CampusMode main.wrap>*:not(#campusPage),body.s1DealsMode main.wrap>*:not(
 @media(max-width:520px){.s1Hub{padding-top:25px}.s1CampusControl{grid-template-columns:1fr;padding:16px;gap:16px}.s1HubGrid{grid-template-columns:1fr}.s1HubHeading{margin:24px 0}.s1HubTabs{gap:6px}.s1HubTabs button{padding:9px 13px;font-size:12px}.s1HubCard{padding:20px}.s1CampusPhoto{height:230px}.s1Hub h1{font-size:52px}.s1DealApplication{padding:0}}
 
 .s1HubArrow{display:inline-block;vertical-align:middle;width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;margin-left:5px}
+
+.s1DealInvite{display:flex;align-items:center;flex-wrap:wrap;gap:14px 22px;margin:16px 0 26px;padding:20px 22px;border:1px solid #d8d5ca;border-radius:8px;background:#f3f0e8}
+.s1DealInvite[hidden],.s1DealInvite input[hidden]{display:none!important}
+.s1DealInvite p{margin:5px 0 0;color:#595950}
+.s1DealInvite button{min-height:44px;padding:9px 15px;border:1px solid #4e4c43;border-radius:6px;color:#252520;background:transparent;font-weight:650;cursor:pointer}
+.s1DealInvite input{width:100%;padding:8px}
+.s1DealCard h2 .s1DealTitle{display:inline;padding:0;margin:0;background:transparent;border:0;color:inherit;font:inherit;text-decoration:none}
+.s1DealCard h2 .s1DealTitle:hover{text-decoration:underline}

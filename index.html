@@ -64,7 +64,7 @@
     <button type="button" onclick="browseCampusListings()"><span class="s1RouteNumber">01</span><span>Зарын зах<small>Хэрэгтэй зүйлээ ол</small></span><span aria-hidden="true"><svg class="boardIcon s1ArrowIcon" viewBox="0 0 24 24"><use href="#board-arrow"></use></svg></span></button>
     <button type="button" onclick="openSolioWanted()"><span class="s1RouteNumber">02</span><span>Хайж байна<small>Олдохгүй зүйлээ асуу</small></span><span aria-hidden="true"><svg class="boardIcon s1ArrowIcon" viewBox="0 0 24 24"><use href="#board-arrow"></use></svg></span></button>
     <button type="button" onclick="openSolioCommunity()"><span class="s1RouteNumber">03</span><span>Оюутны булан<small>Асуулт, зөвлөгөө, яриа</small></span><span aria-hidden="true"><svg class="boardIcon s1ArrowIcon" viewBox="0 0 24 24"><use href="#board-arrow"></use></svg></span></button>
-    <button type="button" onclick="SolioCampus.open()"><span class="s1RouteNumber">04</span><span>Миний сургууль<small>Сургуулийн самбар</small></span><span aria-hidden="true"><svg class="boardIcon s1ArrowIcon" viewBox="0 0 24 24"><use href="#board-arrow"></use></svg></span></button>
+    <button type="button" onclick="SolioCampus.deals()"><span class="s1RouteNumber">04</span><span>Оюутны хөнгөлөлт<small>Хаана, юунд хямдрах вэ?</small></span><span aria-hidden="true"><svg class="boardIcon s1ArrowIcon" viewBox="0 0 24 24"><use href="#board-arrow"></use></svg></span></button>
     <button type="button" onclick="SolioSocieties.open()"><span class="s1RouteNumber">05</span><span>Клуб, эвент<small>Хамт олонтой болъё</small></span><span aria-hidden="true"><svg class="boardIcon s1ArrowIcon" viewBox="0 0 24 24"><use href="#board-arrow"></use></svg></span></button>
   </nav>
 </section>
@@ -107,7 +107,7 @@
   <button type="button" class="boardMore" id="loadMoreListings" onclick="loadListings(false)" hidden>Дараагийн зарууд ↓</button>
 </section>
 <section class="s1CampusNote" aria-labelledby="s1CampusNoteTitle"><div><span class="s1Eyebrow">ЗАРААС ЦААШ</span><h2 id="s1CampusNoteTitle">Сургуулийнхаа<br>ярианд нэгд.</h2><p>Асуулт, зөвлөгөө, хэрэгтэй мэдээлэл.<br>Бие биедээ хэрэг болох нэг булан.</p></div><div class="s1NoteActions"><svg class="s1NoteDrawing" viewBox="0 0 160 95" fill="none" aria-hidden="true"><path d="M18 12h103v51H56L33 80V63H18V12Z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M43 29h53M43 41h36M130 34h14v48h-15l-12 9V76H78V66" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg><button type="button" onclick="openSolioCommunity()">Оюутны булан руу <span aria-hidden="true"><svg class="boardIcon s1ArrowIcon" viewBox="0 0 24 24"><use href="#board-arrow"></use></svg></span></button></div></section>
-</main><section id="adminPanel" class="adminPanel wrap" aria-label="Удирдлагын хэсэг" hidden></section><nav class="mobileBottomNav" aria-label="Solio утасны үндсэн цэс"><button type="button" id="bottomHome" onclick="goMobileHome()" class="active"><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-home"></use></svg></i><small class="bottomLabel">Нүүр</small></button><button type="button" id="bottomSearch" onclick="goMobileSearch()" class=""><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-search"></use></svg></i><small class="bottomLabel">Хайх</small></button><button type="button" id="bottomAdd" onclick="SolioUX.create()" class="bottomPost"><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-plus"></use></svg></i><small class="bottomLabel">Нэмэх</small></button><button type="button" id="bottomMenu" onclick="SolioUX.menu()" class=""><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-grid"></use></svg></i><small class="bottomLabel">Бүх боломж</small></button><button type="button" id="bottomAccount" onclick="goMobileSpace()" class=""><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-person"></use></svg></i><small class="bottomLabel">Миний</small></button></nav><footer class="footer"><div class="wrap"><b>sol<span>1</span>o.</b><p>Нэгэнд илүүдсэн. Нөгөөд хэрэгтэй.</p><p>© 2026 sol1o</p><button type="button" onclick="SolioUX.menu()">Бүх боломж · Ашиглах заавар</button><button type="button" onclick="SolioSocieties.open()">Клуб, эвент</button><button type="button" onclick="SolioCampus.deals()">Оюутны хөнгөлөлт <svg class="s1HubArrow" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-arrow"></use></svg></button><button type="button" id="solioSponsorFooterCta" onclick="window.SolioSponsorOpen?.('feed')">Байгууллагын сурталчилгаа ↗</button></div></footer><div class="modal" id="modal" role="presentation"><div class="dialog" role="dialog" aria-modal="true" aria-label="Solio цонх"><button class="close" type="button" aria-label="Цонх хаах" title="Хаах" onclick="closeModal()">✕</button><div id="modalBody"></div></div></div><div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div><script src="https://unpkg.com/appwrite@17.0.0/dist/iife/sdk.js"></script><script>
+</main><section id="adminPanel" class="adminPanel wrap" aria-label="Удирдлагын хэсэг" hidden></section><nav class="mobileBottomNav" aria-label="Solio утасны үндсэн цэс"><button type="button" id="bottomHome" onclick="goMobileHome()" class="active"><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-home"></use></svg></i><small class="bottomLabel">Нүүр</small></button><button type="button" id="bottomSearch" onclick="goMobileSearch()" class=""><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-search"></use></svg></i><small class="bottomLabel">Хайх</small></button><button type="button" id="bottomAdd" onclick="SolioUX.create()" class="bottomPost"><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-plus"></use></svg></i><small class="bottomLabel">Нэмэх</small></button><button type="button" id="bottomMenu" onclick="SolioUX.menu()" class=""><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-grid"></use></svg></i><small class="bottomLabel">Бүх боломж</small></button><button type="button" id="bottomAccount" onclick="goMobileSpace()" class=""><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-person"></use></svg></i><small class="bottomLabel">Миний</small></button></nav><footer class="footer"><div class="wrap"><b>sol<span>1</span>o.</b><p>Нэгэнд илүүдсэн. Нөгөөд хэрэгтэй.</p><p>© 2026 sol1o</p><button type="button" onclick="SolioUX.menu()">Бүх боломж · Ашиглах заавар</button><button type="button" onclick="SolioSocieties.open()">Клуб, эвент</button><button type="button" onclick="SolioCampus.deals()">Оюутны хөнгөлөлт <svg class="s1HubArrow" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-arrow"></use></svg></button><a id="solioSponsorFooterCta" href="/partners" onclick="this.href=solioPublicPath('/partners')">Байгууллагад ↗</a></div></footer><div class="modal" id="modal" role="presentation"><div class="dialog" role="dialog" aria-modal="true" aria-label="Solio цонх"><button class="close" type="button" aria-label="Цонх хаах" title="Хаах" onclick="closeModal()">✕</button><div id="modalBody"></div></div></div><div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div><script src="https://unpkg.com/appwrite@17.0.0/dist/iife/sdk.js"></script><script>
 const APPWRITE_CONFIG={endpoint:"https://sgp.cloud.appwrite.io/v1",projectId:"6ae367b80007a4d31918",databaseId:"public",storageBucketId:"6ae3b5970003d472ee8f"};
 const appwriteClient=new Appwrite.Client().setEndpoint(APPWRITE_CONFIG.endpoint).setProject(APPWRITE_CONFIG.projectId);
 const appwriteAccount=new Appwrite.Account(appwriteClient);const appwriteDatabases=new Appwrite.Databases(appwriteClient);const appwriteStorage=new Appwrite.Storage(appwriteClient);const appwriteListeners=[];
@@ -146,7 +146,7 @@ function changeSolioListingStatus(id){
 async function openSolioNotifications(){if(!session){openModal('login');return}document.getElementById('modal').classList.add('show');const body=document.getElementById('modalBody');body.innerHTML='<div class="solioNotifs"><button type="button" class="solioNotifBack" onclick="openSolioProfile()">← Профайл руу буцах</button><h2>🔔 Мэдэгдэл</h2><div id="solioNotifList">Ачаалж байна...</div></div>';const {data,error}=await db.from('solio_notifications').select('id,kind,title,body,listing_id,read_at,created_at').order('created_at',{ascending:false}).limit(60);const el=document.getElementById('solioNotifList');if(!el)return;if(error){el.textContent='Мэдэгдэл уншихад алдаа гарлаа';return}el.innerHTML=data?.length?data.map(n=>'<button type="button" class="solioNotifItem" data-notif="'+escapeHTML(n.id)+'"><b>'+escapeHTML(n.title)+'</b><span>'+escapeHTML(n.body)+'</span></button>').join(''):'<p>Одоогоор мэдэгдэл алга.</p>';el.querySelectorAll('[data-notif]').forEach(b=>b.onclick=async()=>{const n=data.find(z=>z.id===b.dataset.notif);await db.from('solio_notifications').update({read_at:new Date().toISOString()}).eq('id',n.id);refreshSolioNotificationCount();if(n.kind==='chat'){toast('Solio Chat үйлчилгээг сайтаас хассан.')}else if(n.listing_id){const x=listings.find(z=>z.id===n.listing_id);if(x)openListing(x.id);else{closeModal();toast('Зарыг жагсаалтаас хайна уу')}}})}
 async function refreshSolioNotificationCount(){const badge=document.getElementById('solioNotifCount');if(!badge)return;if(!session){badge.textContent='';return}const {data,error}=await db.from('solio_notifications').select('id,read_at').eq('user_id',session.user.id).limit(100);if(!error){const count=(data||[]).filter(x=>!x.read_at).length;badge.textContent=count?(' '+(count>=100?'99+':count)):''}}
 let solioModalReturnFocus=null,solioListingReturnHash='';
-function closeModal(restoreRoute=true){solioAfterAuth=null;document.getElementById("modal").classList.remove("show");requestAnimationFrame(()=>{if(!document.getElementById("modal").classList.contains("show"))solioModalReturnFocus?.focus({preventScroll:true})});document.querySelector(".dialog").classList.remove("detailDialog","authDialog","quickPostDialog","easyDialog");if(restoreRoute){if(location.hash.startsWith("#listing-"))history.replaceState(null,"",location.pathname+location.search+solioListingReturnHash);window.SolioCampus?.restoreModalRoute();window.SolioSocieties?.restoreModalRoute()}}
+function closeModal(restoreRoute=true){solioAfterAuth=null;document.getElementById("modal").classList.remove("show");requestAnimationFrame(()=>{if(!document.getElementById("modal").classList.contains("show"))solioModalReturnFocus?.focus({preventScroll:true})});document.querySelector(".dialog").classList.remove("detailDialog","authDialog","quickPostDialog","easyDialog");if(restoreRoute){if(location.hash==="#register")history.replaceState(null,"",location.pathname+location.search);if(location.hash.startsWith("#listing-"))history.replaceState(null,"",location.pathname+location.search+solioListingReturnHash);window.SolioCampus?.restoreModalRoute();window.SolioSocieties?.restoreModalRoute()}}
 
 let socialMode='wanted';
 function filterWantedRequests(){
@@ -574,12 +574,14 @@ function finishSolioAuthentication(){
  if(next)next.action();
 }
 
+function solioPublicPath(path){return window.Capacitor?.isNativePlatform?.()?"https://sol1o.me"+path:path}
 function openModal(mode,id){
   const dialog=document.querySelector(".dialog");
   dialog.classList.remove("detailDialog","authDialog","quickPostDialog","easyDialog");
-  if(mode==="login"&&!session)dialog.classList.add("authDialog");
+  const authDialog=mode==="login"||mode==="register";
+  if(authDialog&&!session)dialog.classList.add("authDialog");
   if(mode==="post"||mode==="edit")dialog.classList.add("quickPostDialog");document.getElementById("modal").classList.add("show");const body=document.getElementById("modalBody");document.querySelector('.dialog').scrollTop=0;
-if(mode==="login"){
+if(authDialog){
   if(session){openSolioProfile(session.user.id);return}
   body.innerHTML='<div class="authExperience">'
     +'<div class="authHeader"><h2 id="authTitle">Нэвтрэх</h2><p id="authSubtitle"></p></div>'
@@ -628,7 +630,7 @@ if(mode==="login"){
     button.setAttribute("aria-label",visible?"Нууц үг нуух":"Нууц үг харуулах");
     button.setAttribute("aria-pressed",String(visible));
   };
-  setMode("login");
+  setMode(mode);
   document.getElementById("authForm").onsubmit=e=>{e.preventDefault();authAction(authMode)};
   return;
 }
@@ -789,7 +791,9 @@ window.addEventListener("popstate",()=>{
   leaveSolioCommunity();
   leaveSolioSearch();
   leaveMobileSchools();
-  if(location.hash==="#wanted"){
+  if(location.hash==="#register"){
+    openModal("register");
+  }else if(location.hash==="#wanted"){
     document.body.classList.add('solioWantedPage');
     switchSocial('wanted');
     updateBottomTabs('bottomWanted');
@@ -883,7 +887,7 @@ appwriteAuth.getSession().then(({data,error})=>{
   if(error)console.warn('Solio session:',error.message);
   session=data?.session||null;
   try{updateNav();syncAdminNav();if(session)render()}catch(err){console.error('Solio navigation:',err)}
-}).catch(err=>console.error('Solio session startup:',err));
+}).catch(err=>console.error('Solio session startup:',err)).finally(()=>{if(location.hash==='#register')openModal('register')});
 
 // PWA registration and optional install prompt; never blocks the marketplace.
 let solioInstallEvent=null;
