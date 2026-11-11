@@ -12,6 +12,17 @@ async function asset(content,extension,{initial=false,main=false}={}){
  await writeFile(resolve(dist,'.'+name),output);assets.push({name,bytes:Buffer.byteLength(output),initial});if(initial)critical.push(name);return name;
 }
 let html=await readFile(resolve(root,'index.html'),'utf8');
+// Public metadata is present in the initial HTML for search engines and link previews.
+html=html.replace('</head>',`<link rel="canonical" href="https://sol1o.me/">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="mn_MN">
+<meta property="og:site_name" content="sol1o">
+<meta property="og:title" content="sol1o — Монголын оюутны зар, клуб, эвент">
+<meta property="og:description" content="Оюутны зар, хайж буй зүйл, сургуулийн хүрээлэл, клуб, эвент болон оюутны хөнгөлөлтүүдийг нэг дороос.">
+<meta property="og:url" content="https://sol1o.me/">
+<meta name="twitter:card" content="summary">
+</head>`);
 const sdk=await build({entryPoints:[resolve(root,'scripts/appwrite-browser.mjs')],bundle:true,write:false,format:'iife',target:'es2020',minify:true,charset:'utf8',legalComments:'eof'});
 const sdkPath=await asset(sdk.outputFiles[0].text,'js',{initial:true});
 html=html.replace('<script src="https://unpkg.com/appwrite@17.0.0/dist/iife/sdk.js"></script>','<script src="'+sdkPath+'" defer></script>');
@@ -31,7 +42,7 @@ for(const match of [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)]){
 }
 const early="<script>if(!/^#(?:campus|deals|societies)(?:\\/|$)/.test(location.hash))window.solioFeedRequest=fetch('/api/public/listings?offset=0&limit=24',{credentials:'omit',cache:'no-store'}).catch(()=>null);</script>";
 html=html.replace('</head>',early+'</head>');await writeFile(resolve(dist,'index.html'),html);
-for(const file of ['manifest.webmanifest','solio-icon.svg'])await copyFile(resolve(root,file),resolve(dist,file));
+for(const file of ['manifest.webmanifest','solio-icon.svg','robots.txt','sitemap.xml'])await copyFile(resolve(root,file),resolve(dist,file));
 // The BSD SDK license accompanies the bundled subset; no CDN dependency at runtime.
 await copyFile(resolve(root,'node_modules/appwrite/LICENSE'),resolve(dist,'THIRD-PARTY-LICENSE.txt'));
 let sw=await readFile('sw.js','utf8');sw=sw.replace('solio-shell-v9','solio-shell-v10-'+createHash('sha256').update(assets.map(a=>a.name).join(',')).digest('hex').slice(0,12));
