@@ -1,0 +1,14 @@
+# Public pages for search engines and ChatGPT search
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: *
+Allow: /
+
+Sitemap: https://sol1o.me/sitemap.xml
