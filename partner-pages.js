@@ -38,16 +38,16 @@ export function partnerLanding() {
     content: `<section class="partner-hero"><div class="intro">
 <p class="eyebrow">Байгууллагад</p><h1>Оюутанд ямар<br>хөнгөлөлт өгөх вэ?</h1>
 <p class="lead">Кофе, өдрийн хоол, хэвлэлийн үйлчилгээ гээд оюутанд хямд өгдөг зүйлээ энд оруулаарай. Саналын нөхцөл, байршил нэг дор харагдана.</p>
-<a class="button primary" href="/#deals/apply">Хөнгөлөлтөө оруулах <span aria-hidden="true">↗</span></a></div>
+<a class="button primary" href="/#deals/apply">Хөнгөлөлтөө оруулах</a></div>
 <aside class="counter" aria-label="Оюутны хөнгөлөлтүүдийг нээх QR код"><div class="counter-card">
 <div class="counter-top"><span class="brand small">sol<span>1</span>o<span>.</span></span><span>sol1o.me</span></div>
 <h2>Оюутны<br>хөнгөлөлт</h2><div class="counter-foot"><p>Утсаараа уншуулаад<br>саналуудыг үзээрэй.</p><a href="/#deals"><img width="112" height="112" src="/partner-assets/deals-qr.svg" alt="Оюутны хөнгөлөлтүүдийг нээх"></a></div>
 </div></aside></section>
 <section class="details-row"><div><h2>Нэг санал, нэг холбоос</h2>
 <p>Байршил, хугацаа, хэнд үйлчлэхээ бичнэ. Санал батлагдаж, хугацаа нь эхлэхэд оюутан холбоосоор орж нөхцөл, кодыг бүртгэлгүй үзнэ.</p></div>
-<div><h2>Сошиалд ч, лангуун дээр ч</h2><p>Саналынхаа холбоосыг Facebook групп, Instagram story-д хуваалцаарай. Хаягаа QR кодтой нь хэвлээд кассын дэргэд тавьж болно.</p></div></section>
+<div><h2>Сошиалд ч, лангуун дээр ч</h2><p>Саналынхаа холбоосыг Facebook групп, Instagram story-д хуваалцаарай. Саналаа QR кодтой нь хэвлээд кассын дэргэд тавьж болно.</p></div></section>
 <section class="paid"><div><h2>Баннер байрлуулах уу?</h2><p>Заруудын дунд эсвэл утасны доод хэсэгт 7, 30 хоногоор сурталчилж болно.</p></div>
-<a href="/?sponsor=1&amp;placement=feed">Байршил, үнэ үзэх <span aria-hidden="true">↗</span></a></section>`
+<a href="/?sponsor=1&amp;placement=feed">Байршил, үнэ үзэх</a></section>`
   });
 }
 
@@ -66,7 +66,7 @@ export function offerPage(deal) {
 <dl>${term('Хэнд', school)}${deal.location ? term('Байршил', deal.location) : ''}
 ${term('Дуусах хугацаа', date(deal.end_at) + ' (УБ)')}</dl>
 ${deal.code ? `<div class="code"><span>Хөнгөлөлтийн код</span><strong id="offer-code">${escape(deal.code)}</strong><button type="button" data-action="code" hidden>Код хуулах</button></div>` : ''}
-<div class="actions">${target ? `<a class="button primary" href="${escape(target)}" target="_blank" rel="noopener noreferrer sponsored">Байгууллагын хуудас ↗</a>` : ''}
+<div class="actions">${target ? `<a class="button primary" href="${escape(target)}" target="_blank" rel="noopener noreferrer sponsored">Байгууллагын хуудас</a>` : ''}
 <button class="button secondary" type="button" data-action="share" hidden>Хуваалцах</button></div>
 <p class="feedback" id="share-feedback" role="status"></p><input id="manual-copy" aria-label="Хуулах текст" readonly hidden></div>
 <aside class="offer-qr"><h2>Утсаараа нээх</h2><img width="168" height="168" src="${path}?format=qr" alt="Энэ саналын QR код">
