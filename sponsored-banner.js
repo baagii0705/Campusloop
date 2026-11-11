@@ -76,17 +76,16 @@ function makeInFeedCard(ad){
  const card=sponsoredElement('article','solioFeedSponsor'+(isPlaceholder?' is-placeholder':''));
  card.setAttribute('aria-label',isPlaceholder?'Сурталчилгаа байрлуулах боломж':'Ивээн тэтгэсэн сурталчилгаа');
  card.dataset.sponsorId=ad.$id;
- const mark=sponsoredElement('span','solioFeedSponsorTag',isPlaceholder?'СУРТАЛЧИЛГААНЫ ТАЛБАЙ':'ИВЭЭН ТЭТГЭСЭН');
+ const mark=sponsoredElement('span','solioFeedSponsorTag',isPlaceholder?'БАЙГУУЛЛАГАД':'ИВЭЭН ТЭТГЭСЭН');
  card.append(mark);
  if(isPlaceholder){
   const intro=sponsoredElement('div','solioFeedSponsorIntro');
   const copy=sponsoredElement('div','solioFeedSponsorCopy');
-  copy.append(sponsoredElement('h3','','Энд таны байгууллагын зар байрлана'),sponsoredElement('p','','Оюутнуудад хүрэх сурталчилгааны байршил, үнийн мэдээлэл.'));
+  copy.append(sponsoredElement('h3','','Оюутанд хөнгөлөлт санал болгох уу?'),sponsoredElement('p','','Саналаа хуваалцах холбоос, хэвлэх QR код аваарай.'));
   intro.append(copy);
   card.append(intro);
-  const button=sponsoredElement('button','solioFeedSponsorAction','Байршил, үнэ үзэх →');
-  button.type='button';
-  button.addEventListener('click',()=>{if(typeof window.SolioSponsorOpen==='function')window.SolioSponsorOpen('feed');else location.assign('/?sponsor=1&placement=feed')});
+  const button=sponsoredElement('a','solioFeedSponsorAction','Байгууллагад →');
+  button.href=solioPublicPath('/partners');
   card.append(button);
  }else{
   const link=sponsoredElement('a','solioFeedSponsorLink');
