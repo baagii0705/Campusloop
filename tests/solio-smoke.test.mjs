@@ -119,9 +119,9 @@ test('iPhone modal is above sticky header with accessible close button', () => {
 
 test('quick-post form keeps essential fields, optional details and mobile submit',()=>{
   const start=inlineScript.indexOf('const listingFormHTML=');
-  const end=inlineScript.indexOf(';\nbody.innerHTML=',start);
+  const end=inlineScript.indexOf('body.innerHTML=listingFormHTML',start);
   assert.ok(start>=0&&end>start,'post markup exists');
-  const literal=inlineScript.slice(start+'const listingFormHTML='.length,end);
+  const literal=inlineScript.slice(start+'const listingFormHTML='.length,end).trim().replace(/;$/,'');
   const formMarkup=JSON.parse(literal);
   for(const field of ['newTitle','newPrice','newSchool','newCategory','newImageFile','newImage','newPhone','newInstagram','newDesc','newMeetingPlace']){
     assert.ok(formMarkup.includes('id=\"'+field+'\"'),field);
@@ -325,4 +325,3 @@ test('public feed starts without waiting for account or hidden community request
   assert.doesNotMatch(setup,/loadSocialPosts\(/);
   assert.doesNotMatch(startup,/setInterval|refreshSolioNotificationCount/);
 });
-

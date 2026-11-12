@@ -34,10 +34,10 @@
     <a class="boardWordmark" href="#" onclick="goMobileHome();return false" aria-label="Solio нүүр хуудас">sol<span class="s1LogoOne">1</span>o<span class="s1LogoDot">.</span></a>
     <nav class="boardLinks" id="desktopNav" aria-label="Үндсэн цэс">
       <button type="button" data-desktop-tab="bottomHome" class="is-active" aria-current="page" onclick="goDesktopListings()">Зарууд</button>
-      <button type="button" data-desktop-tab="bottomSchools" onclick="SolioCampus.open()">Миний сургууль</button>
-      <button type="button" data-desktop-tab="bottomSocieties" onclick="SolioSocieties.open()">Клуб, эвент</button>
-      <button type="button" data-desktop-tab="bottomSearch" onclick="goDesktopSearch()">Хайлт</button>
-      <button type="button" data-desktop-tab="bottomMenu" onclick="SolioUX.menu()" aria-haspopup="dialog">Бүх боломж</button>
+      <button type="button" data-desktop-tab="bottomSocieties" onclick="SolioSocieties.open({kind:'club'})">Клубүүд</button>
+      <button type="button" data-desktop-tab="bottomSocieties" onclick="SolioSocieties.open({kind:'event'})">Арга хэмжээнүүд</button>
+      <button type="button" data-desktop-tab="bottomDeals" onclick="SolioCampus.deals()">Хөнгөлөлт</button>
+      <a class="boardNavLink" href="/partners" onclick="this.href=solioPublicPath('/partners')">Байгууллагад</a>
     </nav>
     <div class="boardAccount">
       <button type="button" id="adminNavBtn" onclick="openAdminPanel()" hidden>Удирдлага</button>
@@ -306,8 +306,14 @@ function render(){
     return true;
   });
   const sort=document.getElementById('sort')?.value||'new';
-  if(sort==='low')visible.sort((x,y)=>Number(x.price)-Number(y.price));
-  else if(sort==='high')visible.sort((x,y)=>Number(y.price)-Number(x.price));
+  const sortListings=(x,y)=>{
+    const vipX=window.SolioVIP?.isActive?.(x.id)?1:0,vipY=window.SolioVIP?.isActive?.(y.id)?1:0;
+    if(vipX!==vipY)return vipY-vipX;
+    if(sort==='low')return Number(x.price)-Number(y.price);
+    if(sort==='high')return Number(y.price)-Number(x.price);
+    return String(y.created_at||'').localeCompare(String(x.created_at||''));
+  };
+  visible.sort(sortListings);
   const results=document.getElementById('results');
   const pending=loadingListings&&listingPage===0&&!listings.length;
   results.textContent=pending?'':visible.length+' зар';
@@ -334,6 +340,8 @@ function render(){
     const price=escapeHTML(solioCardPrice(x.price));
     const schoolName=escapeHTML(x.school||'');
     const date=escapeHTML(solioCardDate(x.created_at));
+    const vip=window.SolioVIP?.isActive?.(x.id);
+    const vipRequest=mine&&window.SolioVIP?.statusFor?.(x.id);
     const description=String(x.description||'').trim();
     const note=description && description!==String(x.title||'').trim()
       ? '<p>'+escapeHTML(description.slice(0,250))+'</p>' : boardIcon('image');
@@ -343,11 +351,12 @@ function render(){
     return '<article class="solioProductCard boardListing" id="listing-'+escapeHTML(x.id)+'" data-open="'+escapeHTML(x.id)+'">'
       +'<div class="boardMedia" data-category="'+escapeHTML(x.category||'')+'">'
       +'<div class="boardPaper" aria-hidden="true"><span>'+escapeHTML(x.category||'Оюутны зар')+'</span>'+note+'</div>'
-      +solioCoverImage(x,'boardPhoto',index<(window.innerWidth>=1100?4:window.innerWidth>=769?3:2))+badge
+      +solioCoverImage(x,'boardPhoto',index<(window.innerWidth>=1100?4:window.innerWidth>=769?3:2))+(vip?'<span class="vipBadge">VIP</span>':'')+badge
       +(solioListingGallery(x).length>1?'<span class="boardPhotoCount" aria-label="'+solioListingGallery(x).length+' зураг">'+boardIcon('image')+solioListingGallery(x).length+'</span>':'')
       +'<button class="boardHeart" type="button" data-fav="'+escapeHTML(x.id)+'" aria-label="'+(saved?'Хадгалснаас хасах':'Зарыг хадгалах')+'" aria-pressed="'+String(saved)+'">'+boardIcon('heart')+'</button></div>'
       +'<div class="boardListingInfo"><strong class="boardPrice">'+price+'</strong><h3><button class="boardListingLink" type="button" aria-label="'+title+' — '+price+'">'+title+'</button></h3>'
       +'<div class="boardMeta">'+(schoolName?'<span>'+schoolName+'</span>':'')+(date?'<time>'+date+'</time>':'')+'</div>'
+      +(vipRequest?'<small class="vipRequestStatus">'+escapeHTML({pending:'VIP хүсэлт хянагдаж байна',active:'VIP идэвхтэй',rejected:'VIP хүсэлт татгалзсан'}[vipRequest]||vipRequest)+'</small>':'')
       +(mine?'<div class="solioCardManage"><button type="button" data-edit="'+escapeHTML(x.id)+'">Засах</button><button type="button" data-delete="'+escapeHTML(x.id)+'">Устгах</button></div>':'')
       +'</div></article>';
   }).join('')||(pending?'<div class="solioLoadingListings" role="status">Заруудыг ачаалж байна…</div>':'<div class="boardEmpty">'+(savedOnly?'Хадгалсан зар алга. Таалагдсан зарынхаа зүрхэн дээр дараарай.':onlyMine?'Энд чиний нийтэлсэн зарууд харагдана.':filtered?'Тохирох зар олдсонгүй. Өөр үгээр хайх эсвэл шүүлтүүрээ цэвэрлээрэй.':'Одоогоор зар алга.')+'</div>');
@@ -899,4 +908,3 @@ function showSolioInstallHint(){if(!solioInstallEvent||sessionStorage.getItem('s
 // Make search discoverable without changing existing marketplace behavior.
 (function(){const input=document.getElementById('search');if(input){input.setAttribute('aria-label','Зар хайх');input.setAttribute('autocomplete','off');input.setAttribute('enterkeyhint','search');}document.querySelectorAll('.mobileBottomNav button').forEach(b=>{if(!b.getAttribute('aria-label'))b.setAttribute('aria-label',(b.textContent||'').trim());});})();
 </script><script src="/sponsored-banner.js" defer></script><script src="/feature-loader.js" defer></script><script src="/usability.js" defer></script><script src="/vip.js" defer></script></body></html>
-

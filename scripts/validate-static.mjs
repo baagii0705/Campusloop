@@ -4,7 +4,7 @@ const html = await readFile(new URL("../index.html", import.meta.url), "utf8");
 const required = [
   '<meta name="viewport"',
   'id="modal"',
-  'id="postForm"',
+  'const listingFormHTML=',
 ];
 
 const missing = required.filter((value) => !html.includes(value));

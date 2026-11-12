@@ -7,7 +7,7 @@ const source=(start,end)=>script.slice(script.indexOf(start),script.indexOf(end,
 
 test('login continuation opens the requested UI once and cancelling discards it',()=>{
  const auth=source('let solioAfterAuth=','function openModal(');
- const close=source('function closeModal(','\n\nlet socialMode=');
+ const close=source('function closeModal(','function filterWantedRequests');
  const classList={remove(){},contains(){return false}};
  const context={session:null,document:{getElementById:()=>({classList}),querySelector:()=>({classList})},requestAnimationFrame:fn=>fn(),window:{},location:{hash:''},solioModalReturnFocus:null,opened:[],openModal:mode=>context.opened.push(mode)};
  const api=runInNewContext(auth+close+';({requireSolioAccount,finishSolioAuthentication,closeModal})',context);
@@ -20,9 +20,9 @@ test('login continuation opens the requested UI once and cancelling discards it'
 
 test('closing a listing preserves the underlying search route',()=>{
  let restored;
- const close=source('function closeModal(','\n\nlet socialMode=');
+ const close=source('function closeModal(','function filterWantedRequests');
  const classList={remove(){},contains(){return false}};
- const fn=runInNewContext(close+';closeModal',{solioAfterAuth:null,solioPendingPostAfterAuth:false,solioModalReturnFocus:null,solioListingReturnHash:'#search',document:{getElementById:()=>({classList}),querySelector:()=>({classList})},location:{hash:'#listing-123',pathname:'/',search:''},history:{replaceState:(a,b,url)=>restored=url},window:{},requestAnimationFrame:fn=>fn()});
+ const fn=runInNewContext(close+';closeModal',{solioAfterAuth:null,solioPendingPostAfterAuth:false,solioModalReturnFocus:null,solioListingReturnHash:'#search',document:{getElementById:()=>({classList}),querySelector:()=>({classList})},location:{hash:'#listing-123',pathname:'/',search:''},history:{replaceState:(a,b,url)=>restored=url},window:{matchMedia:()=>({addEventListener(){}})},requestAnimationFrame:fn=>fn()});
  fn();assert.equal(restored,'/#search');
  const handler=source("const solioSearchResultsRoot=","const solioSearchSchoolsRoot=");assert.doesNotMatch(handler,/leaveSolioSearch|history.replaceState/);
 });

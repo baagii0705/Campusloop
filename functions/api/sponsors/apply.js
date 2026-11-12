@@ -1,5 +1,13 @@
 import {response,originOK,readJSON,clean,safeURL,safeDate,binding} from '../../../sponsor-api-utils.js';
 import {sponsorQuote} from '../../../sponsor-pricing.js';
+export async function onRequestGet({request,env}){
+ const url=new URL(request.url),id=clean(url.searchParams.get('id'),70),email=clean(url.searchParams.get('email'),254).toLowerCase();
+ if(!id||!/^\S+@\S+\.\S+$/.test(email))return response({error:'Хүсэлтийн дугаар болон имэйлээ шалгана уу.'},400);
+ try{
+  const item=await binding({env}).prepare('SELECT id,company,status,admin_notes,created_at,reviewed_at,quoted_price,placement,duration_days FROM sponsor_requests WHERE id=? AND email=?').bind(id,email).first();
+  return item?response({item}):response({error:'Ийм хүсэлт олдсонгүй.'},404);
+ }catch{return response({error:'Хүсэлтийн төлөв түр ачаалж чадсангүй.'},503)}
+}
 export async function onRequestPost({request,env}){
  if(!originOK(request))return response({error:'Энэ сайтаас хүсэлт илгээнэ үү'},403);
  if(!String(request.headers.get('Content-Type')||'').startsWith('application/json'))return response({error:'JSON хүсэлт шаардлагатай'},415);

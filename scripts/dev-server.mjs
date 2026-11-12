@@ -17,7 +17,7 @@ import {onRequestGet as vipGet,onRequestPost as vipPost} from '../functions/api/
 import {onRequestGet as summary} from '../functions/api/admin/summary.js';
 import {onRequestGet as sponsorsAdminGet,onRequestPost as sponsorsAdminPost} from '../functions/api/sponsors/admin.js';
 import {onRequestGet as sponsorsActive} from '../functions/api/sponsors/active.js';
-import {onRequestPost as sponsorsApply} from '../functions/api/sponsors/apply.js';
+import {onRequestGet as sponsorsApplyGet,onRequestPost as sponsorsApply} from '../functions/api/sponsors/apply.js';
 import {onRequestPost as sponsorsEvent} from '../functions/api/sponsors/event.js';
 import {societyFields} from '../societies-data.js';
 const sqlite=new DatabaseSync(':memory:');
@@ -47,7 +47,7 @@ function seedPreview(){
 }
 const routes={
  '/api/vip':{GET:vipGet,POST:vipPost},'/api/admin/summary':{GET:summary},
- '/api/sponsors/admin':{GET:sponsorsAdminGet,POST:sponsorsAdminPost},'/api/sponsors/active':{GET:sponsorsActive},'/api/sponsors/apply':{POST:sponsorsApply},'/api/sponsors/event':{POST:sponsorsEvent},
+ '/api/sponsors/admin':{GET:sponsorsAdminGet,POST:sponsorsAdminPost},'/api/sponsors/active':{GET:sponsorsActive},'/api/sponsors/apply':{GET:sponsorsApplyGet,POST:sponsorsApply},'/api/sponsors/event':{POST:sponsorsEvent},
  '/api/campus':{GET:campus},'/api/deals':{GET:deals},'/api/deals/apply':{POST:apply},'/api/deals/admin':{GET:adminGet,POST:adminPost},
  '/api/societies':{GET:societies},'/api/societies/mine':{GET:societyMine},'/api/societies/submit':{POST:societySubmit,PATCH:societyWithdraw},'/api/societies/admin':{GET:societyAdmin,POST:societyReview},'/api/societies/calendar':{GET:calendar}
 };
@@ -63,7 +63,10 @@ http.createServer(async(req,res)=>{
   if(route)result=route[req.method]?await route[req.method](context):new Response('Method not allowed',{status:405});
   else if(url.pathname.startsWith('/api/public/')&&req.method==='GET')result=await fetch('https://sol1o.me'+url.pathname+url.search);
   else if(url.pathname.startsWith('/api/'))result=new Response('Unknown local API',{status:404});
-  if(result){res.writeHead(result.status,Object.fromEntries(result.headers));res.end(Buffer.from(await result.arrayBuffer()));return}
+  if(result){
+   const headers=Object.fromEntries([...result.headers].filter(([name])=>!['content-encoding','content-length','transfer-encoding'].includes(name.toLowerCase())));
+   res.writeHead(result.status,headers);res.end(Buffer.from(await result.arrayBuffer()));return
+  }
   const path=resolve(root,url.pathname==='/partners'||url.pathname==='/partners/'?'partners.html':'.'+decodeURIComponent(url.pathname));if(path!==root&&!path.startsWith(root+sep)){res.writeHead(403);res.end();return}
   const file=(await stat(path)).isDirectory()?resolve(path,'index.html'):path;
   res.setHeader('Content-Type',types[extname(file)]||'application/octet-stream');let content=await readFile(file);

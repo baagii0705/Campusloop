@@ -38,7 +38,7 @@ export function partnerLanding() {
     content: `<section class="partner-hero"><div class="intro">
 <p class="eyebrow">Байгууллагад</p><h1>Оюутанд ямар<br>хөнгөлөлт өгөх вэ?</h1>
 <p class="lead">Кофе, өдрийн хоол, хэвлэлийн үйлчилгээ гээд оюутанд хямд өгдөг зүйлээ энд оруулаарай. Саналын нөхцөл, байршил нэг дор харагдана.</p>
-<a class="button primary" href="/#deals/apply">Хөнгөлөлтөө оруулах</a></div>
+<div class="actions"><a class="button primary" href="/#deals/apply">Байгууллагаар бүртгүүлэх</a><a class="button secondary" href="/?sponsor=1&amp;placement=feed">Сурталчилгаа байршуулах</a></div></div>
 <aside class="counter" aria-label="Оюутны хөнгөлөлтүүдийг нээх QR код"><div class="counter-card">
 <div class="counter-top"><span class="brand small">sol<span>1</span>o<span>.</span></span><span>sol1o.me</span></div>
 <h2>Оюутны<br>хөнгөлөлт</h2><div class="counter-foot"><p>Утсаараа уншуулаад<br>саналуудыг үзээрэй.</p><a href="/#deals"><img width="112" height="112" src="/partner-assets/deals-qr.svg" alt="Оюутны хөнгөлөлтүүдийг нээх"></a></div>
@@ -46,8 +46,8 @@ export function partnerLanding() {
 <section class="details-row"><div><h2>Нэг санал, нэг холбоос</h2>
 <p>Байршил, хугацаа, хэнд үйлчлэхээ бичнэ. Санал батлагдаж, хугацаа нь эхлэхэд оюутан холбоосоор орж нөхцөл, кодыг бүртгэлгүй үзнэ.</p></div>
 <div><h2>Сошиалд ч, лангуун дээр ч</h2><p>Саналынхаа холбоосыг Facebook групп, Instagram story-д хуваалцаарай. Саналаа QR кодтой нь хэвлээд кассын дэргэд тавьж болно.</p></div></section>
-<section class="paid"><div><h2>Баннер байрлуулах уу?</h2><p>Заруудын дунд эсвэл утасны доод хэсэгт 7, 30 хоногоор сурталчилж болно.</p></div>
-<a href="/?sponsor=1&amp;placement=feed">Байршил, үнэ үзэх</a></section>`
+<section class="paid"><div><h2>Байгууллагад өгөх давуу тал</h2><p>Оюутнуудад зориулсан санал нэг холбоос, QR код, сошиал хуваалцах хуудастай болно.</p></div><div><h2>Байршил ба үнэ</h2><p>Зарын дунд эсвэл утасны доод хэсэгт 7, 30 хоногоор сурталчилж болно.</p></div>
+<a href="/?sponsor=1&amp;placement=feed">Үнийн мэдээлэл үзэх</a></section>`
   });
 }
 

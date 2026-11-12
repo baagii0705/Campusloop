@@ -66,7 +66,7 @@ configuration. Do not add Appwrite API keys, Cloudflare API tokens, or other
 secrets to the repository. Store future server-side secrets as encrypted
 Cloudflare Pages environment variables separately for Preview and Production.
 
-Apply `migrations/000-sponsors.sql` (the retained existing baseline), `migrations/001-student-deals.sql` and `migrations/002-clubs-events.sql` to the existing D1 binding. They preserve all sponsor tables and Appwrite data.
+Apply `migrations/000-sponsors.sql` (the retained existing baseline), `migrations/001-student-deals.sql`, `migrations/002-clubs-events.sql` and `migrations/004-club-images.sql` to the existing D1 binding. They are additive and preserve all sponsor tables, clubs, events and Appwrite data.
 
 Signed-in users submit clubs or independent events. A club-linked event must belong to the verified club owner (or an admin), and the club must already be published. Submissions stay pending until an Appwrite admin-label account approves them. Owners can withdraw a club or cancel an event in «Миний хүсэлтүүд»; admins can reject, publish or close them. Closing a club also hides its linked events from public reads. Private owner IDs/review notes are excluded from public feeds. New club/event submissions have a per-owner daily limit.
 

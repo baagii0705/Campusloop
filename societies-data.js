@@ -1,6 +1,6 @@
 import {clean,safeURL,safeDate,checkDateRange} from './sponsor-api-utils.js';
 export const SOCIETY_CATEGORIES=['Технологи','Урлаг','Спорт','Сайн дурын ажил','Карьер, сургалт','Бусад'];
-export const CLUB_FIELDS=['id','name','school','category','summary','description','join_url','meeting_info','created_at'];
+export const CLUB_FIELDS=['id','name','school','category','summary','description','image_url','join_url','meeting_info','created_at'];
 export const EVENT_FIELDS=['id','club_id','club_name','title','school','category','description','location','starts_at','ends_at','registration_url','price_note','created_at'];
 export const tableFor=kind=>kind==='club'?'society_clubs':kind==='event'?'society_events':null;
 export const publicSociety=(kind,row)=>Object.fromEntries((kind==='club'?CLUB_FIELDS:EVENT_FIELDS).map(key=>[key,row[key]??'']));
@@ -13,9 +13,9 @@ export function societyFields(kind,input,now=Date.now()){
  if(description.length<15)throw Error('Тайлбараа 15-аас доошгүй тэмдэгтээр бичнэ үү.');
  let fields;
  if(kind==='club'){
-  const name=clean(input.name,100),summary=clean(input.summary,180),join_url=safeURL(input.join_url,true),meeting_info=clean(input.meeting_info,240);
-  if(name.length<3||summary.length<10||join_url===null)throw Error('Клубийн нэр, товч танилцуулга болон HTTPS холбоосоо шалгана уу.');
-  fields={name,school,category,summary,description,join_url,meeting_info};
+  const name=clean(input.name,100),summary=clean(input.summary,180),image_url=safeURL(input.image_url,true),join_url=safeURL(input.join_url,true),meeting_info=clean(input.meeting_info,240);
+  if(name.length<3||summary.length<10||image_url===null||join_url===null)throw Error('Клубийн нэр, товч танилцуулга болон HTTPS холбоосуудаа шалгана уу.');
+  fields={name,school,category,summary,description,image_url,join_url,meeting_info};
  }else if(kind==='event'){
   const title=clean(input.title,120),location=clean(input.location,200),starts_at=safeDate(input.starts_at),ends_at=safeDate(input.ends_at),registration_url=safeURL(input.registration_url,true),price_note=clean(input.price_note,100),club_id=clean(input.club_id,70)||null;
   if(title.length<3||location.length<3||!starts_at||!ends_at||registration_url===null||!price_note)throw Error('Гарчиг, байршил, огноо, төлбөрийн нөхцөл болон HTTPS холбоосоо шалгана уу.');

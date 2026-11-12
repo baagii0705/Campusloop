@@ -9,13 +9,13 @@ import {onRequestPost as submit,onRequestPatch as withdraw} from '../functions/a
 import {onRequestPost as moderate,onRequestGet as adminGet} from '../functions/api/societies/admin.js';
 import {onRequestGet as calendar} from '../functions/api/societies/calendar.js';
 const day=86400000;
-const club={kind:'club',name:'Код клуб',school:'ШУТИС',category:'Технологи',summary:'Хамтдаа төсөл хийдэг оюутны клуб.',description:'Оюутнууд долоо хоног бүр цуглаж шинэ санаагаа бодит төсөл болгоно.',join_url:'https://example.com/club'};
+const club={kind:'club',name:'Код клуб',school:'ШУТИС',category:'Технологи',summary:'Хамтдаа төсөл хийдэг оюутны клуб.',description:'Оюутнууд долоо хоног бүр цуглаж шинэ санаагаа бодит төсөл болгоно.',join_url:'https://example.com/club',image_url:'https://example.com/club.jpg'};
 const event={kind:'event',title:'Төслийн уулзалт',school:'ШУТИС',category:'Технологи',description:'Хамтдаа шинэ төслүүдээ танилцуулж, баг бүрдүүлэн ажиллана.',location:'Сургуулийн 101 тоот',starts_at:new Date(Date.now()+day).toISOString(),ends_at:new Date(Date.now()+day+3600000).toISOString(),registration_url:'https://example.com/join',price_note:'Үнэгүй'};
 const tokens={owner:'owner_user_jwt_of_sufficient_length',other:'other_user_jwt_of_sufficient_length',admin:'admin_user_jwt_of_sufficient_length'};
 const request=(path='',data,role,method=data?'POST':'GET')=>new Request('https://sol1o.me/api/societies'+path,{method,headers:{'Content-Type':'application/json',...(role?{Authorization:'Bearer '+tokens[role]}:{})},...(data?{body:JSON.stringify(data)}:{})});
 async function fixture(t){
  let DatabaseSync;try{({DatabaseSync}=await import('node:sqlite'))}catch{t.skip('SQLite integration requires Node 22+');return null}
- const sql=new DatabaseSync(':memory:');sql.exec(await readFile(new URL('../migrations/002-clubs-events.sql',import.meta.url),'utf8'));
+ const sql=new DatabaseSync(':memory:');sql.exec(await readFile(new URL('../migrations/002-clubs-events.sql',import.meta.url),'utf8'));sql.exec(await readFile(new URL('../migrations/004-club-images.sql',import.meta.url),'utf8'));
  const statement=(text,params=[])=>({bind(...values){return statement(text,values)},first:async()=>sql.prepare(text).get(...params),all:async()=>({results:sql.prepare(text).all(...params)}),run:async()=>({meta:sql.prepare(text).run(...params)}),execute:async()=>/^\s*SELECT/i.test(text)?{results:sql.prepare(text).all(...params)}:{meta:sql.prepare(text).run(...params)}});
  const db={prepare:statement,batch:async queries=>{sql.exec('BEGIN');try{const results=[];for(const q of queries)results.push(await q.execute());sql.exec('COMMIT');return results}catch(e){sql.exec('ROLLBACK');throw e}}};
  const original=globalThis.fetch;globalThis.fetch=async(input,init)=>{assert.equal(String(input),'https://sgp.cloud.appwrite.io/v1/account');const token=init.headers['X-Appwrite-JWT'];const role=Object.keys(tokens).find(k=>tokens[k]===token);return role?Response.json({$id:role,labels:role==='admin'?['admin']:[]}):new Response('',{status:401})};
@@ -27,8 +27,8 @@ async function fixture(t){
 }
 test('club and event fields validate dates, URLs and text while ignoring owner and approval claims',()=>{
  const fields=societyFields('club',{...club,owner_id:'admin',status:'published'});assert.equal(fields.owner_id,undefined);assert.equal(fields.status,undefined);assert.ok(fields.search_text.includes('код клуб'));
- assert.throws(()=>societyFields('club',{...club,join_url:'javascript:alert(1)'}));assert.throws(()=>societyFields('event',{...event,starts_at:'2000-01-01'}));assert.throws(()=>societyFields('event',{...event,ends_at:event.starts_at}));assert.throws(()=>societyFields('event',{...event,price_note:''}));assert.throws(()=>societyFields('other',club));
- assert.equal(publicSociety('club',{...club,id:'x',owner_id:'private',review_note:'private'}).owner_id,undefined);
+ assert.throws(()=>societyFields('club',{...club,join_url:'javascript:alert(1)'}));assert.throws(()=>societyFields('club',{...club,image_url:'http://example.com/club.jpg'}));assert.throws(()=>societyFields('event',{...event,starts_at:'2000-01-01'}));assert.throws(()=>societyFields('event',{...event,ends_at:event.starts_at}));assert.throws(()=>societyFields('event',{...event,price_note:''}));assert.throws(()=>societyFields('other',club));
+ assert.equal(publicSociety('club',{...club,id:'x',owner_id:'private',review_note:'private'}).owner_id,undefined);assert.equal(publicSociety('club',club).image_url,club.image_url);
 });
 test('public query binds search, school and saved IDs instead of concatenating them into SQL',()=>{
  const url=new URL('https://sol1o.me/api/societies?kind=club&school='+encodeURIComponent('ШУТИС')+'&q='+encodeURIComponent("%' OR 1=1 --")+'&ids=abc,def');const q=societyQuery(url);assert.ok(!q.sql.includes('ШУТИС'));assert.ok(!q.sql.includes('OR 1=1'));assert.match(q.sql,/id IN \(\?,\?\)/);assert.ok(q.params.includes('abc'));assert.ok(q.params.some(p=>String(p).includes('\\%')));assert.throws(()=>societyQuery(new URL('https://sol1o.me/?kind=secrets')));
@@ -43,6 +43,7 @@ test('pending club submissions are private and moderation publishes only safe fi
  assert.equal((await moderate(f.context(request('/admin',{kind:'club',id,action:'approve'},'owner')))).status,403);
  assert.equal((await f.review('club',id)).status,200);assert.equal((await f.review('club',id)).status,409);
  const data=await (await list(f.context(request('?kind=club&q='+encodeURIComponent('КОД'))))).json();assert.equal(data.items.length,1);assert.equal(data.items[0].owner_id,undefined);assert.equal(data.items[0].review_note,undefined);
+ assert.equal(data.items[0].image_url,club.image_url);
  const own=await (await mine(f.context(request('/mine',undefined,'owner')))).json();assert.equal(own.clubs.length,1);assert.equal((await (await mine(f.context(request('/mine',undefined,'other')))).json()).clubs.length,0);
 });
 test('club ownership, date filters, calendar visibility and withdrawal govern events',async t=>{
