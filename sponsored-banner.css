@@ -128,3 +128,61 @@ body.solioSponsorModalOpen{overflow:hidden}
  #cards .solioFeedSponsor:not(.is-placeholder) .solioFeedSponsorLink{grid-template-columns:1fr}
  #cards .solioFeedSponsor:not(.is-placeholder) .solioFeedSponsorPhoto,#cards .solioFeedSponsor:not(.is-placeholder) .solioFeedSponsorPhoto img{height:180px;max-height:180px}
 }
+
+
+/* Business onboarding: compact four-step flow, touch-friendly and accessible. */
+.solioSponsorDialog{width:min(100%,660px)}
+.solioSponsorStep[hidden],.solioSponsorWizardActions button[hidden]{display:none!important}
+.solioSponsorSteps{list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;padding:0;margin:14px 0 5px}
+.solioSponsorSteps li{min-width:0;padding:9px 6px;border:1px solid #eae0dc;border-radius:9px;background:#faf7f5;color:#8a776e;font-size:11px;font-weight:750;text-align:center;line-height:1.35}
+.solioSponsorSteps li.current{color:#763b27;background:#f4e5dd;border-color:#c67556}
+.solioSponsorSteps li.completed{color:#496d50;background:#f0f8f2;border-color:#b5d2bc}
+.solioSponsorStepStatus{font-size:12px!important;font-weight:800;color:#8c604d!important;margin:8px 0 14px}
+.solioSponsorStep h3{margin:0 0 14px;font-size:19px;line-height:1.35;color:#4f2d21}
+.solioSponsorStep>.solioSponsorFields{margin-bottom:12px}
+.solioSponsorStep>p{color:#826a60;font-size:12px;line-height:1.55}
+.solioSponsorWizardActions{position:sticky;bottom:-25px;display:flex;gap:10px;justify-content:flex-end;background:linear-gradient(0deg,#fff 85%,#ffffffef);padding:12px 0 4px;margin-top:14px;z-index:2}
+.solioSponsorWizardActions button{min-height:44px;padding:11px 18px}
+.solioSponsorWizardActions .solioSponsorPrimary{flex:1}
+.solioSponsorReview{display:grid;grid-template-columns:minmax(96px,.45fr) minmax(0,1fr);gap:0;border:1px solid #ece2dd;border-radius:13px;overflow:hidden;margin:0}
+.solioSponsorReview dt,.solioSponsorReview dd{margin:0;padding:10px 12px;border-bottom:1px solid #f0e9e5;font-size:12px;overflow-wrap:anywhere}
+.solioSponsorReview dt{background:#faf6f4;color:#796259}
+.solioSponsorReview dd{color:#3f302a;font-weight:700}
+.solioSponsorReview dt:nth-last-child(2),.solioSponsorReview dd:last-child{border-bottom:0}
+.solioSponsorCreativePreview{border:1px dashed #d4b9ac;border-radius:12px;overflow:hidden;margin:14px 0;min-height:90px;display:grid;place-items:center;background:#fcfaf9}
+.solioSponsorCreativePreview img{width:100%;height:auto;max-height:250px;object-fit:contain}
+.solioSponsorCreativePreview img[hidden],.solioSponsorCreativePreview span[hidden]{display:none}
+.solioSponsorCreativePreview span{color:#94766a;text-align:center;padding:22px;font-size:12px}
+.solioSponsorStatusDetails{margin-top:18px;border-top:1px solid #eee3df;padding-top:14px}
+.solioSponsorStatusDetails>summary{cursor:pointer;font-size:13px;font-weight:750;color:#96553e;padding:10px 0;list-style:revert}
+.solioSponsorStatusDetails form{padding:8px 0 0}
+.solioSponsorDialog input:focus-visible,.solioSponsorDialog button:focus-visible,.solioSponsorDialog select:focus-visible{outline:3px solid #cc8d73;outline-offset:2px}
+@media(max-width:600px){
+ .solioSponsorDialog{max-height:calc(100dvh - 20px);padding:22px 15px}
+ .solioSponsorSteps{grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}
+ .solioSponsorSteps li{font-size:10px;padding:8px 3px}
+ .solioSponsorStep h3{font-size:18px}
+ .solioSponsorWizardActions{bottom:-22px}
+ .solioSponsorReview{grid-template-columns:minmax(92px,.43fr) minmax(0,1fr)}
+ .solioSponsorReview dt,.solioSponsorReview dd{padding:9px;font-size:11px}
+}
+
+/* Organizations also use a short, three-step discount request form. */
+.solioDealWizard{display:grid;gap:14px}
+.solioDealProgress{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.solioDealProgress li{font-size:11px;font-weight:700;padding:10px 6px;text-align:center;background:#f4f0e8;border:1px solid #d4ccbd;color:#6d675e;border-radius:6px}
+.solioDealProgress li.current{background:#25231f;color:#fff}
+.solioDealProgress li.completed{background:#e5efe5;color:#35643d;border-color:#aac2ab}
+.solioDealStep{display:grid;gap:15px}
+.solioDealStep[hidden],.solioDealWizardActions button[hidden]{display:none!important}
+.solioDealStep h3{font-size:19px;margin:5px 0 2px}
+.solioDealStep>p{font-size:12px;color:#67635b}
+.solioDealWizardActions{display:flex;gap:10px}
+.solioDealWizardActions button{min-height:44px}
+.solioDealWizardActions button[type="submit"],.solioDealWizardActions button:nth-child(2){flex:1}
+.solioDealWizardActions button:first-child{background:#fff;color:#25231f}
+.solioDealSummary{margin:0;display:grid;grid-template-columns:110px minmax(0,1fr);border:1px solid #d3cbbc;border-radius:8px;overflow:hidden}
+.solioDealSummary dt,.solioDealSummary dd{margin:0;padding:11px;border-bottom:1px solid #e9e3d8;overflow-wrap:anywhere;font-size:12px}
+.solioDealSummary dt{background:#f5f0e7;color:#76695b}
+.solioDealSummary dd{font-weight:700}
+@media(max-width:600px){.solioDealProgress li{font-size:10px;padding:8px 4px}.solioDealSummary{grid-template-columns:90px minmax(0,1fr)}}

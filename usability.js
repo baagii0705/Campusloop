@@ -14,7 +14,7 @@ const entries=[
  ['requests','Клуб, эвентийн хүсэлтүүд','Илгээсэн хүсэлтийнхээ төлөвийг шалгах','file','Миний хэсэг',()=>SolioSocieties.open({kind:'mine'})],
  ['profile','Миний бүртгэл','Профайл, мэдэгдэл, бүртгэлийн тохиргоо','person','Миний хэсэг',()=>goMobileSpace()],
  ['partners','Байгууллагад','Хөнгөлөлт нийтлүүлэх, QR авах, баннерын үнэ үзэх','share','Байгууллагад',()=>location.assign(solioPublicPath('/partners'))],
- ['advertise','Сурталчилгаа байршуулах','Үнэ, байрлал харах, байгууллагын хүсэлт илгээх','share','Байгууллагад',()=>SolioSponsorOpen('feed')],
+ ['advertise','Төлбөртэй баннерын зар','Байрлал, 7 эсвэл 30 хоногийн үнэ сонгоод хүсэлт илгээх','share','Байгууллагад',()=>SolioSponsorOpen('feed')],
  ['offer-deal','Хөнгөлөлт санал болгох','Оюутанд зориулсан хөнгөлөлтөө илгээх','school','Байгууллагад',()=>SolioCampus.apply()]
 ];
 const createEntries=[
@@ -22,7 +22,8 @@ const createEntries=[
  ['wanted','Хайж буй зүйлээ бичих','Хэрэгтэй зүйлээ олоогүй байна.','wanted',()=>{openSolioWanted();toggleSocialForm('wanted',true)}],
  ['community','Нийтлэл бичих','Асуулт, зөвлөгөө, мэдээллээ хуваалцъя.','chat',()=>{openSolioCommunity();toggleSocialForm('community',true)}],
  ['event','Эвент нэмэх','Уулзалт, тэмцээн, арга хэмжээ зарлая.','file',()=>SolioSocieties.create('event')],
- ['club','Клуб бүртгүүлэх','Клубээ танилцуулж, гишүүдтэй болъё.','person',()=>SolioSocieties.create('club')]
+ ['club','Клуб бүртгүүлэх','Клубээ танилцуулж, гишүүдтэй болъё.','person',()=>SolioSocieties.create('club')],
+ ['business','Байгууллагын зар','Баннерын байрлал, үнэ сонгож захиалгын хүсэлт илгээх','share',()=>SolioSponsorOpen('feed')]
 ];
 function sheet(title,intro,content){
  const dialog=document.querySelector('.dialog');

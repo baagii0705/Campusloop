@@ -62,7 +62,52 @@ $('inviteCompany').onclick=async()=>{
  catch{const field=$('inviteFallback');field.hidden=false;field.value=url;field.focus();field.select()}
 };
 $('dealsSchool').onchange=()=>loadDeals();$('dealsCategory').onchange=()=>loadDeals();$('dealsMore').onclick=()=>loadDeals(true);$('dealsFeed').onclick=async e=>{const b=e.target.closest('[data-copy]');if(!b)return;try{await navigator.clipboard.writeText(b.dataset.copy);toast('Код хууллаа.')}catch{toast('Код: '+b.dataset.copy)}};
-function apply(){$('modal').classList.add('show');document.querySelector('.dialog').classList.remove('authDialog','detailDialog','quickPostDialog','easyDialog');document.querySelector('.dialog').scrollTop=0;const field=(name,label,type='text',required=true,max=120)=>'<label>'+label+'<input name="'+name+'" type="'+type+'" maxlength="'+max+'" '+(required?'required':'')+'></label>';$('modalBody').innerHTML='<div class="s1DealApplication"><small>БАЙГУУЛЛАГАД</small><h2>Оюутанд санал болгоё.</h2><p>Саналыг хянаж зөвшөөрсний дараа нийтэлнэ. Холбоо барих мэдээлэл олон нийтэд харагдахгүй.</p><form id="dealForm">'+field('company','Байгууллагын нэр')+field('contact_name','Холбоо барих хүний нэр')+field('email','Имэйл','email')+field('phone','Утас','tel',false,40)+field('title','Саналын гарчиг')+field('benefit','Хөнгөлөлт (жишээ: 15% хямдрал)')+'<label>Ашиглах нөхцөл<textarea name="conditions" required minlength="5" maxlength="1200" rows="4" placeholder="Оюутны үнэмлэх шаардах эсэх, хамрах бүтээгдэхүүн, хязгаарлалтаа бичнэ үү."></textarea></label><label>Ангилал<select name="category">'+categories.map(c=>'<option>'+esc(c)+'</option>').join('')+'</select></label><label>Хамрах сургууль<select name="school">'+options('Бүх сургууль')+'</select></label>'+field('location','Байршил','text',false,200)+field('code','Хөнгөлөлтийн код','text',false,40)+field('target_url','Вэбсайт эсвэл сошиал хуудас (https://)','url',false,1000)+field('start_at','Эхлэх хугацаа','datetime-local')+field('end_at','Дуусах хугацаа','datetime-local')+'<div hidden aria-hidden="true"><input name="website" tabindex="-1" autocomplete="off"></div><button type="submit">Хянуулах хүсэлт илгээх →</button><p id="dealFormStatus" role="status"></p></form></div>';const form=$('dealForm');const local=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,16);form.elements.start_at.value=local;form.elements.end_at.min=local;form.onsubmit=async e=>{e.preventDefault();const button=form.querySelector('[type=submit]');button.disabled=true;const status=$('dealFormStatus');status.textContent='Илгээж байна…';try{const values=Object.fromEntries(new FormData(form));values.start_at=new Date(values.start_at).toISOString();values.end_at=new Date(values.end_at).toISOString();const receipt=await json('/api/deals/apply',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(values)});showDealReceipt(form,receipt.id)}catch(error){status.textContent=error.message;button.disabled=false}};form.elements.company.focus()}
+
+/* Organization discount form: only the relevant fields are shown at each step. */
+function setupDealWizard(form){
+ const names=['Байгууллага','Хөнгөлөлтийн санал','Хугацаа, баталгаажуулалт'];
+ const wizard=document.createElement('div');wizard.className='solioDealWizard';
+ const progress=document.createElement('ol');progress.className='solioDealProgress';
+ const panels=names.map((name,index)=>{
+  const marker=document.createElement('li');marker.textContent=String(index+1)+'. '+name;progress.append(marker);
+  const panel=document.createElement('section');panel.className='solioDealStep';panel.hidden=index!==0;panel.setAttribute('aria-label',name);return panel;
+ });
+ wizard.append(progress,...panels);
+ function move(name,index){
+  const field=form.querySelector('[name="'+name+'"]')?.closest('label');
+  if(field)panels[index].append(field);
+ }
+ for(const name of ['company','contact_name','email','phone'])move(name,0);
+ for(const name of ['title','benefit','conditions','category','school','location','code','target_url'])move(name,1);
+ for(const name of ['start_at','end_at'])move(name,2);
+ const titles=['1. Байгууллагын мэдээлэл','2. Хөнгөлөлтийн дэлгэрэнгүй','3. Эхлэх, дуусах хугацаа'];
+ panels.forEach((panel,index)=>{const title=document.createElement('h3');title.textContent=titles[index];panel.prepend(title)});
+ const summary=document.createElement('dl');summary.className='solioDealSummary';panels[2].append(summary);
+ const note=document.createElement('p');note.textContent='Хүсэлтийг админ шалгасны дараа хөнгөлөлт нийтлэгдэнэ. Энэ үйлдэл төлбөр суутгахгүй.';panels[2].append(note);
+ const submit=form.querySelector('button[type="submit"]');
+ const actions=document.createElement('div');actions.className='solioDealWizardActions';
+ const back=document.createElement('button');back.type='button';back.textContent='Буцах';
+ const next=document.createElement('button');next.type='button';next.textContent='Үргэлжлүүлэх →';
+ actions.append(back,next,submit);form.prepend(wizard);form.insertBefore(actions,form.querySelector('#dealFormStatus'));
+ let step=0;
+ function renderReview(){
+  summary.replaceChildren();
+  const rows=[['Байгууллага',form.elements.company.value],['Холбоо барих',form.elements.contact_name.value],['Имэйл',form.elements.email.value],['Санал',form.elements.title.value],['Хөнгөлөлт',form.elements.benefit.value],['Эхлэх',form.elements.start_at.value||'Сонгоогүй'],['Дуусах',form.elements.end_at.value||'Сонгоогүй']];
+  for(const [label,value] of rows){const dt=document.createElement('dt');dt.textContent=label;const dd=document.createElement('dd');dd.textContent=value;summary.append(dt,dd)}
+ }
+ function setStep(n){
+  step=Math.max(0,Math.min(2,n));if(step===2)renderReview();
+  panels.forEach((panel,i)=>{panel.hidden=i!==step});
+  [...progress.children].forEach((li,i)=>{li.classList.toggle('current',i===step);li.classList.toggle('completed',i<step);if(i===step)li.setAttribute('aria-current','step');else li.removeAttribute('aria-current')});
+  back.hidden=step===0;next.hidden=step===2;submit.hidden=step!==2;
+ }
+ function advance(){for(const el of panels[step].querySelectorAll('input,select,textarea')){if(!el.checkValidity()){el.reportValidity();el.focus();return}}setStep(step+1)}
+ back.onclick=()=>setStep(step-1);next.onclick=advance;
+ form.addEventListener('submit',event=>{if(step!==2){event.preventDefault();event.stopImmediatePropagation();advance()}},true);
+ setStep(0);
+}
+
+function apply(){$('modal').classList.add('show');document.querySelector('.dialog').classList.remove('authDialog','detailDialog','quickPostDialog','easyDialog');document.querySelector('.dialog').scrollTop=0;const field=(name,label,type='text',required=true,max=120)=>'<label>'+label+'<input name="'+name+'" type="'+type+'" maxlength="'+max+'" '+(required?'required':'')+'></label>';$('modalBody').innerHTML='<div class="s1DealApplication"><small>БАЙГУУЛЛАГАД</small><h2>Оюутанд санал болгоё.</h2><p>Саналыг хянаж зөвшөөрсний дараа нийтэлнэ. Холбоо барих мэдээлэл олон нийтэд харагдахгүй.</p><form id="dealForm">'+field('company','Байгууллагын нэр')+field('contact_name','Холбоо барих хүний нэр')+field('email','Имэйл','email')+field('phone','Утас','tel',false,40)+field('title','Саналын гарчиг')+field('benefit','Хөнгөлөлт (жишээ: 15% хямдрал)')+'<label>Ашиглах нөхцөл<textarea name="conditions" required minlength="5" maxlength="1200" rows="4" placeholder="Оюутны үнэмлэх шаардах эсэх, хамрах бүтээгдэхүүн, хязгаарлалтаа бичнэ үү."></textarea></label><label>Ангилал<select name="category">'+categories.map(c=>'<option>'+esc(c)+'</option>').join('')+'</select></label><label>Хамрах сургууль<select name="school">'+options('Бүх сургууль')+'</select></label>'+field('location','Байршил','text',false,200)+field('code','Хөнгөлөлтийн код','text',false,40)+field('target_url','Вэбсайт эсвэл сошиал хуудас (https://)','url',false,1000)+field('start_at','Эхлэх хугацаа','datetime-local')+field('end_at','Дуусах хугацаа','datetime-local')+'<div hidden aria-hidden="true"><input name="website" tabindex="-1" autocomplete="off"></div><button type="submit">Хянуулах хүсэлт илгээх →</button><p id="dealFormStatus" role="status"></p></form></div>';const form=$('dealForm');const local=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,16);form.elements.start_at.value=local;form.elements.end_at.min=local;setupDealWizard(form);form.onsubmit=async e=>{e.preventDefault();const button=form.querySelector('[type=submit]');button.disabled=true;const status=$('dealFormStatus');status.textContent='Илгээж байна…';try{const values=Object.fromEntries(new FormData(form));values.start_at=new Date(values.start_at).toISOString();values.end_at=new Date(values.end_at).toISOString();const receipt=await json('/api/deals/apply',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(values)});showDealReceipt(form,receipt.id)}catch(error){status.textContent=error.message;button.disabled=false}};form.elements.company.focus()}
 function showDealReceipt(form,id){
  form.innerHTML='<h3>Хүсэлт хүлээн авлаа.</h3><p>Саналыг зөвшөөрч, эхлэх хугацаа нь болоход нийтэлнэ.</p>';
  if(id){

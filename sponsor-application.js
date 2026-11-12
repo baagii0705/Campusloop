@@ -52,6 +52,114 @@ function buildPricingPicker(form){
  controls.querySelectorAll('select').forEach(el=>el.addEventListener('change',updateSponsorQuote));
  updateSponsorQuote();
 }
+
+/* Four short steps instead of asking organizations to complete one long form. */
+function setupSponsorWizard(form){
+ const picker=form.querySelector('.solioSponsorPricePicker');
+ const originalFields=form.querySelector('.solioSponsorFields');
+ const message=form.elements.message?.closest('label');
+ const privacy=form.querySelector('.solioSponsorPrivacy');
+ const feedback=form.querySelector('#solioSponsorApplyFeedback');
+ const submit=form.querySelector('.solioSponsorPrimary');
+ const stepNames=['Байрлал, үнэ','Байгууллага','Зарын мэдээлэл','Баталгаажуулах'];
+ const wizard=make('div',undefined,'solioSponsorWizard');
+ const progress=make('ol',undefined,'solioSponsorSteps');
+ const sections=stepNames.map((name,index)=>{
+  const li=make('li',String(index+1)+'. '+name);progress.append(li);
+  const section=make('section',undefined,'solioSponsorStep');
+  section.dataset.step=String(index);section.hidden=index!==0;
+  section.setAttribute('aria-label',name);
+  return section;
+ });
+ wizard.append(progress,...sections);
+ sections[0].append(make('h3','1. Сурталчилгааны байрлал, хугацаагаа сонгоно уу'),picker);
+ sections[1].append(make('h3','2. Танай байгууллагатай хэрхэн холбогдох вэ?'));
+ const contactGrid=make('div',undefined,'solioSponsorFields');
+ const creativeGrid=make('div',undefined,'solioSponsorFields');
+ function move(name,destination){
+  const node=originalFields.querySelector('[name="'+name+'"]')?.closest('label');
+  if(node)destination.append(node);
+ }
+ for(const name of ['company','contact_name','email','phone'])move(name,contactGrid);
+ sections[1].append(contactGrid);
+ sections[1].append(make('p','Нэр, имэйлээ зөв оруулаарай. Хүсэлтийн төлөвөө имэйлээрээ шалгана.'));
+ sections[2].append(make('h3','3. Зарынхаа мэдээллийг оруулна уу'));
+ for(const name of ['image_url','target_url','start_date'])move(name,creativeGrid);
+ sections[2].append(creativeGrid);
+ if(message)sections[2].append(message);
+ sections[2].append(make('p','Зураг болон холбоос одоохондоо бэлэн биш бол хоосон үлдээж болно. Админтай тохиролцож дараа нь өгөх боломжтой.'));
+ const creativePreview=make('div',undefined,'solioSponsorCreativePreview');
+ const previewPic=make('img');previewPic.alt='Сурталчилгааны зураг урьдчилан харах';previewPic.referrerPolicy='no-referrer';previewPic.hidden=true;
+ const previewText=make('span','Зургийн HTTPS холбоос оруулбал энд харагдана.');
+ creativePreview.append(previewPic,previewText);sections[2].append(creativePreview);
+ function updatePreview(){
+  const raw=form.elements.image_url.value.trim();
+  let valid=false;try{const u=new URL(raw);valid=u.protocol==='https:'&&!u.username&&!u.password}catch{}
+  previewPic.hidden=!valid;previewText.hidden=valid;
+  if(valid)previewPic.src=raw;else previewPic.removeAttribute('src');
+ }
+ form.elements.image_url.addEventListener('input',updatePreview);
+ previewPic.addEventListener('error',()=>{previewPic.hidden=true;previewText.hidden=false;previewText.textContent='Зургийн холбоос нээгдсэнгүй. Зөв HTTPS зураг оруулна уу.'});
+ sections[3].append(make('h3','4. Мэдээллээ шалгаад хүсэлтээ илгээнэ үү'));
+ const summary=make('dl',undefined,'solioSponsorReview');sections[3].append(summary);
+ if(privacy)sections[3].append(privacy);
+ sections[3].append(make('p','Энэ бол захиалгын хүсэлт. Төлбөр автоматаар суутгахгүй, зар шууд нийтлэгдэхгүй. Админ хянаж тантай холбогдоно.'));
+ originalFields.remove();
+ form.prepend(wizard);
+ const actions=make('div',undefined,'solioSponsorWizardActions');
+ const back=make('button','Буцах','solioSponsorSecondary');back.type='button';
+ const next=make('button','Үргэлжлүүлэх →','solioSponsorPrimary');next.type='button';
+ actions.append(back,next,submit);form.insertBefore(actions,feedback);
+ const stepStatus=make('p',undefined,'solioSponsorStepStatus');
+ progress.before(stepStatus);
+ const oldStatusForm=dialog.querySelector('#solioSponsorStatusForm');
+ if(oldStatusForm){
+  const details=make('details',undefined,'solioSponsorStatusDetails');
+  const disclosure=make('summary','Өмнө илгээсэн хүсэлтийн төлөв шалгах');
+  oldStatusForm.before(details);details.append(disclosure,oldStatusForm);
+ }
+ function review(){
+  summary.replaceChildren();
+  const quote=sponsorRates[form.elements.placement.value];
+  const rows=[
+   ['Байгууллага',form.elements.company.value.trim()],
+   ['Холбоо барих',form.elements.contact_name.value.trim()],
+   ['Имэйл',form.elements.email.value.trim()],
+   ['Утас',form.elements.phone.value.trim()||'Оруулаагүй'],
+   ['Байрлал',quote?.label||''],
+   ['Хугацаа',form.elements.duration_days.value+' хоног'],
+   ['Санал болгож буй үнэ',formatMNT(quote?.prices[form.elements.duration_days.value]||0)],
+   ['Эхлэх өдөр',form.elements.start_date.value||'Админтай тохиролцоно'],
+   ['Зураг',form.elements.image_url.value.trim()?'Холбоос оруулсан':'Дараа өгнө'],
+   ['Очих холбоос',form.elements.target_url.value.trim()||'Дараа өгнө']
+  ];
+  for(const [key,value] of rows){summary.append(make('dt',key),make('dd',value))}
+ }
+ let step=0;
+ function setStep(n){
+  step=Math.max(0,Math.min(3,n));
+  if(step===3)review();
+  sections.forEach((section,i)=>{section.hidden=i!==step});
+  [...progress.children].forEach((li,i)=>{li.classList.toggle('current',i===step);li.classList.toggle('completed',i<step);if(i===step)li.setAttribute('aria-current','step');else li.removeAttribute('aria-current')});
+  back.hidden=step===0;next.hidden=step===3;submit.hidden=step!==3;
+  stepStatus.textContent='Алхам '+(step+1)+' / 4';
+  wizard.scrollIntoView?.({block:'nearest',behavior:'auto'});
+ }
+ function advance(){
+  for(const control of sections[step].querySelectorAll('input,select,textarea')){
+   if(!control.checkValidity()){control.reportValidity();control.focus();return}
+  }
+  setStep(step+1);
+ }
+ back.onclick=()=>setStep(step-1);
+ next.onclick=advance;
+ form.addEventListener('submit',event=>{
+  if(step!==3){event.preventDefault();event.stopImmediatePropagation();advance()}
+ },true);
+ form.sponsorSetStep=setStep;
+ setStep(0);
+}
+
 let dialog;
 function ensureDialog(){
  if(dialog)return dialog;
@@ -61,6 +169,7 @@ function ensureDialog(){
  const form=$('#solioSponsorApplyForm',dialog);
  form.querySelector('[name=end_date]')?.closest('label')?.remove();
  buildPricingPicker(form);
+ setupSponsorWizard(form);
  const close=()=>{dialog.hidden=true;document.body.classList.remove('solioSponsorModalOpen')};
  $('.solioSponsorDismiss',dialog).onclick=close;
  dialog.addEventListener('click',event=>{if(event.target===dialog)close()});
@@ -71,8 +180,10 @@ function ensureDialog(){
 }
 function openApplication(placement='feed'){
  const d=ensureDialog(),selected=typeof placement==='string'&&sponsorRates[placement]?placement:'feed';
- $('#solioSponsorApplyForm',d).elements.placement.value=selected;
- updateSponsorQuote();d.hidden=false;
+ const form=$('#solioSponsorApplyForm',d);
+ if(form.dataset.submitted){form.reset();delete form.dataset.submitted;form.querySelector('.solioSponsorPrimary[type=submit]').disabled=false}
+ form.elements.placement.value=selected;
+ updateSponsorQuote();form.sponsorSetStep?.(0);d.hidden=false;
  document.body.classList.add('solioSponsorModalOpen');
  $('#solioSponsorApplyFeedback',d).textContent='';
  $('.solioSponsorDialog',d).scrollTop=0;
@@ -88,9 +199,9 @@ async function submitApplication(event){
  try{
   const res=await fetch(API+'/apply',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'omit',body:JSON.stringify(input)});
   const result=await res.json();if(!res.ok)throw Error(result.error||'Хүсэлт илгээгдсэнгүй');
-  form.reset();updateSponsorQuote();msg.textContent='Хүсэлтийг хүлээн авлаа. Дугаар: '+result.id+' · Төлөв: Хүлээгдэж буй. Энэ дугаараар төлөвөө шалгана уу.';msg.classList.add('solioSponsorSuccess');
+  form.dataset.submitted='true';const statusForm=$('#solioSponsorStatusForm',dialog);statusForm.elements.id.value=result.id;statusForm.elements.email.value=input.email;msg.textContent='Хүсэлтийг хүлээн авлаа. Дугаар: '+result.id+' · Төлөв: Хүлээгдэж буй. Дугаараа хадгалаарай. Төлөв шалгах хэсэгт автоматаар бөглөгдлөө.';msg.classList.add('solioSponsorSuccess');
  }catch(e){msg.textContent=e.message||'Алдаа гарлаа';msg.classList.remove('solioSponsorSuccess')}
- finally{btn.disabled=false;btn.textContent='Хүсэлт илгээх'}
+ finally{btn.disabled=!!form.dataset.submitted;btn.textContent=form.dataset.submitted?'Хүсэлт илгээгдсэн':'Хүсэлт илгээх'}
 }
 async function checkApplicationStatus(event){
  event.preventDefault();const form=event.currentTarget,msg=$('#solioSponsorStatusFeedback',dialog);msg.textContent='Шалгаж байна…';

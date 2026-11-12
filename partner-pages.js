@@ -36,9 +36,9 @@ export function partnerLanding() {
     title: 'Оюутанд хөнгөлөлт санал болгох · Sol1o', path: '/partners',
     description: 'Оюутанд зориулсан хөнгөлөлтөө Sol1o-д нийтлүүлээрэй. Санал бүр сошиалд хуваалцах холбоос, лангуун дээр тавих QR кодтой.',
     content: `<section class="partner-hero"><div class="intro">
-<p class="eyebrow">Байгууллагад</p><h1>Оюутанд ямар<br>хөнгөлөлт өгөх вэ?</h1>
-<p class="lead">Кофе, өдрийн хоол, хэвлэлийн үйлчилгээ гээд оюутанд хямд өгдөг зүйлээ энд оруулаарай. Саналын нөхцөл, байршил нэг дор харагдана.</p>
-<div class="actions"><a class="button primary" href="/#deals/apply">Байгууллагаар бүртгүүлэх</a><a class="button secondary" href="/?sponsor=1&amp;placement=feed">Сурталчилгаа байршуулах</a></div></div>
+<p class="eyebrow">Байгууллагад</p><h1>Оюутнуудад<br>өөрийгөө таниул.</h1>
+<p class="lead">Танай байгууллага хоёр аргаар оролцоно: оюутанд хөнгөлөлт санал болгох эсвэл нүүр хуудсанд төлбөртэй сурталчилгаа байрлуулах. Аль нь тохирохоо сонгоорой.</p>
+<div class="actions"><a class="button primary" href="/#deals/apply">Хөнгөлөлт санал болгох</a><a class="button secondary" href="/?sponsor=1&amp;placement=feed">Баннерын үнэ, захиалга</a></div></div>
 <aside class="counter" aria-label="Оюутны хөнгөлөлтүүдийг нээх QR код"><div class="counter-card">
 <div class="counter-top"><span class="brand small">sol<span>1</span>o<span>.</span></span><span>sol1o.me</span></div>
 <h2>Оюутны<br>хөнгөлөлт</h2><div class="counter-foot"><p>Утсаараа уншуулаад<br>саналуудыг үзээрэй.</p><a href="/#deals"><img width="112" height="112" src="/partner-assets/deals-qr.svg" alt="Оюутны хөнгөлөлтүүдийг нээх"></a></div>
@@ -46,8 +46,8 @@ export function partnerLanding() {
 <section class="details-row"><div><h2>Нэг санал, нэг холбоос</h2>
 <p>Байршил, хугацаа, хэнд үйлчлэхээ бичнэ. Санал батлагдаж, хугацаа нь эхлэхэд оюутан холбоосоор орж нөхцөл, кодыг бүртгэлгүй үзнэ.</p></div>
 <div><h2>Сошиалд ч, лангуун дээр ч</h2><p>Саналынхаа холбоосыг Facebook групп, Instagram story-д хуваалцаарай. Саналаа QR кодтой нь хэвлээд кассын дэргэд тавьж болно.</p></div></section>
-<section class="paid"><div><h2>Байгууллагад өгөх давуу тал</h2><p>Оюутнуудад зориулсан санал нэг холбоос, QR код, сошиал хуваалцах хуудастай болно.</p></div><div><h2>Байршил ба үнэ</h2><p>Зарын дунд эсвэл утасны доод хэсэгт 7, 30 хоногоор сурталчилж болно.</p></div>
-<a href="/?sponsor=1&amp;placement=feed">Үнийн мэдээлэл үзэх</a></section>`
+<section class="paid"><div><h2>1. Оюутны хөнгөлөлт</h2><p>Байгууллагын нэр, саналын нөхцөл, хугацаагаа оруулна. Админ баталсны дараа санал нэг холбоос, QR кодтой нийтлэгдэнэ.</p></div><div><h2>2. Төлбөртэй сурталчилгаа</h2><p>Зарын дунд, утасны доод хэсэг эсвэл хоёр байрлалд 7, 30 хоногийн багцаас сонгоно. Үнийг илгээхээс өмнө харуулна. Төлбөрийг хүсэлт батлагдсаны дараа тохиролцоно.</p></div>
+<a href="/?sponsor=1&amp;placement=feed">Баннерын багц сонгох</a></section>`
   });
 }
 
