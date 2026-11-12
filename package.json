@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "description": "Solio student marketplace Capacitor Android and iOS app",
   "scripts": {
-    "build": "node scripts/build-mobile.mjs",
+    "test": "node --test tests/solio-smoke.test.mjs",
+    "build": "npm test && node scripts/build-mobile.mjs",
     "lint": "node scripts/validate-static.mjs",
     "typecheck": "node scripts/validate-static.mjs",
     "validate": "npm run lint && npm run typecheck && npm run build",
