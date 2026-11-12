@@ -143,7 +143,7 @@ function setupSponsorWizard(form){
   [...progress.children].forEach((li,i)=>{li.classList.toggle('current',i===step);li.classList.toggle('completed',i<step);if(i===step)li.setAttribute('aria-current','step');else li.removeAttribute('aria-current')});
   back.hidden=step===0;next.hidden=step===3;submit.hidden=step!==3;
   stepStatus.textContent='Алхам '+(step+1)+' / 4';
-  wizard.scrollIntoView?.({block:'nearest',behavior:'instant'});
+  wizard.scrollIntoView?.({block:'nearest',behavior:'auto'});
  }
  function advance(){
   for(const control of sections[step].querySelectorAll('input,select,textarea')){
@@ -180,11 +180,10 @@ function ensureDialog(){
 }
 function openApplication(placement='feed'){
  const d=ensureDialog(),selected=typeof placement==='string'&&sponsorRates[placement]?placement:'feed';
- $('#solioSponsorApplyForm',d).elements.placement.value=selected;
- updateSponsorQuote();
  const form=$('#solioSponsorApplyForm',d);
- if(form.dataset.submitted){form.reset();delete form.dataset.submitted;form.querySelector('.solioSponsorPrimary[type=submit]').disabled=false;updateSponsorQuote()}
- form.sponsorSetStep?.(0);d.hidden=false;
+ if(form.dataset.submitted){form.reset();delete form.dataset.submitted;form.querySelector('.solioSponsorPrimary[type=submit]').disabled=false}
+ form.elements.placement.value=selected;
+ updateSponsorQuote();form.sponsorSetStep?.(0);d.hidden=false;
  document.body.classList.add('solioSponsorModalOpen');
  $('#solioSponsorApplyFeedback',d).textContent='';
  $('.solioSponsorDialog',d).scrollTop=0;
