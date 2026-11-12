@@ -18,7 +18,7 @@ jobs:
       # GitHub ubuntu-latest already includes Android SDK; avoid setup-android tool download failures.
       - name: Check Android SDK
         run: test -d "$ANDROID_HOME" && "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --version
-      - run: npm install
+      - run: npm ci
       - run: npm run cap:add:android
       - name: Build unsigned debug APK
         working-directory: android

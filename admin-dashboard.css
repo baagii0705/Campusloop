@@ -1,0 +1,67 @@
+.solioAdminMode>main,.solioAdminMode>footer{display:none!important}
+.adminPanel[hidden],.adminPanel [hidden]{display:none!important}
+.adminPanel{padding-top:30px;padding-bottom:100px;color:#292720}
+.adminPanel *{box-sizing:border-box}
+.adminHeader{display:flex;justify-content:space-between;align-items:start;gap:20px;border-bottom:1px solid #cfc9ba;padding-bottom:26px;margin-bottom:25px}
+.adminHeader small{font:700 11px/1.5 var(--board-mono,monospace);letter-spacing:.15em;color:#b34732}
+.adminHeader h1{margin:10px 0;font-size:clamp(27px,4vw,44px);letter-spacing:-.045em;line-height:1.12}
+.adminHeader p{margin:0;color:#6b665c}
+.adminPanel button,.adminPanel input,.adminPanel select,.adminPanel textarea{font:inherit;font-size:14px;border:1px solid #c6c0b4;border-radius:5px;min-height:44px;padding:10px 13px;color:inherit;background:#fffdf8;max-width:100%}
+.adminPanel button{cursor:pointer;font-weight:650;line-height:1.4}
+.adminPanel button:hover{border-color:#524c41;background:#f0ece2}
+.adminPanel button:disabled{opacity:.5;cursor:wait}
+.adminPanel :is(button,input,select,textarea,a,summary):focus-visible{outline:3px solid #dc5638;outline-offset:3px}
+.adminPanel label{display:grid;gap:7px;font-size:12px;font-weight:650;min-width:0}
+.adminPanel input,.adminPanel select,.adminPanel textarea{width:100%;min-width:0;font-weight:400}
+.adminLayout{display:grid;grid-template-columns:210px minmax(0,1fr);gap:30px;align-items:start}
+.adminNav{display:grid;gap:6px;position:sticky;top:95px}
+.adminNav button{display:flex;align-items:center;justify-content:space-between;text-align:left;border-color:transparent;background:transparent;gap:8px;padding:12px}
+.adminNav button[aria-pressed=true]{background:#292720;color:#fffdf8}
+.adminNav button span{font:700 12px/1.4 var(--board-mono,monospace);background:#ffe4aa;color:#614518;border-radius:4px;padding:2px 6px}
+.adminWorkspace{min-width:0}
+.adminSectionHead{display:flex;gap:16px;justify-content:space-between;align-items:start;margin-bottom:24px}
+.adminSectionHead h2{font-size:25px;margin:0 0 8px;letter-spacing:-.025em}
+.adminSectionHead p{font-size:14px;line-height:1.6;color:#746c5d;margin:0;max-width:560px}
+.adminSectionHead>button{flex-shrink:0}
+.adminToolbar{display:grid;grid-template-columns:minmax(0,1fr) 190px auto;gap:12px;align-items:end;background:#eae5d9;border:1px solid #d8d0bf;padding:15px;border-radius:6px}
+#adminStatus{font-size:12px;color:#6b6253;line-height:1.7;min-height:20px;overflow-wrap:anywhere;margin:16px 0}
+#adminStatus[data-error=true],#adminActionError{color:#a03427}
+.adminOverview{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.adminOverview>button{display:grid;justify-items:start;text-align:left;border:1px solid #cfc5ae;border-top:3px solid #d15c3f;padding:20px;min-width:0}
+.adminOverview span{font-size:16px}
+.adminOverview strong{font-size:46px;letter-spacing:-.06em;line-height:1.2;margin:12px 0 0}
+.adminOverview small{font-size:11px;color:#776a51;font-weight:400}
+.adminOverview p{font-size:13px;line-height:1.6;font-weight:400;margin-bottom:16px}
+.adminOverview b{font-size:12px;color:#b34732}
+.adminGuide{margin-top:25px;padding-top:20px;border-top:1px solid #d8d0bf}
+.adminGuide h3{font-size:18px;margin:0}
+.adminGuide ol{padding-left:22px;font-size:14px;line-height:1.8;color:#6a6254}
+.adminCards{display:grid;gap:14px;margin:16px 0}
+.adminCard{padding:20px;border:1px solid #d2cbbd;background:#fffdf8;border-radius:7px;overflow-wrap:anywhere;min-width:0}
+.adminCardHead{display:flex;gap:15px;align-items:start;justify-content:space-between;border-bottom:1px solid #ece7da;padding-bottom:12px;margin-bottom:14px}
+.adminCard h3{font-size:19px;margin:0;line-height:1.45;letter-spacing:-.02em}
+.adminBadge{font-size:11px;line-height:1.4;background:#eeeade;padding:6px 8px;border-radius:4px;flex-shrink:0;max-width:45%;text-align:center}
+.adminBadge[data-status=pending]{background:#ffe8a9;color:#674610}
+.adminBadge[data-status=active],.adminBadge[data-status=published]{background:#dbe9db;color:#325236}
+.adminBadge[data-status=rejected],.adminBadge[data-status=expired]{color:#8b4e40;background:#f2e3de}
+.adminCardBody{font-size:14px;line-height:1.6;color:#625b4d}
+.adminCardBody p{margin:8px 0;white-space:pre-wrap}
+.adminCardBody b{font-weight:600;color:#3c392f}
+.adminCardBody a{color:#a4432c;display:inline-block;margin:6px 10px 8px 0}
+.adminCard details{padding:12px 0;border-top:1px dashed #d6cebf}
+.adminCard summary{cursor:pointer;min-height:28px;font-weight:650;color:#3c392f}
+.adminActions{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px}
+.adminPanel .adminPrimary{background:#292720;border-color:#292720;color:#fffdf8}
+.adminPanel .adminDanger{color:#a03427;border-color:#d5a79a;background:#fff7f4}
+.adminEmpty{padding:28px;border:1px dashed #cabfa8;background:#f8f4e9;border-radius:5px}
+.adminEmpty h3{font-size:19px;margin:0 0 10px}.adminEmpty p{color:#776b58;font-size:14px;line-height:1.6;margin:0}
+#adminMore{width:100%;margin-top:8px}
+#adminAction{border:1px solid #bfb39a;border-radius:10px;padding:25px;width:min(560px,calc(100% - 28px));max-height:85dvh;overflow:auto;background:#fffdf7;color:#292720;box-shadow:0 18px 70px #26201333}
+#adminAction::backdrop{background:#25211788}
+#adminAction h2{margin:0 0 10px;font-size:25px}
+#adminActionIntro,.adminFormHint{font-size:14px;line-height:1.65;color:#71624b;overflow-wrap:anywhere}
+#adminActionFields{display:grid;gap:16px;margin-top:18px}
+#adminActionError{font-size:14px;line-height:1.6}
+@media(max-width:760px){.adminPanel{padding-top:20px}.adminHeader{gap:10px;flex-direction:column;padding-bottom:20px}.adminHeader>button{align-self:flex-start}.adminLayout{grid-template-columns:1fr;gap:24px}.adminNav{position:static;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;padding:8px;background:#eae5d9;border:1px solid #d8d0bf;border-radius:6px}.adminNav button{font-size:13px;padding:10px;min-width:0}.adminSectionHead{gap:10px}.adminSectionHead h2{font-size:23px}.adminToolbar{grid-template-columns:minmax(0,1fr) auto}.adminToolbar label:first-child{grid-column:1/-1}.adminOverview{gap:10px}.adminOverview>button{padding:14px}.adminOverview span{font-size:14px}.adminOverview strong{font-size:38px}.adminOverview p{font-size:12px}.adminCard{padding:16px}.adminCardHead{gap:10px}.adminCard h3{font-size:17px}.adminActions button{flex:1;min-width:100px}.adminBadge{font-size:10px}}
+
+@media(max-width:760px){.adminPanel input,.adminPanel select,.adminPanel textarea{font-size:16px}}

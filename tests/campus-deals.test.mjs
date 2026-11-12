@@ -1,0 +1,63 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import {campusItem,readCampusSection} from '../campus-feed.js';
+import {dealFields,publicDeal,DEAL_COLUMN_NAMES} from '../student-deals.js';
+import {onRequestGet as dealsGet} from '../functions/api/deals/index.js';
+import {onRequestGet as publicOffer,onRequestHead as headOffer} from '../functions/deals/[id].js';
+import {onRequestPost as apply} from '../functions/api/deals/apply.js';
+import {onRequestGet as adminGet,onRequestPost as adminPost} from '../functions/api/deals/admin.js';
+const offer={company:'Campus Coffee',title:'Student offer',benefit:'15%',conditions:'Student ID required',category:'Хоол, кофе',start_at:'2099-01-01',end_at:'2099-02-01',target_url:'https://example.com'};
+test('campus feed projects public content without contact or ownership fields',()=>{for(const name of ['listings','wanted_posts','campus_posts']){const item=campusItem(name,{$id:'1',school:'MUST',title:'Book',content:'hello',contact:'secret',phone:'123',user_id:'private',$permissions:['private']});for(const key of ['contact','phone','user_id','$permissions'])assert.equal(Object.hasOwn(item,key),false)}});
+test('campus query restricts school, page size and fields and detects a next page',async()=>{let target;const data=await readCampusSection('wanted_posts','MUST',12,async url=>{target=url;return Response.json({documents:Array.from({length:13},(_,i)=>({$id:String(i),title:'Book',school:'MUST'})),total:44})});const queries=target.searchParams.getAll('queries[]').map(JSON.parse);assert.deepEqual(queries[0],{method:'equal',attribute:'school',values:['MUST']});assert.deepEqual(queries[3].values,[12]);assert.ok(!queries[4].values.includes('contact'));assert.equal(data.items.length,12);assert.equal(data.total,44);assert.equal(data.has_more,true)});
+test('deal dates, categories and links are validated and approval is never accepted from applicants',()=>{const d=dealFields({...offer,status:'approved',active:1});assert.equal(d.status,undefined);assert.equal(d.active,undefined);assert.throws(()=>dealFields({...offer,end_at:'2000-01-01'}));assert.throws(()=>dealFields({...offer,end_at:'2098-01-01'}));assert.throws(()=>dealFields({...offer,target_url:'javascript:alert(1)'}));assert.throws(()=>dealFields({...offer,category:'fake'}));assert.throws(()=>dealFields({...offer,conditions:''}));assert.equal(publicDeal({...offer,email:'private',contact_name:'private'}).email,undefined)});
+test('deal endpoints deny foreign origins and non-admin callers before database use',async()=>{assert.equal((await adminGet({request:new Request('https://sol1o.me/api/deals/admin')})).status,403);assert.equal((await adminPost({request:new Request('https://sol1o.me/api/deals/admin',{method:'POST'})})).status,403);assert.equal((await apply({request:new Request('https://sol1o.me/api/deals/apply',{method:'POST',headers:{Origin:'https://evil.example','Content-Type':'application/json'},body:'{}'})})).status,403)});
+test('honeypot does not insert data and malformed applications fail validation',async()=>{const req=body=>new Request('https://sol1o.me/api/deals/apply',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const result=await apply({request:req({website:'bot'})});assert.equal(result.status,200);assert.equal((await result.json()).status,'pending');assert.equal((await apply({request:req({})})).status,400)});
+test('public deals are filtered server side by validity, school and category, and contacts are excluded',async()=>{let sql,params;const DB={prepare(q){sql=q;return {bind(...p){params=p;return {all:async()=>({results:[{id:'d',...offer,email:'private'}]})}}}}};const res=await dealsGet({request:new Request('https://sol1o.me/api/deals?school=MUST&category=Coffee'),env:{SPONSOR_DB:DB}});assert.equal(res.status,200);assert.match(sql,/active=1 AND start_at<=\? AND end_at>\?/);assert.match(sql,/school='' OR school=\?/);assert.match(sql,/category=\?/);assert.equal(params[2],'MUST');assert.equal(params[3],'Coffee');assert.equal((await res.json()).deals[0].email,undefined)});
+test('migration, pending application and public visibility work against SQLite',async t=>{let DatabaseSync;try{({DatabaseSync}=await import('node:sqlite'))}catch{t.skip('SQLite integration requires Node 22+');return}const sqlite=new DatabaseSync(':memory:');sqlite.exec(await readFile(new URL('../migrations/001-student-deals.sql',import.meta.url),'utf8'));const fields=dealFields(offer);const keys=DEAL_COLUMN_NAMES.split(',');sqlite.prepare('INSERT INTO student_deal_requests(id,contact_name,email,phone,'+DEAL_COLUMN_NAMES+') VALUES('+Array(15).fill('?').join(',')+')').run('test','Reviewer','private@example.com','',...keys.map(k=>fields[k]));assert.equal(sqlite.prepare('SELECT status FROM student_deal_requests').get().status,'pending');assert.equal(sqlite.prepare('SELECT count(*) n FROM student_deals').get().n,0);sqlite.prepare('INSERT INTO student_deals(id,'+DEAL_COLUMN_NAMES+') SELECT id,'+DEAL_COLUMN_NAMES+" FROM student_deal_requests WHERE id=? AND status='pending'").run('test');assert.equal(sqlite.prepare('SELECT count(*) n FROM student_deals').get().n,1);assert.throws(()=>sqlite.prepare('UPDATE student_deals SET end_at=?').run('1900-01-01'));sqlite.close()});
+test('real approval, rejection and pause handlers govern public visibility without leaking contacts',async t=>{
+ let DatabaseSync;try{({DatabaseSync}=await import('node:sqlite'))}catch{t.skip('SQLite integration requires Node 22+');return}
+ const sqlite=new DatabaseSync(':memory:');sqlite.exec(await readFile(new URL('../migrations/001-student-deals.sql',import.meta.url),'utf8'));
+ const stmt=(sql,params=[])=>({bind(...p){return stmt(sql,p)},all:async()=>({results:sqlite.prepare(sql).all(...params)}),first:async()=>sqlite.prepare(sql).get(...params),run:async()=>({meta:sqlite.prepare(sql).run(...params)}),execute:async()=>/^\s*SELECT/i.test(sql)?{results:sqlite.prepare(sql).all(...params)}:{meta:sqlite.prepare(sql).run(...params)}});
+ const DB={prepare:stmt,batch:async xs=>{sqlite.exec('BEGIN');try{const out=[];for(const x of xs)out.push(await x.execute());sqlite.exec('COMMIT');return out}catch(e){sqlite.exec('ROLLBACK');throw e}}};
+ const request=(path,body,admin=false)=>new Request('https://sol1o.me/api/deals'+path,{method:body?'POST':'GET',headers:{'Content-Type':'application/json',...(admin?{Authorization:'Bearer test_admin_jwt_of_sufficient_length'}:{})},...(body?{body:JSON.stringify(body)}:{})});
+ const context=request=>({request,env:{SPONSOR_DB:DB}});
+ const application=await apply(context(request('/apply',{...offer,start_at:'2020-01-01',contact_name:'Test Contact',email:'private@example.com'})));assert.equal(application.status,201);const {id}=await application.json();
+ assert.equal((await (await dealsGet(context(request('')))).json()).deals.length,0);
+ const offerContext=(query='')=>({...context(new Request('https://sol1o.me/deals/'+id+query)),params:{id}});
+ const pending=await publicOffer(offerContext());assert.equal(pending.status,404);
+ const privatePage=await pending.text();assert.doesNotMatch(privatePage,/Campus Coffee|Test Contact|private@example/);
+ assert.equal((await publicOffer(offerContext('?format=qr'))).status,404);
+ const original=globalThis.fetch;globalThis.fetch=async()=>Response.json({$id:'test-admin',labels:['admin']});
+ try{
+  assert.equal((await adminPost(context(request('/admin',{id,action:'approve'},true)))).status,200);
+  assert.equal((await adminPost(context(request('/admin',{id,action:'approve'},true)))).status,409);
+  let visible=(await (await dealsGet(context(request('')))).json()).deals;assert.equal(visible.length,1);assert.equal(visible[0].email,undefined);
+  assert.equal(sqlite.prepare('SELECT status FROM student_deal_requests').get().status,'approved');
+  const link=await publicOffer(offerContext());assert.equal(link.status,200);assert.equal(link.headers.get('cache-control'),'no-store');
+  const markup=await link.text();assert.match(markup,/property="og:title" content="Student offer · Campus Coffee/);
+  assert.ok(markup.includes('rel="canonical" href="https://sol1o.me/deals/'+id+'"'));assert.doesNotMatch(markup,/private@example|Test Contact/);
+  assert.ok(markup.includes('/#register'));assert.ok(markup.includes('/#deals'));
+  const qr=await publicOffer(offerContext('?format=qr&download=1'));
+  assert.equal(qr.headers.get('content-type'),'image/svg+xml');assert.match(qr.headers.get('content-disposition'),/attachment/);assert.match(await qr.text(),/<svg/);
+  assert.equal(await (await headOffer(offerContext())).text(),'');
+  sqlite.prepare('UPDATE student_deals SET start_at=? WHERE id=?').run('2098-01-01',id);
+  assert.equal(await (await publicOffer(offerContext())).text(),privatePage);
+  sqlite.prepare('UPDATE student_deals SET start_at=?,end_at=? WHERE id=?').run('2019-01-01','2020-01-01',id);
+  assert.equal((await publicOffer(offerContext('?format=qr'))).status,404);
+  sqlite.prepare('UPDATE student_deals SET end_at=? WHERE id=?').run('2099-02-01',id);
+  assert.equal((await adminPost(context(request('/admin',{id,action:'toggle',active:false},true)))).status,200);
+  assert.equal((await (await dealsGet(context(request('')))).json()).deals.length,0);
+  assert.equal(await (await publicOffer(offerContext())).text(),privatePage);
+  globalThis.fetch=async()=>Response.json({$id:'test-user',labels:[]});assert.equal((await adminPost(context(request('/admin',{id,action:'toggle',active:true},true)))).status,403);
+ }finally{globalThis.fetch=original;sqlite.close()}
+});
+
+test('shared offer markup escapes submitted text and excludes unsafe legacy destinations',async()=>{
+ const row={id:'escaped',...offer,title:'<script>alert(1)</script>',company:'"Injected"',target_url:'javascript:alert(1)',email:'do-not-publish'};
+ const context={request:new Request('https://sol1o.me/deals/escaped'),params:{id:'escaped'},env:{SPONSOR_DB:{prepare(){return {bind(){return {first:async()=>row}}}}}}};
+ const page=await (await publicOffer(context)).text();
+ assert.match(page,/&lt;script&gt;/);assert.match(page,/&quot;Injected&quot;/);
+ assert.doesNotMatch(page,/<script>alert|javascript:|do-not-publish/);
+ assert.equal((await publicOffer({...context,env:{}})).status,503);
+});

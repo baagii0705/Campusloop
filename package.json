@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Solio student marketplace Capacitor Android and iOS app",
   "scripts": {
-    "test": "node --test tests/solio-smoke.test.mjs",
+    "test": "node --test tests/*.test.mjs",
     "build": "npm test && node scripts/build-mobile.mjs",
     "lint": "node scripts/validate-static.mjs",
     "typecheck": "node scripts/validate-static.mjs",
@@ -15,18 +15,22 @@
     "cap:open:android": "npx cap open android",
     "cap:open:ios": "npx cap open ios",
     "android": "npm run cap:sync && npx cap open android",
-    "ios": "npm run cap:sync && npx cap open ios"
+    "ios": "npm run cap:sync && npx cap open ios",
+    "dev": "node scripts/dev-server.mjs"
   },
   "dependencies": {
-    "@capacitor/core": "^7.4.0",
     "@capacitor/android": "^7.4.0",
+    "@capacitor/core": "^7.4.0",
     "@capacitor/ios": "^7.4.0",
-    "appwrite": "^17.0.0"
+    "qrcode-generator": "2.0.4"
   },
   "devDependencies": {
-    "@capacitor/cli": "^7.4.0"
+    "@capacitor/cli": "^7.4.0",
+    "appwrite": "17.0.0",
+    "esbuild": "0.25.12"
   },
   "engines": {
     "node": ">=20"
-  }
+  },
+  "type": "module"
 }
