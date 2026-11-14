@@ -28,12 +28,21 @@ test('Mobile has five readable entry points and a shared feature menu', () => {
   assert.match(nav, /onclick="goMobileSearch\(\)"/);
 });
 
-test('Campus home has one Add listing button and working community destinations', () => {
+test('Campus home matches compact reference while keeping features in the shared menu', () => {
   const home = section('<section class="marketHome');
   assert.equal((home.match(/openModal\('post'\)/g) || []).length, 1);
-  assert.match(home, /onclick="openSolioCommunity\(\)"/);
-  assert.match(home, /onclick="openSolioWanted\(\)"/);
-  assert.doesNotMatch(home, /solioDiscovery|schoolHubGrid/);
+  assert.match(home, /id="boardTitle"/);
+  assert.doesNotMatch(home, /s1HeroStage|s1WantedTicket|s1CampusRoutes|s1FeatureCard/);
+  const market = section('<section id="market"');
+  assert.match(market, /id="search"/);
+  assert.match(market, /id="solioMarketCategories"/);
+  assert.match(market, /id="boardFeedTitle"/);
+  const menu = readFileSync(new URL('../usability.js', import.meta.url), 'utf8');
+  assert.match(menu, /openSolioWanted\(\)/);
+  assert.match(menu, /openSolioCommunity\(\)/);
+  const css = readFileSync(new URL('../board.css', import.meta.url), 'utf8');
+  assert.match(css, /grid-template-columns:none!important/);
+  assert.doesNotMatch(css, /\.s1WantedTicket|\.s1CampusRoutes/);
 });
 
 test('Marketplace uses one accessible category selector', () => {
@@ -78,7 +87,7 @@ test('Card price formatting handles free and invalid prices', () => {
 
 test('PWA cache is refreshed for the redesigned UI', () => {
   const sw = readFileSync(new URL('../sw.js', import.meta.url), 'utf8');
-  assert.match(sw, /solio-shell-v9/);
+  assert.match(sw, /solio-shell-v10/);
   assert.ok(sw.includes("'/board.css'"));
   assert.ok(staticHtml.includes('href="/board.css"'));
 });
