@@ -619,7 +619,7 @@ button,a{ -webkit-tap-highlight-color: transparent; }
 .boardAccount #boardAccountButton:hover{ background: var(--board-ink); color: white; }
 .mobileBottomNav{ display: none; }
 
-/* The campus opening: typography, a real listing, and an original wanted ticket. */
+/* Student marketplace introduction: minimal, readable, with the catalog immediately below. */
 .marketHome.boardMasthead{ display: grid !important; grid-template-columns: 1.2fr 1fr !important; align-items: center !important; gap: 0 25px !important; padding: 30px 0 0 !important; margin: 0 !important; min-height: 0 !important; border: 0 !important; border-radius: 0 !important; background: none !important; box-shadow: none !important; }
 .boardMasthead::before,.boardMasthead::after{ content: none !important; }
 .s1Intro{ min-width: 0; padding-bottom: 30px; }
@@ -634,42 +634,6 @@ button,a{ -webkit-tap-highlight-color: transparent; }
 .s1Browse{ display: inline-flex; align-items: center; gap: 22px; min-height: 44px; padding: 0; border: 0; background: transparent; color: var(--board-ink); font-size: 13px; font-weight: 650; }
 .s1Browse span{ font-size: 21px; }
 .s1Browse:hover{ color: var(--board-accent); }
-.s1HeroStage{ position: relative; height: 300px; min-width: 0; margin: 0 5px 23px 0; }
-.s1HeroArrow{ position: absolute; width: 128px; height: 55px; left: -30px; top: -4px; color: #b1a895; transform: rotate(8deg); }
-.s1FeatureCard{ position: absolute; top: 8px; left: 28px; width: 230px; min-height: 278px; padding: 9px; border: 1px solid #ded8ca; border-radius: 11px; background: #fff; transform: rotate(-7deg); box-shadow: 7px 8px 0 #e8e2d6; }
-.s1FeatureTap{ display: block; width: 100%; padding: 0; border: 0; text-align: left; background: transparent; color: var(--board-ink); }
-.s1FeatureTap:focus-visible{ border-radius: 5px; }
-.s1FeatureImage{ position: relative; display: block; height: 190px; overflow: hidden; border-radius: 6px; background: #efeadd; }
-.s1FeaturePhoto{ position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.s1FeatureImageFallback{ display: grid; place-items: center; height: 100%; color: #a39a87; }
-.s1FeatureImageFallback .boardIcon{ width: 58px; height: 58px; stroke-width: 1; }
-.s1FeatureImage:has(.s1FeaturePhoto:not([hidden])) .s1FeatureImageFallback{ visibility: hidden; }
-.s1FeatureSticker{ position: absolute; top: 9px; left: 9px; padding: 5px 8px; border: 1px solid #e7c668; border-radius: 4px; background: #fae69d; color: #776030; font: 650 9px/1.2 var(--board-mono); letter-spacing: .07em; }
-.s1FeatureCopy{ display: grid; gap: 9px; padding: 13px 4px 6px; }
-.s1FeatureCopy > strong{ display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; font-weight: 600; }
-.s1FeatureCopy > span{ display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
-.s1FeatureCopy b{ font-size: 18px; letter-spacing: -.04em; }
-.s1FeatureCopy small{ color: var(--board-muted); font-size: 9px; }
-.s1FeatureFallback{ display: grid; place-items: center; align-content: center; gap: 20px; min-height: 257px; color: #989181; background: #f1ecdf; font-size: 21px; line-height: 1.4; }
-.s1FeatureFallback .boardIcon{ width: 60px; height: 60px; stroke-width: 1; }
-.s1WantedTicket{ position: absolute; top: 75px; right: 0; z-index: 1; display: grid; width: 205px; padding: 17px 16px 12px; border: 1px solid #d4bc6e; border-radius: 4px; background: #f1de9c; color: #5e512b; text-align: left; transform: rotate(7deg); box-shadow: 4px 5px 0 #ded5b6; }
-.s1WantedTicket::before,.s1WantedTicket::after{ content: ""; position: absolute; top: 50%; width: 13px; height: 20px; border: 1px solid #d4bc6e; border-radius: 50%; background: var(--board-paper); }
-.s1WantedTicket::before{ left: -9px; border-left: 0; }
-.s1WantedTicket::after{ right: -9px; border-right: 0; }
-.s1TicketTop{ display: flex; align-items: center; justify-content: space-between; padding-bottom: 13px; font: 600 9px/1.3 var(--board-mono); letter-spacing: .11em; }
-.s1TicketTop .boardIcon{ width: 15px; height: 15px; }
-.s1WantedTicket > strong{ padding: 2px 0 17px; font-size: 20px; line-height: 1.35; letter-spacing: -.04em; font-weight: 750; }
-.s1TicketBottom{ display: flex; justify-content: space-between; gap: 8px; padding-top: 11px; border-top: 1px dashed #b8a064; font-size: 10px; }
-.s1WantedTicket:hover{ transform: rotate(4deg); }
-.s1OrbitLabel{ position: absolute; bottom: -3px; right: 2px; color: #a8a18f; font: 500 9px var(--board-mono); letter-spacing: .08em; }
-.s1CampusRoutes{ grid-column: 1/-1; display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); border-block: 1px solid var(--board-rule); }
-.s1CampusRoutes button{ display: flex; align-items: center; gap: 14px; min-width: 0; min-height: 58px; padding: 0 20px; border: 0; border-right: 1px solid var(--board-rule); background: transparent; color: #5b5c53; font-size: 13px; text-align: left; }
-.s1CampusRoutes button:first-child{ padding-left: 0; }
-.s1CampusRoutes button:last-child{ border-right: 0; }
-.s1CampusRoutes .s1RouteNumber{ color: #b1ab9d; font: 500 10px var(--board-mono); }
-.s1CampusRoutes button > span:last-child{ margin-left: auto; color: #9c9587; font-size: 16px; }
-.s1CampusRoutes button:hover{ color: var(--board-accent); }
-.s1CampusRoutes button:hover > span:last-child{ color: var(--board-accent); }
 
 /* The usable catalog stays close to the campus introduction. */
 #market.boardMarket{ margin: 0; padding: 24px 0 38px; scroll-margin-top: 82px; }
@@ -820,14 +784,6 @@ body:has(#modal.show){ overflow: hidden; }
   .boardLinks{ gap: 3px; }
   .boardLinks button{ padding-inline: 8px; font-size: 12px; }
   .boardMasthead .s1Intro{ padding-bottom: 24px; }
-  .s1HeroStage{ height: 270px; }
-  .s1FeatureCard{ left: 5px; width: 197px; min-height: 245px; }
-  .s1FeatureImage{ height: 159px; }
-  .s1WantedTicket{ width: 169px; top: 78px; padding: 13px 12px 10px; }
-  .s1WantedTicket > strong{ font-size: 17px; }
-  .s1TicketTop{ font-size: 8px; }
-  .s1TicketBottom{ font-size: 9px; }
-  .s1OrbitLabel{ display: none; }
   .boardQuickFilters button[data-board-filter=available]{ display: none; }
   .boardGrid{ grid-template-columns: repeat(3,minmax(0,1fr)); }
 }
@@ -835,12 +791,6 @@ body:has(#modal.show){ overflow: hidden; }
   .boardNav{ flex-wrap: wrap; row-gap: 0; padding-block: 10px; }
   .boardLinks{ order: 3; flex-basis: 100%; padding-top: 7px; }
   .boardAccount{ margin-left: auto; }
-  .s1HeroStage{ margin-right: 0; }
-  .s1FeatureCard{ left: 8px; width: 180px; }
-  .s1WantedTicket{ right: -6px; width: 150px; top: 110px; }
-  .s1WantedTicket > strong{ font-size: 15px; }
-  .s1TicketTop{ letter-spacing: .03em; }
-  .s1HeroArrow{ left: -13px; width: 95px; }
   .boardRefine{ gap: 6px; }
   .boardCount h2{ font-size: 23px; }
 }
@@ -864,12 +814,6 @@ body:has(#modal.show){ overflow: hidden; }
   .boardPost{ display: none; }
   .s1Browse{ min-height: 34px; font-size: 12px; gap: 14px; }
   .s1Browse span{ font-size: 19px; }
-  .s1HeroStage{ display: none; }
-  .s1CampusRoutes{ display: flex; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; }
-  .s1CampusRoutes::-webkit-scrollbar{ display: none; }
-  .s1CampusRoutes button{ flex: 0 0 auto; min-height: 48px; padding: 0 14px; gap: 8px; font-size: 11px; }
-  .s1CampusRoutes .s1RouteNumber{ font-size: 8px; }
-  .s1CampusRoutes button > span:last-child{ margin-left: 6px; font-size: 13px; }
   #market.boardMarket{ padding-top: 20px; scroll-margin-top: 12px; }
   .boardFind{ grid-template-columns: minmax(0,1fr) minmax(114px,33%); padding: 3px; }
   .boardSearch,.boardSchool{ min-height: 44px; padding-inline: 8px; gap: 7px; }
@@ -940,33 +884,21 @@ body:has(#modal.show){ overflow: hidden; }
   .s1CampusNote{ flex-direction: column; }
   .s1NoteActions{ flex-direction: row; align-items: center; }
 }
-@media (prefers-reduced-motion:reduce) { .boardPhoto{ transition: none; } .s1WantedTicket:hover{ transform: rotate(7deg); } }
+@media (prefers-reduced-motion:reduce) { .boardPhoto{ transition: none; } }
 /* Line arrows stay crisp without depending on an installed symbol font. */
 .s1ArrowIcon{ width: 15px; height: 15px; vertical-align: middle; stroke-width: 1.6; }
 .s1Browse .s1ArrowIcon{ width: 18px; height: 18px; }
-.s1TicketBottom .s1ArrowIcon{ width: 12px; height: 12px; }
 .schoolHubCount .s1ArrowIcon{ width: 11px; height: 11px; }
 @media (max-width:768px) {
   .s1Eyebrow{ font-size: 9px; }
   .s1Intro{ padding-bottom: 16px; }
   .s1IntroActions{ display: none; }
-  .s1HeroStage{ display: block; height: auto; margin: 0 0 20px; }
-  .s1HeroArrow,.s1FeatureCard,.s1OrbitLabel{ display: none; }
-  .s1WantedTicket{ position: relative; top: auto; right: auto; display: flex; align-items: center; gap: 10px; width: 100%; min-height: 54px; padding: 10px 13px; transform: none; box-shadow: none; border-color: #dfcc90; background: #f4e7ba; }
-  .s1WantedTicket:hover{ transform: none; }
-  .s1TicketTop{ flex: none; width: 61px; padding: 0; font-size: 8px; line-height: 1.5; letter-spacing: .04em; }
-  .s1TicketTop .boardIcon{ display: none; }
-  .s1WantedTicket > strong{ flex: 1; min-width: 0; padding: 0; font-size: 11px; line-height: 1.4; letter-spacing: -.025em; }
-  .s1TicketBottom{ flex: none; align-items: center; width: 85px; padding: 0; border: 0; font-size: 9px; line-height: 1.4; }
-  .s1CampusRoutes button .s1ArrowIcon{ width: 11px; height: 11px; }
   .boardCategories button{ min-height: 40px; }
   .boardQuickFilters button{ min-height: 40px; }
 }
 
 /* Task-oriented navigation, shared forms and readable small-screen controls. */
 .boardMenuButton{display:none}
-.s1CampusRoutes button>span:nth-child(2){min-width:0}
-.s1CampusRoutes small{display:block;font-size:11px;font-weight:400;line-height:1.4;color:#726b5d;letter-spacing:0;margin-top:5px}
 #modal>.dialog.easyDialog{width:min(730px,calc(100vw - 24px))!important;max-width:730px!important;padding:30px!important;background:var(--board-paper)!important}
 .easySheet{color:var(--board-ink);min-width:0}
 .easyKicker{font-size:10px;font-weight:700;letter-spacing:.09em;color:#736b5d;display:block;padding-right:32px}
@@ -1008,8 +940,6 @@ body button:disabled{cursor:wait;opacity:.6}
  .boardAccount .boardSaved{display:none}
  .mobileBottomNav>button{color:#756d5e}
  .mobileBottomNav>button.active .bottomIcon{background:#f1e5d4}
- .s1CampusRoutes small{font-size:10px;max-width:115px}
- .s1CampusRoutes button{min-height:78px}
  #modal>.dialog.easyDialog{padding:22px 16px!important}
  .easyChoices{grid-template-columns:1fr}
  #modal .easyChoice{min-height:74px}
@@ -1029,3 +959,20 @@ body button:disabled{cursor:wait;opacity:.6}
 
 .footer a#solioSponsorFooterCta,#cards .is-placeholder a.solioFeedSponsorAction{display:inline-flex;align-items:center;text-decoration:none;color:#725333}
 .footer a#solioSponsorFooterCta:hover,#cards .is-placeholder a.solioFeedSponsorAction:hover{text-decoration:underline}
+
+
+/* Simplified home screen matching the compact mobile reference.
+   No decorative ticket or duplicate route row; real search appears below the introduction. */
+.marketHome.boardMasthead{
+  display:block!important;
+  grid-template-columns:none!important;
+  min-height:0!important;
+  padding:clamp(30px,4vw,52px) 0 0!important;
+}
+.marketHome.boardMasthead .s1Intro{padding-bottom:0!important}
+#market.boardMarket{padding-top:clamp(30px,3.5vw,46px)}
+@media(max-width:768px){
+  .marketHome.boardMasthead{padding-top:23px!important}
+  .marketHome.boardMasthead .s1Intro{padding-bottom:0!important}
+  #market.boardMarket{padding-top:32px}
+}
