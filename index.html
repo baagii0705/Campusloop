@@ -1,8 +1,8 @@
-<!doctype html><html lang="mn"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f06435"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="sol1o"><meta name="mobile-web-app-capable" content="yes"><link rel="manifest" href="/manifest.webmanifest"><link rel="icon" type="image/svg+xml" href="/solio-icon.svg?v=4"><meta name="description" content="sol1o — Нэгэнд илүүдсэн. Нөгөөд хэрэгтэй. Оюутнуудын зар, хүсэлт, сургуулийн хүрээлэл."><link rel="preconnect" href="https://sgp.cloud.appwrite.io"><title>sol1o — Оюутны амьдралын талбай</title>
+<!doctype html><html lang="mn"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f06435"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="sol1o"><meta name="mobile-web-app-capable" content="yes"><link rel="manifest" href="/manifest.webmanifest"><link rel="icon" type="image/svg+xml" href="/solio-icon.svg?v=4"><meta name="description" content="Solio-ийн Оюутны булан. Сургуулийнхаа оюутнуудтай ярилцаж, хэрэгтэй зүйлээ олж, мэргэжил сонголтоо судлаарай."><link rel="preconnect" href="https://sgp.cloud.appwrite.io"><title>sol1o — Оюутны амьдралын талбай</title>
 <link rel="stylesheet" href="/sponsored-banner.css">
 <link rel="stylesheet" href="/board.css">
 
-</head><body><a class="boardSkip" href="#market">Зарууд руу очих</a><svg class="boardSymbols" width="0" height="0" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+</head><body><script id="solio-initial-route">if(!location.hash||location.hash==="#community"||location.hash==="#register")document.body.classList.add("solioCommunityPage");</script><a class="boardSkip" href="#solioMain" onclick="document.getElementById('solioMain').focus();return false">Үндсэн агуулга руу очих</a><svg class="boardSymbols" width="0" height="0" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
   <symbol id="board-heart" viewBox="0 0 24 24"><path d="M20.5 5.7a5 5 0 0 0-7.1 0L12 7.1l-1.4-1.4a5 5 0 0 0-7.1 7.1L12 21l8.5-8.2a5 5 0 0 0 0-7.1Z"/></symbol>
   <symbol id="board-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.6"/><path d="m16 16 4.5 4.5"/></symbol>
   <symbol id="board-school" viewBox="0 0 24 24"><path d="m2 9 10-5 10 5-10 5-10-5Zm4 2v5c3 3 9 3 12 0v-5m4-2v7"/></symbol>
@@ -31,9 +31,10 @@
 </svg>
 <header class="boardTop">
   <div class="wrap boardNav">
-    <a class="boardWordmark" href="#" onclick="goMobileHome();return false" aria-label="Solio нүүр хуудас">sol<span class="s1LogoOne">1</span>o<span class="s1LogoDot">.</span></a>
+    <a class="boardWordmark" href="/" onclick="goMobileHome();return false" aria-label="Solio нүүр хуудас">sol<span class="s1LogoOne">1</span>o<span class="s1LogoDot">.</span></a>
     <nav class="boardLinks" id="desktopNav" aria-label="Үндсэн цэс">
-      <button type="button" data-desktop-tab="bottomHome" class="is-active" aria-current="page" onclick="goDesktopListings()">Зарууд</button>
+      <button type="button" data-desktop-tab="bottomHome" class="is-active" aria-current="page" onclick="goMobileHome()">Оюутны булан</button>
+      <button type="button" data-desktop-tab="bottomMarket" onclick="goDesktopListings()">Зарууд</button>
       <button type="button" data-desktop-tab="bottomSocieties" onclick="SolioSocieties.open({kind:'club'})">Клубүүд</button>
       <button type="button" data-desktop-tab="bottomSocieties" onclick="SolioSocieties.open({kind:'event'})">Арга хэмжээнүүд</button>
       <button type="button" data-desktop-tab="bottomDeals" onclick="SolioCampus.deals()">Хөнгөлөлт</button>
@@ -48,7 +49,7 @@
     </div>
   </div>
 </header>
-<main class="wrap"><section id="solioSearchPage" class="solioSearchPage" hidden aria-label="Solio хайлт"><div class="solioSearchHead"><h1>Хайх</h1><p>Зар, сургууль эсвэл бусад хэсгээс хайгаарай.</p></div><label for="solioGlobalSearch">Юу хайж байна?</label><input id="solioGlobalSearch" type="search" autocomplete="off" placeholder="Жишээ: iPad, сурах бичиг, МУИС" oninput="scheduleSolioGlobalSearch()"><button type="button" class="easyTextButton" id="clearGlobalSearch" onclick="clearSolioSearch()" hidden>Хайлтыг арилгах ×</button><div class="easySearchRoutes" aria-label="Бусад хэсгээс хайх"><button type="button" onclick="SolioUX.searchElsewhere('wanted')">Хайж буй зүйл</button><button type="button" onclick="SolioUX.searchElsewhere('event')">Эвент</button><button type="button" onclick="SolioUX.searchElsewhere('club')">Клуб</button><button type="button" onclick="SolioUX.searchElsewhere('community')">Нийтлэл</button></div><p id="globalSearchStatus" role="status" class="easyHint"></p><div class="solioSearchSectionTitle">Сургуулиуд</div><div id="solioSearchSchools" class="solioSearchSchools"></div><button type="button" class="solioAllSchoolsLink" onclick="goMobileSchools()">Бүх сургуулийг үзэх →</button><div class="solioSearchSectionTitle">Зарууд</div><div id="solioSearchListings" class="solioSearchListings"></div><button type="button" class="solioSearchMore" id="solioSearchMore" onclick="loadListings(false)" hidden>Өөр заруудыг ачаалах ↓</button></section><section class="marketHome boardMasthead" aria-labelledby="boardTitle">
+<main class="wrap" id="solioMain" tabindex="-1"><section id="solioSearchPage" class="solioSearchPage" hidden aria-label="Solio хайлт"><div class="solioSearchHead"><h1>Хайх</h1><p>Зар, сургууль эсвэл бусад хэсгээс хайгаарай.</p></div><label for="solioGlobalSearch">Юу хайж байна?</label><input id="solioGlobalSearch" type="search" autocomplete="off" placeholder="Жишээ: iPad, сурах бичиг, МУИС" oninput="scheduleSolioGlobalSearch()"><button type="button" class="easyTextButton" id="clearGlobalSearch" onclick="clearSolioSearch()" hidden>Хайлтыг арилгах ×</button><div class="easySearchRoutes" aria-label="Бусад хэсгээс хайх"><button type="button" onclick="SolioUX.searchElsewhere('wanted')">Хайж буй зүйл</button><button type="button" onclick="SolioUX.searchElsewhere('event')">Эвент</button><button type="button" onclick="SolioUX.searchElsewhere('club')">Клуб</button><button type="button" onclick="SolioUX.searchElsewhere('community')">Нийтлэл</button></div><p id="globalSearchStatus" role="status" class="easyHint"></p><div class="solioSearchSectionTitle">Сургуулиуд</div><div id="solioSearchSchools" class="solioSearchSchools"></div><button type="button" class="solioAllSchoolsLink" onclick="goMobileSchools()">Бүх сургуулийг үзэх →</button><div class="solioSearchSectionTitle">Зарууд</div><div id="solioSearchListings" class="solioSearchListings"></div><button type="button" class="solioSearchMore" id="solioSearchMore" onclick="loadListings(false)" hidden>Өөр заруудыг ачаалах ↓</button></section><section class="marketHome boardMasthead" aria-labelledby="boardTitle">
   <div class="s1Intro">
     <p class="s1Eyebrow"><span class="s1TinyMark" aria-hidden="true">s1</span> ОЮУТНЫ АМЬДРАЛЫН ТАЛБАЙ</p>
     <h1 id="boardTitle">Нэгэнд илүүдсэн.<br><span>Нөгөөд хэрэгтэй.</span></h1>
@@ -57,7 +58,37 @@
     <a class="s1StudyEntry" href="/study" onclick="this.href=solioPublicPath('/study')"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-school"></use></svg> Мэргэжил, хөтөлбөр судлах <span aria-hidden="true">↗</span></a>
   </div>
 </section>
-<section class="schoolHub" id="schoolHub" aria-label="Сургуулийн тусгай зах"><div class="schoolHubHead"><div><h2>Сургуулиуд</h2></div><button type="button" class="schoolHubAll" onclick="openSchoolMarket('Бүх сургууль')">Бүх зар →</button></div><label class="schoolHubSearchLabel" for="schoolHubSearch">Сургуулиа хайх</label><input id="schoolHubSearch" class="schoolHubSearch" type="search" placeholder="Сургуулийн нэр бичих..." autocomplete="off" oninput="renderSchoolHub()"><div class="schoolHubGrid" id="schoolHubGrid"></div><div class="schoolHubCurrent" id="schoolHubCurrent" hidden><span id="schoolHubCurrentName"></span><button type="button" onclick="openSchoolMarket('Бүх сургууль')">✕ Цэвэрлэх</button></div></section><section class="socialHub" id="socialHub"><div class="socialHead"><button type="button" class="solioCommunityBack" onclick="SolioSocieties.open()">Клуб, эвент</button><button type="button" class="solioCommunityBack" onclick="goCommunityBack()">← Нүүр рүү буцах</button><div class="solioCommunityHeading"><h2>Оюутны булан</h2></div><div class="solioWantedHeading"><h2>Хайж байна</h2></div></div><div class="socialTabs"><button type="button" id="wantedTab" class="active" onclick="openSolioWanted()">🔎 Хайж байна</button><button type="button" id="communityTab" onclick="openSolioCommunity()">💬 Сургуулийн булан</button></div><div class="socialPanel" id="wantedPanel"><div class="socialBar"><div><p>Хэрэгтэй зүйлээ бичээд оюутнуудаас асуугаарай.</p></div><button onclick="toggleSocialForm('wanted')">+ Хүсэлт нэмэх</button></div><form id="wantedForm" class="socialForm" hidden onsubmit="submitWanted(event)"><label>Сургууль<select id="wantedSchool" required></select></label><label>Юу хайж байна?<input id="wantedTitle" maxlength="120" minlength="3" required placeholder="Жишээ: Инженерийн тооны машин"></label><label>Төсөв (₮)<input id="wantedBudget" type="number" min="0" placeholder="Жишээ: 80000"></label><label>Тайлбар<textarea id="wantedDetails" maxlength="800" rows="3" placeholder="Загвар, нөхцөл, бусад мэдээлэл"></textarea></label><label>Холбоо барих (утас эсвэл Instagram)<input id="wantedContact" maxlength="120" placeholder="Жишээ: @username"></label><p class="easyHint">Төсөв, тайлбар, холбоо барих мэдээлэл заавал биш. Холбоо барих мэдээлэл нийтэд харагдана.</p><button type="submit">Хүсэлт нийтлэх</button><button type="button" onclick="toggleSocialForm('wanted')">Хаах</button><span class="socialStatus" id="wantedStatus"></span></form><div class="wantedSearchBar"><input id="wantedQueryFilter" type="search" placeholder="Хайж буй зүйл хайх..." aria-label="Хайж буй зүйл хайх" autocomplete="off" oninput="filterWantedRequests()"><select id="wantedSchoolFilter" aria-label="Хайж буй зүйлийн сургууль" onchange="filterWantedRequests()"><option value="">Бүх сургууль</option></select></div><div class="socialItems" id="wantedItems"><p>Хүсэлтүүдийг ачаалж байна...</p></div><p id="wantedSearchEmpty" hidden>Тохирох Хайж буй зүйл олдсонгүй.</p></div><div class="socialPanel" id="communityPanel" hidden><div class="socialBar"><div><p>Асуулт, зөвлөгөө, сургуулийн сонин сайхан.</p></div><button onclick="toggleSocialForm('community')">+ Нийтлэл бичих</button></div><div class="communityFilter"><label for="communitySchool">Сургууль</label><select id="communitySchool" onchange="renderCommunityFeed()"></select><input id="communitySearch" type="search" placeholder="Нийтлэл хайх..." aria-label="Нийтлэл хайх" oninput="renderCommunityFeed()"><select id="communitySort" aria-label="Эрэмбэлэх" onchange="renderCommunityFeed()"><option value="new">Шинэ эхэнд</option><option value="popular">Алдартай</option></select></div><form id="communityForm" class="socialForm" hidden onsubmit="submitCommunity(event)"><label>Нийтлэх сургууль<select id="communityPostSchool" required></select></label><label>Таны нийтлэл<textarea id="communityContent" minlength="3" maxlength="800" rows="4" required placeholder="Асуулт, зөвлөгөө, мэдээлэл..."></textarea></label><button type="submit">Нийтлэх</button><button type="button" onclick="toggleSocialForm('community')">Хаах</button><span class="socialStatus" id="communityStatus"></span></form><div class="socialItems" id="communityItems"><p>Нийтлэлүүдийг ачаалж байна...</p></div></div></section><section id="market" class="boardMarket" aria-labelledby="boardFeedTitle">
+<section class="schoolHub" id="schoolHub" aria-label="Сургуулийн тусгай зах"><div class="schoolHubHead"><div><h2>Сургуулиуд</h2></div><button type="button" class="schoolHubAll" onclick="openSchoolMarket('Бүх сургууль')">Бүх зар →</button></div><label class="schoolHubSearchLabel" for="schoolHubSearch">Сургуулиа хайх</label><input id="schoolHubSearch" class="schoolHubSearch" type="search" placeholder="Сургуулийн нэр бичих..." autocomplete="off" oninput="renderSchoolHub()"><div class="schoolHubGrid" id="schoolHubGrid"></div><div class="schoolHubCurrent" id="schoolHubCurrent" hidden><span id="schoolHubCurrentName"></span><button type="button" onclick="openSchoolMarket('Бүх сургууль')">✕ Цэвэрлэх</button></div></section><section class="socialHub" id="socialHub"><div class="socialHead solioWantedHeading"><button type="button" class="solioCommunityBack" onclick="goMobileHome()">← Оюутны булан</button><h2>Хайж байна</h2></div><div class="socialPanel" id="wantedPanel"><div class="socialBar"><div><p>Хэрэгтэй зүйлээ бичээд оюутнуудаас асуугаарай.</p></div><button onclick="toggleSocialForm('wanted')">+ Хүсэлт нэмэх</button></div><form id="wantedForm" class="socialForm" hidden onsubmit="submitWanted(event)"><label>Сургууль<select id="wantedSchool" required></select></label><label>Юу хайж байна?<input id="wantedTitle" maxlength="120" minlength="3" required placeholder="Жишээ: Инженерийн тооны машин"></label><label>Төсөв (₮)<input id="wantedBudget" type="number" min="0" placeholder="Жишээ: 80000"></label><label>Тайлбар<textarea id="wantedDetails" maxlength="800" rows="3" placeholder="Загвар, нөхцөл, бусад мэдээлэл"></textarea></label><label>Холбоо барих (утас эсвэл Instagram)<input id="wantedContact" maxlength="120" placeholder="Жишээ: @username"></label><p class="easyHint">Төсөв, тайлбар, холбоо барих мэдээлэл заавал биш. Холбоо барих мэдээлэл нийтэд харагдана.</p><button type="submit">Хүсэлт нийтлэх</button><button type="button" onclick="toggleSocialForm('wanted')">Хаах</button><span class="socialStatus" id="wantedStatus"></span></form><div class="wantedSearchBar"><input id="wantedQueryFilter" type="search" placeholder="Хайж буй зүйл хайх..." aria-label="Хайж буй зүйл хайх" autocomplete="off" oninput="filterWantedRequests()"><select id="wantedSchoolFilter" aria-label="Хайж буй зүйлийн сургууль" onchange="filterWantedRequests()"><option value="">Бүх сургууль</option></select></div><div class="socialItems" id="wantedItems"><p>Хүсэлтүүдийг ачаалж байна...</p></div><p id="wantedSearchEmpty" hidden>Тохирох Хайж буй зүйл олдсонгүй.</p></div><div class="socialPanel" id="communityPanel">
+  <header class="campusDiscussionHead">
+    <div>
+      <h1>Оюутны булан<span>.</span></h1>
+      <p>Оюутнуудаас асуу, мэддэгээ хуваалц.</p>
+    </div>
+    <button type="button" class="campusWrite" onclick="toggleSocialForm('community')"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-pencil"></use></svg> Нийтлэл бичих</button>
+  </header>
+  <div class="campusDiscussionLayout">
+    <div class="campusDiscussionFeed">
+      <form id="communityForm" class="socialForm" hidden onsubmit="submitCommunity(event)">
+        <label>Нийтлэх сургууль<select id="communityPostSchool" required></select></label>
+        <label>Таны нийтлэл<textarea id="communityContent" minlength="3" maxlength="800" rows="4" required placeholder="Асуулт, зөвлөгөө, мэдээлэл…"></textarea></label>
+        <button type="submit">Нийтлэх</button><button type="button" onclick="toggleSocialForm('community')">Хаах</button>
+        <span class="socialStatus" id="communityStatus" role="status"></span>
+      </form>
+      <div class="communityFilter" aria-label="Нийтлэл шүүх">
+        <label class="boardSrOnly" for="communitySchool">Сургууль</label><select id="communitySchool" onchange="renderCommunityFeed()"></select>
+        <input id="communitySearch" type="search" placeholder="Нийтлэл хайх…" aria-label="Нийтлэл хайх" oninput="renderCommunityFeed()">
+        <select id="communitySort" aria-label="Нийтлэл эрэмбэлэх" onchange="renderCommunityFeed()"><option value="new">Шинэ эхэнд</option><option value="popular">Таалагдсанаар</option></select>
+      </div>
+      <div class="socialItems" id="communityItems"><p role="status">Нийтлэлүүдийг ачаалж байна…</p></div>
+    </div>
+    <nav class="campusDiscussionLinks" aria-label="Solio-ийн бусад хэсэг">
+      <a href="#market" onclick="goDesktopListings();return false"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-box"></use></svg><span>Зарын зах</span><span aria-hidden="true">→</span></a>
+      <a href="#wanted" onclick="openSolioWanted();return false"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-wanted"></use></svg><span>Хайж байна</span><span aria-hidden="true">→</span></a>
+      <a href="/study/" onclick="this.href=solioPublicPath('/study/')"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-school"></use></svg><span>Мэргэжил сонголт</span><span aria-hidden="true">→</span></a>
+      <a href="#societies" onclick="SolioSocieties.open();return false"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-person"></use></svg><span>Клуб, эвент</span><span aria-hidden="true">→</span></a>
+    </nav>
+  </div>
+</div></section><section id="market" class="boardMarket" aria-labelledby="boardFeedTitle">
   <form class="boardFind" role="search" onsubmit="event.preventDefault();render();document.getElementById('search').blur()">
     <label class="boardSearch"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#board-search"></use></svg><input id="search" type="search" aria-label="Зар хайх" placeholder="Ном, хувцас, электрон хэрэгсэл хайх..." autocomplete="off" enterkeyhint="search" oninput="scheduleSolioMarketRender()"></label>
     <button type="button" class="boardSchool" onclick="goMobileSchools()" title="Сургуулиа сонгох"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#board-school"></use></svg><span id="selectedSchool">Бүх сургууль</span><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#board-chevron"></use></svg></button>
@@ -134,10 +165,10 @@ function changeSolioListingStatus(id){
 }
 async function openSolioNotifications(){if(!session){openModal('login');return}document.getElementById('modal').classList.add('show');const body=document.getElementById('modalBody');body.innerHTML='<div class="solioNotifs"><button type="button" class="solioNotifBack" onclick="openSolioProfile()">← Профайл руу буцах</button><h2>🔔 Мэдэгдэл</h2><div id="solioNotifList">Ачаалж байна...</div></div>';const {data,error}=await db.from('solio_notifications').select('id,kind,title,body,listing_id,read_at,created_at').order('created_at',{ascending:false}).limit(60);const el=document.getElementById('solioNotifList');if(!el)return;if(error){el.textContent='Мэдэгдэл уншихад алдаа гарлаа';return}el.innerHTML=data?.length?data.map(n=>'<button type="button" class="solioNotifItem" data-notif="'+escapeHTML(n.id)+'"><b>'+escapeHTML(n.title)+'</b><span>'+escapeHTML(n.body)+'</span></button>').join(''):'<p>Одоогоор мэдэгдэл алга.</p>';el.querySelectorAll('[data-notif]').forEach(b=>b.onclick=async()=>{const n=data.find(z=>z.id===b.dataset.notif);await db.from('solio_notifications').update({read_at:new Date().toISOString()}).eq('id',n.id);refreshSolioNotificationCount();if(n.kind==='chat'){toast('Solio Chat үйлчилгээг сайтаас хассан.')}else if(n.listing_id){const x=listings.find(z=>z.id===n.listing_id);if(x)openListing(x.id);else{closeModal();toast('Зарыг жагсаалтаас хайна уу')}}})}
 async function refreshSolioNotificationCount(){const badge=document.getElementById('solioNotifCount');if(!badge)return;if(!session){badge.textContent='';return}const {data,error}=await db.from('solio_notifications').select('id,read_at').eq('user_id',session.user.id).limit(100);if(!error){const count=(data||[]).filter(x=>!x.read_at).length;badge.textContent=count?(' '+(count>=100?'99+':count)):''}}
-let solioModalReturnFocus=null,solioListingReturnHash='';
+let solioModalReturnFocus=null,solioListingReturnHash='#market';
 function closeModal(restoreRoute=true){solioAfterAuth=null;document.getElementById("modal").classList.remove("show");requestAnimationFrame(()=>{if(!document.getElementById("modal").classList.contains("show"))solioModalReturnFocus?.focus({preventScroll:true})});document.querySelector(".dialog").classList.remove("detailDialog","authDialog","quickPostDialog","easyDialog");if(restoreRoute){if(location.hash==="#register")history.replaceState(null,"",location.pathname+location.search);if(location.hash.startsWith("#listing-"))history.replaceState(null,"",location.pathname+location.search+solioListingReturnHash);window.SolioCampus?.restoreModalRoute();window.SolioSocieties?.restoreModalRoute()}}
 
-let socialMode='wanted';
+let communityLoaded=false;
 function filterWantedRequests(){
  const q=(document.getElementById('wantedQueryFilter')?.value||'').trim().toLocaleLowerCase('mn-MN');
  const school=document.getElementById('wantedSchoolFilter')?.value||'';
@@ -152,52 +183,87 @@ function filterWantedRequests(){
  if(empty)empty.hidden=!items.length||shown>0;
 }
 
-function switchSocial(mode){socialMode=mode;document.getElementById('wantedPanel').hidden=mode!=='wanted';document.getElementById('communityPanel').hidden=mode!=='community';document.getElementById('wantedTab').classList.toggle('active',mode==='wanted');document.getElementById('communityTab').classList.toggle('active',mode==='community');loadSocialPosts()}
+function showSolioSocial(mode){
+  const community=mode==='community';
+  document.getElementById('wantedPanel').hidden=community;
+  document.getElementById('communityPanel').hidden=!community;
+  document.body.classList.add(community?'solioCommunityPage':'solioWantedPage');
+  updateBottomTabs(community?'bottomHome':'bottomWanted');
+  if(community)loadCommunityPosts();
+  else loadWantedPosts();
+}
 function openSolioWanted(){
-  leaveSolioSearch();
-  leaveMobileSchools();
-  leaveSolioCommunity();
-  switchSocial('wanted');
-  document.body.classList.add('solioWantedPage');
-  updateBottomTabs('bottomWanted');
-  if(location.hash!=='#wanted')history.pushState({solioPage:'wanted'},'','#wanted');
+  pushSolioRoute('#wanted');
+  restoreSolioPage();
   window.scrollTo({top:0,behavior:'instant'});
 }
 function openSolioCommunity(){
-  leaveSolioSearch();
-  leaveMobileSchools();
-  leaveSolioCommunity();
-  switchSocial('community');
-  document.body.classList.add('solioCommunityPage');
-  updateBottomTabs('bottomCommunity');
-  if(location.hash!=='#community')history.pushState({solioPage:'community'},'','#community');
-  window.scrollTo({top:0,behavior:'instant'});
+  goMobileHome();
 }
 function leaveSolioCommunity(){window.SolioCancelFeatureNavigation?.();window.SolioCampus?.leave();window.SolioSocieties?.leave();document.body.classList.remove('solioCommunityPage','solioWantedPage')}
-function goCommunityBack(){goMobileHome()}
 function toggleSocialForm(mode,force=false){
  if(!session){requireSolioAccount(()=>toggleSocialForm(mode,true),mode==='wanted'?'Хайж буй зүйлээ бичих':'Нийтлэл бичих');return}
  const el=document.getElementById(mode==='wanted'?'wantedForm':'communityForm');el.hidden=force?false:!el.hidden;
  if(!el.hidden){let selected='';try{selected=localStorage.getItem('solio_my_school')||localStorage.getItem('solio_last_school')||''}catch{}const schoolField=el.querySelector('select');if(selected&&!el.dataset.started){schoolField.value=selected;el.dataset.started='true'}el.scrollIntoView({behavior:'smooth',block:'center'});el.querySelector('input,textarea')?.focus({preventScroll:true})}
 }
 function setupSocial(){const opts=schools.slice(1).map(s=>'<option value="'+escapeHTML(s)+'">'+escapeHTML(s)+'</option>').join('');document.getElementById('wantedSchool').innerHTML=opts;document.getElementById('communityPostSchool').innerHTML=opts;document.getElementById('communitySchool').innerHTML='<option value="">Бүх сургууль</option>'+opts;document.getElementById('wantedSchoolFilter').innerHTML='<option value="">Бүх сургууль</option>'+opts;}
-async function loadSocialPosts(){const wanted=document.getElementById('wantedItems'),community=document.getElementById('communityItems');if(!wanted||!community)return;const [w,c]=await Promise.all([db.from('wanted_posts').select('id,user_id,school,title,details,budget,contact,created_at').order('created_at',{ascending:false}).limit(60),db.from('campus_posts').select('id,user_id,school,content,created_at').order('created_at',{ascending:false}).limit(80)]);if(w.error){wanted.textContent='Хүсэлтүүдийг ачаалж чадсангүй.'}else{wanted.innerHTML=w.data.length?w.data.map(x=>'<article class="socialItem"><div class="socialMeta">'+escapeHTML(x.school)+' · '+new Date(x.created_at).toLocaleDateString('mn-MN')+'</div><h4>'+escapeHTML(x.title)+'</h4><p>'+escapeHTML(x.details||'')+'</p>'+(x.budget!=null?'<strong>Төсөв: '+Number(x.budget).toLocaleString('en-US')+' ₮</strong>':'')+(x.contact?'<div class="socialContact">Холбоо барих: '+escapeHTML(x.contact)+'</div>':'')+(session?.user?.id===x.user_id?'<button class="socialDelete" data-delete-wanted="'+escapeHTML(x.id)+'">Устгах</button>':'')+'</article>').join(''):'<p class="socialEmpty">Одоогоор хүсэлт алга. Эхний хүсэлтээ нийтлээрэй.</p>';wanted.querySelectorAll('[data-delete-wanted]').forEach(b=>b.onclick=()=>deleteSocial('wanted_posts',b.dataset.deleteWanted));filterWantedRequests()}if(c.error){community.textContent='Нийтлэлүүдийг ачаалж чадсангүй.'}else{communityPosts=c.data||[];const [likes,comments]=await Promise.all([db.from('campus_post_likes').select('id,post_id,user_id').limit(500),db.from('campus_post_comments').select('id,post_id,user_id,content,created_at').order('created_at',{ascending:true}).limit(500)]);communityLikes=likes.error?[]:likes.data||[];communityComments=comments.error?[]:comments.data||[];renderCommunityFeed();if(likes.error||comments.error)console.warn('Community interactions unavailable:',likes.error||comments.error)}}
+async function loadWantedPosts(){
+ const wanted=document.getElementById('wantedItems');
+ const {data,error}=await db.from('wanted_posts').select('id,user_id,school,title,details,budget,contact,created_at').order('created_at',{ascending:false}).limit(60);
+ if(error){wanted.textContent='Хүсэлтүүдийг ачаалж чадсангүй.';return}
+ wanted.innerHTML=data.length?data.map(x=>'<article class="socialItem"><div class="socialMeta">'+escapeHTML(x.school)+' · '+new Date(x.created_at).toLocaleDateString('mn-MN')+'</div><h4>'+escapeHTML(x.title)+'</h4><p>'+escapeHTML(x.details||'')+'</p>'+(x.budget!=null?'<strong>Төсөв: '+Number(x.budget).toLocaleString('en-US')+' ₮</strong>':'')+(x.contact?'<div class="socialContact">Холбоо барих: '+escapeHTML(x.contact)+'</div>':'')+(session?.user?.id===x.user_id?'<button class="socialDelete" data-delete-wanted="'+escapeHTML(x.id)+'">Устгах</button>':'')+'</article>').join(''):'<p class="socialEmpty">Одоогоор хүсэлт алга. Эхний хүсэлтээ нийтлээрэй.</p>';wanted.querySelectorAll('[data-delete-wanted]').forEach(b=>b.onclick=()=>deleteSocial('wanted_posts',b.dataset.deleteWanted));filterWantedRequests()
+}
+let communityRequest=0;
+async function loadCommunityPosts(){
+ const request=++communityRequest,root=document.getElementById('communityItems');
+ if(!communityLoaded)root.innerHTML='<p role="status">Нийтлэлүүдийг ачаалж байна…</p>';
+ const result=await db.from('campus_posts').select('id,user_id,school,content,created_at').order('created_at',{ascending:false}).limit(80);
+ if(request!==communityRequest)return;
+ if(result.error){
+  if(!communityLoaded)root.innerHTML='<div class="campusFeedStatus"><p role="status">Нийтлэлүүдийг ачаалж чадсангүй.</p><button type="button" onclick="loadCommunityPosts()">Дахин ачаалах</button></div>';
+  else toast('Нийтлэлүүдийг шинэчилж чадсангүй.');
+  return;
+ }
+ communityPosts=result.data||[];
+ communityLoaded=true;
+ renderCommunityFeed();
+ const [likes,comments]=await Promise.all([
+  db.from('campus_post_likes').select('id,post_id,user_id').limit(500),
+  db.from('campus_post_comments').select('id,post_id,user_id,content,created_at').order('created_at',{ascending:true}).limit(500)
+ ]);
+ if(request!==communityRequest)return;
+ if(!likes.error)communityLikes=likes.data||[];
+ if(!comments.error)communityComments=comments.data||[];
+ renderCommunityFeed();
+}
 let communityPosts=[],communityLikes=[],communityComments=[];
-function communityTime(value){const d=new Date(value);return Number.isNaN(d.getTime())?'':d.toLocaleDateString('mn-MN',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})}
+const communityDateFormat=new Intl.DateTimeFormat('mn-MN',{timeZone:'Asia/Ulaanbaatar',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit',hourCycle:'h23'});
+function communityTime(value){const d=new Date(value);return Number.isNaN(d.getTime())?'':communityDateFormat.format(d)}
 function renderCommunityFeed(){
- const root=document.getElementById('communityItems');if(!root)return;
+ const root=document.getElementById('communityItems');if(!root||!communityLoaded)return;
  const school=document.getElementById('communitySchool')?.value||'',term=(document.getElementById('communitySearch')?.value||'').trim().toLocaleLowerCase('mn-MN'),sort=document.getElementById('communitySort')?.value;
+ const expanded=new Map([...root.querySelectorAll('.communityComments:not([hidden])')].map(panel=>[panel.id,panel.querySelector('input')?.value||'']));
+ const focused=document.activeElement?.closest('#communityItems button,#communityItems input');
+ const focusKey=focused&&[...focused.attributes].find(attribute=>attribute.name.startsWith('data-'));
+ const focusedForm=focused?.closest('[data-comment-form]')?.dataset.commentForm;
  const rows=communityPosts.filter(p=>(!school||p.school===school)&&(!term||(p.content+' '+p.school).toLocaleLowerCase('mn-MN').includes(term))).slice();
  if(sort==='popular')rows.sort((a,b)=>communityLikes.filter(x=>x.post_id===b.id).length-communityLikes.filter(x=>x.post_id===a.id).length);
  root.innerHTML=rows.length?rows.map(p=>{
  const likes=communityLikes.filter(x=>x.post_id===p.id),comments=communityComments.filter(x=>x.post_id===p.id),liked=likes.some(x=>x.user_id===session?.user?.id);
- const initials=(p.school||'S').slice(0,2).toUpperCase();
- return '<article class="socialItem communityCard"><div class="communityAuthor"><span class="communityAvatar">'+escapeHTML(initials)+'</span><div><strong>'+escapeHTML(p.school)+'</strong><div class="socialMeta">'+communityTime(p.created_at)+'</div></div></div><p class="communityBody">'+escapeHTML(p.content)+'</p><div class="communityCounts"><span>♥ '+likes.length+' таалагдсан</span><span>'+comments.length+' сэтгэгдэл</span></div><div class="communityActions"><button type="button" data-like-post="'+escapeHTML(p.id)+'" aria-pressed="'+liked+'">'+(liked?'♥ Таалагдсан':'♡ Таалагдлаа')+'</button><button type="button" data-comment-toggle="'+escapeHTML(p.id)+'">💬 Сэтгэгдэл</button><button type="button" data-share-post="'+escapeHTML(p.id)+'">↗ Хуваалцах</button>'+(session?.user?.id===p.user_id?'<button type="button" class="socialDelete" data-delete-community="'+escapeHTML(p.id)+'">Устгах</button>':'')+'</div><div class="communityComments" id="comments-'+escapeHTML(p.id)+'" hidden>'+comments.map(c=>'<div class="communityComment"><strong>Оюутан</strong> '+escapeHTML(c.content)+(session?.user?.id===c.user_id?' <button type="button" data-delete-comment="'+escapeHTML(c.id)+'">Устгах</button>':'')+'</div>').join('')+'<form data-comment-form="'+escapeHTML(p.id)+'"><input name="comment" maxlength="1200" required placeholder="Сэтгэгдэл бичих..." aria-label="Сэтгэгдэл"><button type="submit">Илгээх</button></form></div></article>'
- }).join(''):'<p class="socialEmpty">Одоогоор тохирох нийтлэл алга.</p>';
+ const schoolName=p.school||'Сургууль тодорхойгүй';
+ const commentsId='comments-'+p.id;
+ const commentsOpen=expanded.has(commentsId);
+ return '<article class="socialItem communityCard"><header class="communityAuthor"><span class="communityAvatar" aria-hidden="true">'+boardIcon('school')+'</span><strong>'+escapeHTML(schoolName)+'</strong><time class="socialMeta" datetime="'+escapeHTML(p.created_at)+'">'+communityTime(p.created_at)+'</time></header><p class="communityBody">'+escapeHTML(p.content)+'</p><div class="communityActions"><button type="button" data-like-post="'+escapeHTML(p.id)+'" aria-pressed="'+liked+'" aria-label="Таалагдсан · '+likes.length+'">'+boardIcon('heart')+' '+likes.length+'</button><button type="button" data-comment-toggle="'+escapeHTML(p.id)+'" aria-expanded="'+commentsOpen+'" aria-controls="'+escapeHTML(commentsId)+'">'+boardIcon('chat')+' '+comments.length+' сэтгэгдэл</button><button type="button" data-share-post="'+escapeHTML(p.id)+'">'+boardIcon('share')+' Хуваалцах</button>'+(session?.user?.id===p.user_id?'<button type="button" class="socialDelete" data-delete-community="'+escapeHTML(p.id)+'">Устгах</button>':'')+'</div><div class="communityComments" id="'+escapeHTML(commentsId)+'"'+(commentsOpen?'':' hidden')+'>'+comments.map(c=>'<div class="communityComment"><strong>Оюутан</strong> '+escapeHTML(c.content)+(session?.user?.id===c.user_id?' <button type="button" data-delete-comment="'+escapeHTML(c.id)+'">Устгах</button>':'')+'</div>').join('')+'<form data-comment-form="'+escapeHTML(p.id)+'"><input name="comment" value="'+escapeHTML(expanded.get(commentsId)||'')+'" maxlength="1200" required placeholder="Сэтгэгдэл бичих…" aria-label="Сэтгэгдэл"><button type="submit">Илгээх</button></form></div></article>'
+ }).join(''):'<p class="campusFeedStatus">'+(term||school?'Тохирох нийтлэл олдсонгүй.':'Одоогоор нийтлэл алга. Эхний нийтлэлээ бичээрэй.')+'</p>';
+ if(focusKey){
+  [...root.querySelectorAll('['+focusKey.name+']')].find(el=>el.getAttribute(focusKey.name)===focusKey.value)?.focus({preventScroll:true});
+ }else if(focusedForm&&focused.matches('input')){
+  [...root.querySelectorAll('[data-comment-form]')].find(form=>form.dataset.commentForm===focusedForm)?.elements.comment.focus({preventScroll:true});
+ }
  root.querySelectorAll('[data-delete-community]').forEach(b=>b.onclick=()=>deleteSocial('campus_posts',b.dataset.deleteCommunity));
  root.querySelectorAll('[data-like-post]').forEach(b=>b.onclick=()=>toggleCommunityLike(b.dataset.likePost));
- root.querySelectorAll('[data-comment-toggle]').forEach(b=>b.onclick=()=>{const panel=document.getElementById('comments-'+b.dataset.commentToggle);if(panel)panel.hidden=!panel.hidden});
- root.querySelectorAll('[data-share-post]').forEach(b=>b.onclick=()=>{const url=location.origin+location.pathname+'#community';if(navigator.share)navigator.share({title:'Solio Community',url}).catch(()=>{});else if(navigator.clipboard)navigator.clipboard.writeText(url).then(()=>toast('Холбоос хууллаа')).catch(()=>toast('Холбоос хуулах боломжгүй'))});
+ root.querySelectorAll('[data-comment-toggle]').forEach(b=>b.onclick=()=>{const panel=document.getElementById('comments-'+b.dataset.commentToggle);if(panel){panel.hidden=!panel.hidden;b.setAttribute('aria-expanded',!panel.hidden)}});
+ root.querySelectorAll('[data-share-post]').forEach(b=>b.onclick=()=>{const url=location.origin+location.pathname+'#community';if(navigator.share)navigator.share({title:'Solio · Оюутны булан',url}).catch(()=>{});else if(navigator.clipboard)navigator.clipboard.writeText(url).then(()=>toast('Холбоос хууллаа')).catch(()=>toast('Холбоос хуулах боломжгүй'))});
  root.querySelectorAll('[data-comment-form]').forEach(f=>f.onsubmit=e=>submitCommunityComment(e,f.dataset.commentForm));
  root.querySelectorAll('[data-delete-comment]').forEach(b=>b.onclick=()=>deleteCommunityComment(b.dataset.deleteComment));
 }
@@ -205,25 +271,25 @@ async function toggleCommunityLike(postId){
  if(!session){openModal('login');return}
  const existing=communityLikes.find(x=>x.post_id===postId&&x.user_id===session.user.id);
  const result=existing?await db.from('campus_post_likes').delete().eq('id',existing.id).eq('user_id',session.user.id):await db.from('campus_post_likes').insert({post_id:postId,user_id:session.user.id});
- if(result.error){toast('Үйлдэл амжилтгүй: '+result.error.message);return}await loadSocialPosts()
+ if(result.error){toast('Үйлдэл амжилтгүй: '+result.error.message);return}await loadCommunityPosts()
 }
 async function submitCommunityComment(event,postId){
  event.preventDefault();if(!session){openModal('login');return}
  const form=event.currentTarget,input=form.elements.comment,content=input.value.trim();if(!content)return;
  const result=await db.from('campus_post_comments').insert({post_id:postId,user_id:session.user.id,content});
  if(result.error){toast('Сэтгэгдэл илгээж чадсангүй: '+result.error.message);return}
- await loadSocialPosts();const panel=document.getElementById('comments-'+postId);if(panel)panel.hidden=false
+ input.value='';await loadCommunityPosts()
 }
 async function deleteCommunityComment(id){
  if(!session||!confirm('Сэтгэгдлийг устгах уу?'))return;
  const result=await db.from('campus_post_comments').delete().eq('id',id).eq('user_id',session.user.id);
- if(result.error){toast('Устгаж чадсангүй: '+result.error.message);return}await loadSocialPosts()
+ if(result.error){toast('Устгаж чадсангүй: '+result.error.message);return}await loadCommunityPosts()
 }
 
-async function submitWanted(event){event.preventDefault();if(!session){requireSolioAccount(()=>toggleSocialForm('wanted',true),'Нийтлэх');return}const submit=event.target.querySelector('[type=submit]');if(submit.disabled)return;submit.disabled=true;try{const status=document.getElementById('wantedStatus');status.textContent='Нийтэлж байна...';const row={user_id:session.user.id,school:document.getElementById('wantedSchool').value,title:document.getElementById('wantedTitle').value.trim(),details:document.getElementById('wantedDetails').value.trim(),budget:document.getElementById('wantedBudget').value===''?null:Number(document.getElementById('wantedBudget').value),contact:document.getElementById('wantedContact').value.trim()};const {error}=await db.from('wanted_posts').insert(row);status.textContent=error?'Алдаа: '+error.message:'Хүсэлт нийтлэгдлээ.';if(!error){toast(status.textContent);event.target.reset();event.target.hidden=true;await loadSocialPosts()}}catch{document.getElementById('wantedStatus').textContent='Холболтоо шалгаад дахин оролдоно уу.'}finally{submit.disabled=false}}
-async function submitCommunity(event){event.preventDefault();if(!session){requireSolioAccount(()=>toggleSocialForm('community',true),'Нийтлэх');return}const submit=event.target.querySelector('[type=submit]');if(submit.disabled)return;submit.disabled=true;try{const status=document.getElementById('communityStatus');status.textContent='Нийтэлж байна...';const {error}=await db.from('campus_posts').insert({user_id:session.user.id,school:document.getElementById('communityPostSchool').value,content:document.getElementById('communityContent').value.trim()});status.textContent=error?'Алдаа: '+error.message:'Нийтлэл нийтлэгдлээ.';if(!error){toast(status.textContent);event.target.reset();event.target.hidden=true;await loadSocialPosts()}}catch{document.getElementById('communityStatus').textContent='Холболтоо шалгаад дахин оролдоно уу.'}finally{submit.disabled=false}}
-async function deleteSocial(table,id){if(!session||!confirm('Энэ нийтлэлийг устгах уу?'))return;const {error}=await db.from(table).delete().eq('id',id).eq('user_id',session.user.id);if(error){alert('Устгаж чадсангүй: '+error.message);return}await loadSocialPosts()}
-function openSchoolMarket(name){ensureSolioListings();leaveSolioCommunity();leaveSolioSearch();leaveMobileSchools();if(location.hash.startsWith('#societies')||['#schools','#search','#community','#wanted','#campus','#deals'].includes(location.hash))history.pushState({solioPage:'home'},'',location.pathname+location.search);school=schools.includes(name)?name:'Бүх сургууль';savedOnly=false;onlyMine=false;category='Бүх ангилал';document.getElementById('search').value='';render();updateBottomTabs('bottomHome');document.getElementById('market').scrollIntoView({behavior:'smooth',block:'start'})}
+async function submitWanted(event){event.preventDefault();if(!session){requireSolioAccount(()=>toggleSocialForm('wanted',true),'Нийтлэх');return}const submit=event.target.querySelector('[type=submit]');if(submit.disabled)return;submit.disabled=true;try{const status=document.getElementById('wantedStatus');status.textContent='Нийтэлж байна...';const row={user_id:session.user.id,school:document.getElementById('wantedSchool').value,title:document.getElementById('wantedTitle').value.trim(),details:document.getElementById('wantedDetails').value.trim(),budget:document.getElementById('wantedBudget').value===''?null:Number(document.getElementById('wantedBudget').value),contact:document.getElementById('wantedContact').value.trim()};const {error}=await db.from('wanted_posts').insert(row);status.textContent=error?'Алдаа: '+error.message:'Хүсэлт нийтлэгдлээ.';if(!error){toast(status.textContent);event.target.reset();event.target.hidden=true;await loadWantedPosts()}}catch{document.getElementById('wantedStatus').textContent='Холболтоо шалгаад дахин оролдоно уу.'}finally{submit.disabled=false}}
+async function submitCommunity(event){event.preventDefault();if(!session){requireSolioAccount(()=>toggleSocialForm('community',true),'Нийтлэх');return}const submit=event.target.querySelector('[type=submit]');if(submit.disabled)return;submit.disabled=true;try{const status=document.getElementById('communityStatus');status.textContent='Нийтэлж байна...';const {error}=await db.from('campus_posts').insert({user_id:session.user.id,school:document.getElementById('communityPostSchool').value,content:document.getElementById('communityContent').value.trim()});status.textContent=error?'Алдаа: '+error.message:'Нийтлэл нийтлэгдлээ.';if(!error){toast(status.textContent);event.target.reset();event.target.hidden=true;await loadCommunityPosts()}}catch{document.getElementById('communityStatus').textContent='Холболтоо шалгаад дахин оролдоно уу.'}finally{submit.disabled=false}}
+async function deleteSocial(table,id){if(!session||!confirm('Энэ нийтлэлийг устгах уу?'))return;const {error}=await db.from(table).delete().eq('id',id).eq('user_id',session.user.id);if(error){alert('Устгаж чадсангүй: '+error.message);return}if(table==='campus_posts')await loadCommunityPosts();else await loadWantedPosts()}
+function openSchoolMarket(name){ensureSolioListings();leaveSolioCommunity();leaveSolioSearch();leaveMobileSchools();pushSolioRoute('#market');school=schools.includes(name)?name:'Бүх сургууль';savedOnly=false;onlyMine=false;category='Бүх ангилал';document.getElementById('search').value='';render();updateBottomTabs('bottomMarket');document.getElementById('market').scrollIntoView({behavior:'smooth',block:'start'})}
 /* Original Solio campus marks: not affiliated with or copied from university logos. */
 function solioCampusMark(name){const initials=({'МУИС':'МУ','ШУТИС':'ШУ','АШУҮИС':'АШ','МУБИС':'МБ','СЭЗИС':'СЭ','ХААИС':'ХА','Төмөр замын дээд сургууль':'ТЗ'})[name]||name.split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]).join('').toLocaleUpperCase('mn-MN');let hash=0;for(const ch of name)hash=(hash*31+ch.charCodeAt(0))>>>0;const palettes=[['#5D32A5','#B894F2'],['#176F81','#79CFD4'],['#AD4D6B','#F2A8B9'],['#295C9B','#93C5F4'],['#82601F','#E5C37C'],['#426D51','#9AD3A4'],['#7A438B','#D6A4E5'],['#A34E36','#F0AE8E']];const [dark,light]=palettes[hash%palettes.length];const shape=hash%3;const decoration=shape===0?'<circle cx="42" cy="18" r="15" fill="'+light+'" opacity=".35"/>':shape===1?'<path d="M33 4 60 27 37 54 10 30Z" fill="'+light+'" opacity=".3"/>':'<path d="M4 39 37 5 61 39 37 61Z" fill="'+light+'" opacity=".3"/>';return '<svg class="solioCampusLogo" viewBox="0 0 64 64" role="img" aria-label="'+escapeHTML(name)+' сургуулийн Solio тэмдэг"><rect width="64" height="64" rx="17" fill="'+dark+'"/>'+decoration+'<circle cx="32" cy="32" r="23" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1.5"/><text x="32" y="38" text-anchor="middle" font-size="'+(initials.length>2?'15':'20')+'" font-weight="800" fill="#fff" font-family="system-ui, sans-serif">'+escapeHTML(initials)+'</text></svg>'}
 function renderSchoolHub(){const grid=document.getElementById('schoolHubGrid');if(!grid)return;const term=(document.getElementById('schoolHubSearch')?.value||'').trim().toLocaleLowerCase('mn-MN');const visible=schools.slice(1).filter(s=>s.toLocaleLowerCase('mn-MN').includes(term));grid.innerHTML=visible.map(s=>{const count=listings.filter(x=>x.school===s).length;return '<button type="button" class="schoolHubCard '+(school===s?'selected':'')+'" data-campus="'+escapeHTML(s)+'"><span class="schoolHubMonogram">'+solioCampusMark(s)+'</span><span class="schoolHubName">'+escapeHTML(s)+'</span><span class="schoolHubCount">'+count+' зар <span aria-hidden="true"><svg class="boardIcon s1ArrowIcon" viewBox="0 0 24 24"><use href="#board-arrow"></use></svg></span></span></button>'}).join('')||'<p class="schoolHubNoResults">Сургууль олдсонгүй. Нэрийг өөрөөр бичээд үзээрэй.</p>';grid.querySelectorAll('[data-campus]').forEach(b=>b.onclick=()=>openSchoolMarket(b.dataset.campus));const current=document.getElementById('schoolHubCurrent');current.hidden=school==='Бүх сургууль';document.getElementById('schoolHubCurrentName').textContent=school==='Бүх сургууль'?'':school+' · тусгай зах'}
@@ -755,7 +821,7 @@ async function saveListing(id){
 }
 async function deleteListing(id){if(!confirm("Энэ зарыг устгах уу?"))return;const {error}=await db.from("listings").delete().eq("id",id).eq("user_id",session.user.id);if(error)toast(error.message);else{toast("Зар устгагдлаа");await loadListings()}}
 function toggleMyListings(){if(!session){requireSolioAccount(toggleMyListings,'Миний зарууд');return}onlyMine=!onlyMine;render()}
-function resetMarketFilters(){school='Бүх сургууль';category='Бүх ангилал';onlyMine=false;document.getElementById('search').value='';document.getElementById('sort').value='new';document.getElementById('solioListingFilter').value='all';savedOnly=false;render()}
+function resetMarketFilters(update=true){school='Бүх сургууль';category='Бүх ангилал';onlyMine=false;document.getElementById('search').value='';document.getElementById('sort').value='new';document.getElementById('solioListingFilter').value='all';savedOnly=false;if(update)render()}
 function toggleFav(){showSavedListings()}
 function pickHomeCategory(value){category=value;savedOnly=false;onlyMine=false;render();document.getElementById("solioMarketCategories")?.scrollIntoView({behavior:"smooth",block:"nearest"})}
 function updateBottomTabs(active){
@@ -763,55 +829,68 @@ function updateBottomTabs(active){
  document.querySelectorAll('.mobileBottomNav button').forEach(b=>{const selected=b.id===mobile;b.classList.toggle('active',selected);if(selected)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
  document.querySelectorAll('#desktopNav button').forEach(b=>{const selected=b.dataset.desktopTab===active||(b.dataset.desktopTab==='bottomMenu'&&!['bottomHome','bottomSchools','bottomSocieties','bottomSearch'].includes(active));b.classList.toggle('is-active',selected);if(selected)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
 }
-function goDesktopListings(){goMobileHome()}
+function goDesktopListings(){openSolioMarket()}
 function goDesktopSearch(){goMobileSearch();if(window.innerWidth>=769)requestAnimationFrame(()=>document.getElementById("solioGlobalSearch")?.focus({preventScroll:true}))}
-function goMobileHome(){ensureSolioListings();leaveSolioCommunity();leaveSolioSearch();leaveMobileSchools();if(location.hash.startsWith("#societies")||["#schools","#search","#community","#wanted","#campus","#deals"].includes(location.hash))history.pushState({solioPage:"home"},"",location.pathname+location.search);savedOnly=false;onlyMine=false;school="Бүх сургууль";category="Бүх ангилал";document.getElementById("search").value="";document.getElementById("sort").value="new";document.getElementById("solioListingFilter").value="all";render();updateBottomTabs("bottomHome");window.scrollTo({top:0,behavior:"smooth"})}
-function showSavedListings(){ensureSolioListings();leaveSolioSearch();leaveSolioCommunity();leaveMobileSchools();if(location.hash.startsWith("#societies")||["#search","#schools","#community","#wanted","#campus","#deals"].includes(location.hash))history.replaceState(null,"",location.pathname+location.search);savedOnly=true;onlyMine=false;school="Бүх сургууль";category="Бүх ангилал";document.getElementById("search").value="";document.getElementById("sort").value="new";document.getElementById("solioListingFilter").value="all";render();updateBottomTabs("bottomHome");document.getElementById("market").scrollIntoView({behavior:"smooth"})}
-function goMobileSchools(){ensureSolioListings();leaveSolioCommunity();leaveSolioSearch();document.body.classList.add("solioSchoolsPage");renderSchoolHub();updateBottomTabs("bottomSchools");history.pushState({solioPage:"schools"},"","#schools");window.scrollTo({top:0,behavior:"instant"})}
-function leaveMobileSchools(){document.body.classList.remove("solioSchoolsPage")}
-window.addEventListener("popstate",()=>{
-  if(document.getElementById("modal").classList.contains("show"))closeModal(false);
-  leaveSolioCommunity();
-  leaveSolioSearch();
-  leaveMobileSchools();
-  if(location.hash==="#register"){
-    openModal("register");
-  }else if(location.hash==="#wanted"){
-    document.body.classList.add('solioWantedPage');
-    switchSocial('wanted');
-    updateBottomTabs('bottomWanted');
-  }else if(location.hash==="#community"){
-    document.body.classList.add('solioCommunityPage');
-    switchSocial('community');
-    updateBottomTabs('bottomCommunity');
-  }else if(location.hash==="#search"){
-    document.body.classList.add("solioSearchMode");
-    document.getElementById("solioSearchPage").hidden=false;
-    renderSolioGlobalSearch();
-    updateBottomTabs("bottomSearch");
-  }else if(location.hash==="#schools"){
-    document.body.classList.add("solioSchoolsPage");
-    renderSchoolHub();
-    updateBottomTabs("bottomSchools");
-  }else{
-    updateBottomTabs("bottomHome");
-  }
-});
-if(location.hash==="#wanted"){
-  document.body.classList.add('solioWantedPage');
-  setTimeout(()=>{switchSocial('wanted');updateBottomTabs('bottomWanted')},0);
-}else if(location.hash==="#community"){
-  document.body.classList.add('solioCommunityPage');
-  setTimeout(()=>{switchSocial('community');updateBottomTabs('bottomCommunity')},0);
-}else if(location.hash==="#search"){
-  document.body.classList.add("solioSearchMode");
-  document.getElementById("solioSearchPage").hidden=false;
-  setTimeout(()=>{renderSolioGlobalSearch();updateBottomTabs("bottomSearch")},0);
-}else if(location.hash==="#schools"){
-  document.body.classList.add("solioSchoolsPage");
-  setTimeout(()=>{renderSchoolHub();updateBottomTabs("bottomSchools")},0);
+function pushSolioRoute(hash){
+ if(location.hash!==hash)history.pushState(null,'',location.pathname+location.search+hash);
 }
-function goMobileSearch(){ensureSolioListings();leaveSolioCommunity();leaveMobileSchools();document.body.classList.add("solioSearchMode");document.getElementById("solioSearchPage").hidden=false;history.pushState({solioPage:"search"},"","#search");updateBottomTabs("bottomSearch");renderSolioGlobalSearch();window.scrollTo({top:0,behavior:"instant"})}
+function goMobileHome(){
+ pushSolioRoute('');
+ restoreSolioPage();
+ window.scrollTo({top:0,behavior:'instant'});
+}
+function openSolioMarket(saved=false){
+  pushSolioRoute('#market');
+  resetMarketFilters(false);
+  savedOnly=saved;
+  restoreSolioPage();
+  render();
+  if(saved)document.getElementById('market').scrollIntoView({behavior:'smooth'});
+  else window.scrollTo({top:0,behavior:'instant'});
+}
+function showSavedListings(){openSolioMarket(true)}
+function goMobileSchools(){
+ pushSolioRoute('#schools');
+ restoreSolioPage();
+ window.scrollTo({top:0,behavior:'instant'});
+}
+function leaveMobileSchools(){document.body.classList.remove("solioSchoolsPage")}
+function restoreSolioPage(){
+ const hash=location.hash;
+ leaveSolioCommunity();
+ leaveSolioSearch();
+ leaveMobileSchools();
+ if(!hash||hash==='#community'||hash==='#register'){
+  showSolioSocial('community');
+  if(hash==='#register')Promise.resolve().then(()=>solioSessionReady).then(()=>{if(location.hash==='#register')openModal('register')});
+ }else if(hash==="#wanted"){
+  showSolioSocial('wanted');
+ }else if(hash==="#search"){
+  document.body.classList.add('solioSearchMode');
+  document.getElementById('solioSearchPage').hidden=false;
+  updateBottomTabs('bottomSearch');
+  ensureSolioListings();
+  renderSolioGlobalSearch();
+ }else if(hash==='#schools'){
+  document.body.classList.add('solioSchoolsPage');
+  updateBottomTabs('bottomSchools');
+  ensureSolioListings();
+  renderSchoolHub();
+ }else if(!/^#(?:campus|deals|societies)(?:\/|$)/.test(hash)){
+  updateBottomTabs('bottomMarket');
+  if(hash.startsWith('#listing-'))loadListings();
+  else ensureSolioListings();
+ }
+}
+window.addEventListener('popstate',()=>{
+ if(document.getElementById('modal').classList.contains('show'))closeModal(false);
+ restoreSolioPage();
+});
+function goMobileSearch(){
+ pushSolioRoute('#search');
+ restoreSolioPage();
+ window.scrollTo({top:0,behavior:'instant'});
+}
 function leaveSolioSearch(){document.body.classList.remove("solioSearchMode");const page=document.getElementById("solioSearchPage");if(page)page.hidden=true}
 let solioSearchRenderTimer=null;
 function scheduleSolioGlobalSearch(){
@@ -862,15 +941,15 @@ function closeAdminPanel(){const p=document.getElementById("adminPanel");if(p)p.
 function openAdminPanel(){if(!isCampusAdmin()){toast("Админ эрх шаардлагатай");return}window.SolioAdmin?.open()}
 
 document.getElementById("modal").addEventListener("click",e=>{if(e.target.id==="modal")closeModal()});
-appwriteAuth.onAuthStateChange((_event,s)=>{session=s;try{updateNav();syncAdminNav();render()}catch(err){console.error('Solio auth UI:',err)}});
-// Public listings do not depend on the visitor's login check.
+appwriteAuth.onAuthStateChange((_event,s)=>{session=s;try{updateNav();syncAdminNav();render();if(document.body.classList.contains('solioCommunityPage'))renderCommunityFeed()}catch(err){console.error('Solio auth UI:',err)}});
+// Start only the active public feed before checking the visitor's session.
 setupSocial();
-if(!/^#(?:campus|deals|societies)(?:\/|$)/.test(location.hash))loadListings();
-appwriteAuth.getSession().then(({data,error})=>{
+restoreSolioPage();
+const solioSessionReady=appwriteAuth.getSession().then(({data,error})=>{
   if(error)console.warn('Solio session:',error.message);
   session=data?.session||null;
-  try{updateNav();syncAdminNav();if(session)render()}catch(err){console.error('Solio navigation:',err)}
-}).catch(err=>console.error('Solio session startup:',err)).finally(()=>{if(location.hash==='#register')openModal('register')});
+  try{updateNav();syncAdminNav();if(session)render();if(document.body.classList.contains('solioCommunityPage'))renderCommunityFeed()}catch(err){console.error('Solio navigation:',err)}
+}).catch(err=>console.error('Solio session startup:',err));
 
 // PWA registration and optional install prompt; never blocks the marketplace.
 let solioInstallEvent=null;
