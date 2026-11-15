@@ -976,3 +976,25 @@ body button:disabled{cursor:wait;opacity:.6}
   .marketHome.boardMasthead .s1Intro{padding-bottom:0!important}
   #market.boardMarket{padding-top:32px}
 }
+
+.boardLinks .s1StudyNav {
+  min-height: 42px;
+  padding-inline: 8px;
+  color: var(--board-ink);
+  font-size: 13px;
+  font-weight: 650;
+  white-space: nowrap;
+}
+.s1StudyEntry { display: none; }
+@media (max-width: 768px) {
+  .s1StudyEntry {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 44px;
+    color: var(--board-ink);
+    font-size: 13px;
+    font-weight: 650;
+  }
+  .s1StudyEntry .boardIcon { width: 17px; height: 17px; }
+}

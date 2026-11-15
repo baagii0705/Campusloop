@@ -33,6 +33,8 @@ for(const match of [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)]){
 }
 const early="<script>if(!/^#(?:campus|deals|societies)(?:\\/|$)/.test(location.hash))window.solioFeedRequest=fetch('/api/public/listings?offset=0&limit=24',{credentials:'omit',cache:'no-store'}).catch(()=>null);</script>";
 html=html.replace('</head>',early+'</head>');await writeFile(resolve(dist,'index.html'),html);
+await mkdir(resolve(dist,'study'),{recursive:true});
+for(const file of ['index.html','guide.css','guide.js','catalog.js'])await copyFile(resolve(root,'study',file),resolve(dist,'study',file));
 for(const file of ['manifest.webmanifest','solio-icon.svg'])await copyFile(resolve(root,file),resolve(dist,file));
 // Share links and printable QR artwork work independently of the marketplace bundle.
 await mkdir(resolve(dist,'partner-assets'),{recursive:true});
