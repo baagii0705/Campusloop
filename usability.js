@@ -3,7 +3,7 @@
 'use strict';
 const $=id=>document.getElementById(id),esc=escapeHTML;
 const entries=[
- ['market','Зарууд','Хэрэгтэй зүйлээ олох, худалдаж авах','grid','Олж үзэх',()=>goMobileHome()],
+ ['market','Зарууд','Хэрэгтэй зүйлээ олох, худалдаж авах','grid','Олж үзэх',()=>goDesktopListings()],
  ['wanted','Хайж байна','Олдохгүй байгаа зүйлээ оюутнуудаас асуух','wanted','Олж үзэх',()=>openSolioWanted()],
  ['campus','Миний сургууль','Сургуулийн зар, хүсэлт, нийтлэл нэг дор','school','Олж үзэх',()=>SolioCampus.open()],
  ['societies','Клуб, эвент','Клубтэй танилцах, арга хэмжээ олох','person','Олж үзэх',()=>SolioSocieties.open()],

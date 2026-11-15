@@ -72,7 +72,7 @@ ${deal.code ? `<div class="code"><span>Хөнгөлөлтийн код</span><st
 <aside class="offer-qr"><h2>Утсаараа нээх</h2><img width="168" height="168" src="${path}?format=qr" alt="Энэ саналын QR код">
 <p class="qr-domain">sol1o.me</p><div class="qr-actions"><a href="${path}?format=qr&amp;download=1" download>QR татах</a><button type="button" data-action="print" hidden>Хэвлэх</button></div></aside></article>
 <section class="student-next"><div><h2>Sol1o дээр өөр юу байна?</h2><p>Бусад хөнгөлөлт, оюутнуудын зарыг үзээрэй. Бүртгүүлбэл өөрөө зар оруулж болно.</p></div>
-<div><a href="/#deals">Хөнгөлөлтүүд →</a><a href="/">Зарууд →</a><a href="/#register">Бүртгүүлэх →</a></div></section>`
+<div><a href="/#deals">Хөнгөлөлтүүд →</a><a href="/#market">Зарууд →</a><a href="/#register">Бүртгүүлэх →</a></div></section>`
   });
 }
 

@@ -998,3 +998,129 @@ body button:disabled{cursor:wait;opacity:.6}
   }
   .s1StudyEntry .boardIcon { width: 17px; height: 17px; }
 }
+
+/* Community home uses the paper, ink and orange from Solio's marketplace. */
+body.solioCommunityPage #socialHub {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: clamp(22px, 4vw, 46px) 0 80px !important;
+}
+.campusDiscussionHead {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 18px;
+  margin-bottom: 16px;
+  border-bottom: 2px solid var(--board-ink);
+}
+.campusDiscussionHead h1 {
+  margin: 0 0 7px;
+  font: 800 clamp(34px, 5.5vw, 64px)/1.05 var(--board-sans);
+  letter-spacing: -.065em;
+  color: var(--board-ink);
+}
+.campusDiscussionHead h1 span { color: var(--board-accent); }
+.campusDiscussionHead p { margin: 0; color: #605e55; font-size: 14px; line-height: 1.45; }
+.campusWrite {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 44px;
+  border: 0;
+  border-radius: 6px;
+  padding: 8px 13px;
+  background: var(--board-ink);
+  color: var(--board-paper);
+  font-size: .85rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.campusWrite:hover { background: #433c34; }
+.campusWrite .boardIcon { width: 16px; height: 16px; }
+.campusDiscussionLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(200px, 260px);
+  align-items: start;
+  gap: clamp(16px, 3vw, 38px);
+}
+.campusDiscussionFeed { min-width: 0; }
+.campusDiscussionLinks {
+  display: grid;
+  border: 1px solid var(--board-rule);
+  border-radius: 6px;
+  background: #f2eee6;
+  overflow: hidden;
+}
+.campusDiscussionLinks a {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 9px;
+  min-height: 46px;
+  padding: 7px 12px;
+  font-size: .85rem;
+  font-weight: 680;
+  line-height: 1.22;
+}
+.campusDiscussionLinks a + a { border-top: 1px solid var(--board-rule); }
+.campusDiscussionLinks a:focus-visible { outline-offset: -4px !important; }
+.campusDiscussionLinks a:hover { background: #fce9df; }
+.campusDiscussionLinks .boardIcon { width: 17px; height: 17px; color: #954125; }
+#communityPanel .communityFilter {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(145px, 1.4fr) minmax(105px, .65fr);
+  gap: 7px;
+  margin-bottom: 12px;
+}
+#communityPanel .communityFilter :is(select,input) {
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  min-height: 44px;
+  padding: 8px 9px;
+  border: 1px solid var(--board-rule);
+  border-radius: 6px;
+  background: #fffdf8;
+  color: var(--board-ink);
+}
+#communityItems { display: grid; grid-template-columns: 1fr; gap: 10px; }
+#socialHub #communityItems .communityCard {
+  margin: 0;
+  border-radius: 7px !important;
+  padding: 15px 16px 8px;
+}
+#communityItems .communityAuthor { gap: 8px; }
+#communityItems .communityAuthor strong { min-width: 0; color: var(--board-ink); font-size: .86rem; overflow-wrap: anywhere; }
+#communityItems .communityAvatar { width: 28px; height: 28px; border-radius: 5px; color: #954125; background: #fbeae0; flex: none; }
+#communityItems .communityAvatar .boardIcon { width: 16px; height: 16px; }
+#communityItems .socialMeta { margin-left: auto; flex: none; color: #605e55; font-size: .74rem; }
+#communityItems .communityBody { margin: 13px 0; font-size: .97rem; color: var(--board-ink); }
+#communityItems .communityActions { border-top: 1px solid var(--board-rule); padding-top: 4px; gap: 4px; }
+#communityItems .communityActions button { display: inline-flex; align-items: center; justify-content: flex-start; gap: 5px; min-height: 40px; flex: initial; padding: 5px 8px; background: transparent; border-radius: 5px; color: #605042; font-size: .79rem; white-space: nowrap; }
+#communityItems .communityActions button:hover,
+#communityItems .communityActions button[aria-pressed="true"] { background: #fbeae0; color: #87351b; }
+#communityItems .communityActions .boardIcon { width: 16px; height: 16px; }
+.campusFeedStatus, #communityItems > p { padding: 14px; border: 1px dashed var(--board-rule); border-radius: 6px; color: #605e55; font-size: .87rem; }
+.campusFeedStatus p { margin: 0 0 8px; }
+.campusFeedStatus button { min-height: 40px; padding: 5px 9px; border: 1px solid var(--board-rule); border-radius: 5px; background: #fffdf8; color: var(--board-ink); }
+@media (min-width: 901px) {
+  .boardNav { column-gap: clamp(17px, 3vw, 46px); }
+}
+@media (max-width: 768px) {
+  .campusDiscussionLayout { grid-template-columns: 1fr; gap: 12px; }
+  .campusDiscussionLinks { grid-row: 1; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .campusDiscussionLinks a:nth-child(2) { border-top: 0; }
+  .campusDiscussionLinks a:nth-child(even) { border-left: 1px solid var(--board-rule); }
+  .campusDiscussionHead { align-items: flex-start; }
+  .campusDiscussionHead h1 { font-size: clamp(32px, 8.1vw, 47px); }
+  .campusDiscussionHead p { font-size: 13px; }
+  #communityPanel .communityFilter { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); }
+  #communityPanel .communityFilter input { grid-column: 1/-1; grid-row: 1; }
+}
+@media (max-width: 390px) {
+  .campusDiscussionHead { flex-wrap: wrap; }
+  #communityItems .communityActions button { gap: 3px; padding-inline: 4px; }
+}

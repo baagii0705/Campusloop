@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import { Script, runInNewContext } from 'node:vm';
 
 const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
-const staticHtml = html.slice(0, html.indexOf('<script'));
+const staticHtml = html.slice(0, html.indexOf('<script src="https://unpkg.com/appwrite'));
 const inlineScript = html.match(/<script>([\s\S]*?)<\/script>/)?.[1] || '';
 const section = (start, end = '</section>') => {
   const at = staticHtml.indexOf(start);
@@ -28,7 +28,7 @@ test('Mobile has five readable entry points and a shared feature menu', () => {
   assert.match(nav, /onclick="goMobileSearch\(\)"/);
 });
 
-test('Campus home matches compact reference while keeping features in the shared menu', () => {
+test('Marketplace retains its compact layout on its own route', () => {
   const home = section('<section class="marketHome');
   assert.equal((home.match(/openModal\('post'\)/g) || []).length, 1);
   assert.match(home, /id="boardTitle"/);
@@ -60,7 +60,7 @@ test('Schools, Wanted and Community have dedicated pages', () => {
   assert.match(staticHtml, /id="communityPanel"/);
   assert.match(inlineScript, /function openSolioWanted\(\)/);
   assert.match(inlineScript, /solioWantedPage/);
-  assert.match(inlineScript, /location.hash==="#wanted"/);
+  assert.match(inlineScript, /hash==="#wanted"/);
   assert.match(staticHtml, /id="solioSearchPage"[^>]*hidden/);
   assert.match(inlineScript, /function leaveSolioSearch\(\)[\s\S]*?page.hidden=true/);
 });
@@ -87,7 +87,7 @@ test('Card price formatting handles free and invalid prices', () => {
 
 test('PWA cache is refreshed for the redesigned UI', () => {
   const sw = readFileSync(new URL('../sw.js', import.meta.url), 'utf8');
-  assert.match(sw, /solio-shell-v10/);
+  assert.match(sw, /solio-shell-v11/);
   assert.ok(sw.includes("'/board.css'"));
   assert.ok(staticHtml.includes('href="/board.css"'));
 });
@@ -325,12 +325,30 @@ test('large uploads shrink without upscaling and decoding failure retains the fi
   const small={...file,size:120000};assert.equal(await optimize(small),small);
 });
 
-test('public feed starts without waiting for account or hidden community requests',()=>{
-  const start=inlineScript.indexOf('// Public listings do not depend');
-  const end=inlineScript.indexOf('// PWA registration',start);
-  const startup=inlineScript.slice(start,end);
-  assert.ok(startup.indexOf('loadListings();')<startup.indexOf('appwriteAuth.getSession()'));
-  const setup=inlineScript.slice(inlineScript.indexOf('function setupSocial()'),inlineScript.indexOf('async function loadSocialPosts()'));
-  assert.doesNotMatch(setup,/loadSocialPosts\(/);
+test('Community is the default and only the visible section starts loading',async()=>{
+  const start=inlineScript.indexOf('// Start only the active public feed');
+  const startup=inlineScript.slice(start,inlineScript.indexOf('// PWA registration',start));
+  assert.ok(startup.includes('restoreSolioPage();'));
+  assert.ok(startup.indexOf('restoreSolioPage();')<startup.indexOf('appwriteAuth.getSession()'));
+  const source=inlineScript.slice(inlineScript.indexOf('function restoreSolioPage()'),inlineScript.indexOf('function leaveSolioSearch()'));
+  const visit=async hash=>{
+    const visible=[],load=[];
+    runInNewContext(source+';restoreSolioPage()',{
+      location:{hash},document:{body:{classList:{add(){}}},getElementById(){return {hidden:true}}},
+      window:{addEventListener(){}},leaveSolioCommunity(){},leaveSolioSearch(){},leaveMobileSchools(){},
+      showSolioSocial:mode=>visible.push(mode),updateBottomTabs:tab=>visible.push(tab),
+      ensureSolioListings:()=>load.push('listings'),loadListings:()=>load.push('listing-link'),
+      solioSessionReady:Promise.resolve(),openModal:mode=>visible.push(mode),renderSchoolHub(){},renderSolioGlobalSearch(){},
+    });
+    await new Promise(resolve=>setImmediate(resolve));
+    return {visible,load};
+  };
+  assert.deepEqual(await visit(''),{visible:['community'],load:[]});
+  assert.deepEqual(await visit('#community'),await visit(''));
+  assert.deepEqual(await visit('#wanted'),{visible:['wanted'],load:[]});
+  assert.deepEqual(await visit('#market'),{visible:['bottomMarket'],load:['listings']});
+  assert.deepEqual(await visit('#listing-example'),{visible:['bottomMarket'],load:['listing-link']});
+  assert.deepEqual(await visit('#register'),{visible:['community','register'],load:[]});
+  assert.deepEqual(await visit('#deals/apply'),{visible:[],load:[]});
   assert.doesNotMatch(startup,/setInterval|refreshSolioNotificationCount/);
 });
