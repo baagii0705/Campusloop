@@ -20,38 +20,26 @@ test('Solio JavaScript can be parsed', () => {
 test('Mobile has five readable entry points and a shared feature menu', () => {
   const nav = section('<nav class="mobileBottomNav"', '</nav>');
   assert.equal((nav.match(/<button\b/g) || []).length, 5);
-  for (const id of ['bottomHome','bottomSearch','bottomAdd','bottomMenu','bottomAccount']) {
+  for (const id of ['bottomHome','bottomWanted','bottomAdd','bottomMenu','bottomAccount']) {
     assert.equal((nav.match(new RegExp('id="' + id + '"', 'g')) || []).length, 1);
   }
   assert.match(nav, /onclick="SolioUX.menu\(\)"/);
-  assert.match(nav, /onclick="SolioUX.create\(\)"/);
-  assert.match(nav, /onclick="goMobileSearch\(\)"/);
+  assert.match(nav, /id="bottomAdd" onclick="openModal\(\x27post\x27\)"/);
+  assert.match(nav, /onclick="openSolioWanted\(\)"/);
 });
 
-test('Marketplace retains its compact layout on its own route', () => {
-  const home = section('<section class="marketHome');
-  assert.equal((home.match(/openModal\('post'\)/g) || []).length, 1);
-  assert.match(home, /id="boardTitle"/);
-  assert.doesNotMatch(home, /s1HeroStage|s1WantedTicket|s1CampusRoutes|s1FeatureCard/);
+test('The marketplace puts search, posting and each filter in one place', () => {
   const market = section('<section id="market"');
-  assert.match(market, /id="search"/);
-  assert.match(market, /id="solioMarketCategories"/);
-  assert.match(market, /id="boardFeedTitle"/);
+  assert.match(market, /id="boardTitle">Зарын зах/);
+  assert.equal((market.match(/openModal\('post'\)/g) || []).length, 1);
+  for (const id of ['search','marketSchool','marketCategory','sort','solioListingFilter']) {
+    assert.equal((market.match(new RegExp('id="' + id + '"', 'g')) || []).length, 1);
+  }
+  assert.doesNotMatch(market, /boardQuickFilters|boardCategories|s1Intro/);
   const menu = readFileSync(new URL('../usability.js', import.meta.url), 'utf8');
   assert.match(menu, /openSolioWanted\(\)/);
   assert.match(menu, /openSolioCommunity\(\)/);
-  const css = readFileSync(new URL('../board.css', import.meta.url), 'utf8');
-  assert.match(css, /grid-template-columns:none!important/);
-  assert.doesNotMatch(css, /\.s1WantedTicket|\.s1CampusRoutes/);
-});
-
-test('Marketplace uses one accessible category selector', () => {
-  const market = section('<section id="market"');
-  assert.equal((market.match(/data-home-category="/g) || []).length, 8);
-  assert.doesNotMatch(market, /id="category"|id="cats"|class="marketSidebar"/);
-  assert.match(market, /id="search"/);
-  assert.match(market, /id="solioListingFilter"/);
-  assert.match(market, /id="sort"/);
+  assert.match(menu, /goMobileSearch\(\)/);
 });
 
 test('Schools, Wanted and Community have dedicated pages', () => {
@@ -87,7 +75,7 @@ test('Card price formatting handles free and invalid prices', () => {
 
 test('PWA cache is refreshed for the redesigned UI', () => {
   const sw = readFileSync(new URL('../sw.js', import.meta.url), 'utf8');
-  assert.match(sw, /solio-shell-v11/);
+  assert.match(sw, /solio-shell-v12/);
   assert.ok(sw.includes("'/board.css'"));
   assert.ok(staticHtml.includes('href="/board.css"'));
 });
@@ -101,7 +89,7 @@ test('DOM element IDs are unique', () => {
 test('essential marketplace destinations remain in the page', () => {
   for(const id of ['market','cards','schoolHub','schoolHubGrid','solioSearchPage',
     'solioSearchSchools','solioSearchListings','socialHub','communityPanel',
-    'wantedPanel','bottomHome','bottomMenu','bottomAdd','bottomSearch',
+    'wantedPanel','bottomHome','bottomMenu','bottomAdd','bottomWanted',
     'bottomAccount']){
     assert.ok(staticHtml.includes('id="'+id+'"'),id);
   }
@@ -325,7 +313,7 @@ test('large uploads shrink without upscaling and decoding failure retains the fi
   const small={...file,size:120000};assert.equal(await optimize(small),small);
 });
 
-test('Community is the default and only the visible section starts loading',async()=>{
+test('The marketplace is the default and Community opens from its own route',async()=>{
   const start=inlineScript.indexOf('// Start only the active public feed');
   const startup=inlineScript.slice(start,inlineScript.indexOf('// PWA registration',start));
   assert.ok(startup.includes('restoreSolioPage();'));
@@ -343,12 +331,12 @@ test('Community is the default and only the visible section starts loading',asyn
     await new Promise(resolve=>setImmediate(resolve));
     return {visible,load};
   };
-  assert.deepEqual(await visit(''),{visible:['community'],load:[]});
-  assert.deepEqual(await visit('#community'),await visit(''));
+  assert.deepEqual(await visit(''),{visible:['bottomHome'],load:['listings']});
+  assert.deepEqual(await visit('#community'),{visible:['community'],load:[]});
   assert.deepEqual(await visit('#wanted'),{visible:['wanted'],load:[]});
-  assert.deepEqual(await visit('#market'),{visible:['bottomMarket'],load:['listings']});
-  assert.deepEqual(await visit('#listing-example'),{visible:['bottomMarket'],load:['listing-link']});
-  assert.deepEqual(await visit('#register'),{visible:['community','register'],load:[]});
+  assert.deepEqual(await visit('#market'),{visible:['bottomHome'],load:['listings']});
+  assert.deepEqual(await visit('#listing-example'),{visible:['bottomHome'],load:['listing-link']});
+  assert.deepEqual(await visit('#register'),{visible:['bottomHome','register'],load:['listings']});
   assert.deepEqual(await visit('#deals/apply'),{visible:[],load:[]});
   assert.doesNotMatch(startup,/setInterval|refreshSolioNotificationCount/);
 });

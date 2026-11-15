@@ -3,13 +3,14 @@
 'use strict';
 const $=id=>document.getElementById(id),esc=escapeHTML;
 const entries=[
- ['market','Зарууд','Хэрэгтэй зүйлээ олох, худалдаж авах','grid','Олж үзэх',()=>goDesktopListings()],
+ ['search','Бүх хэсгээс хайх','Зар, сургууль, клуб, нийтлэл хайх','search','Олж үзэх',()=>goMobileSearch()],
  ['wanted','Хайж байна','Олдохгүй байгаа зүйлээ оюутнуудаас асуух','wanted','Олж үзэх',()=>openSolioWanted()],
  ['campus','Миний сургууль','Сургуулийн зар, хүсэлт, нийтлэл нэг дор','school','Олж үзэх',()=>SolioCampus.open()],
  ['societies','Клуб, эвент','Клубтэй танилцах, арга хэмжээ олох','person','Олж үзэх',()=>SolioSocieties.open()],
  ['community','Оюутны булан','Асуулт, зөвлөгөө, сургуулийн сонин','chat','Олж үзэх',()=>openSolioCommunity()],
  ['study','Мэргэжил сонголт','Хөтөлбөр харьцуулах, сургуулийн багш нарыг судлах','school','Олж үзэх',()=>location.assign(solioPublicPath('/study'))],
  ['deals','Хөнгөлөлт','Оюутанд зориулсан байгууллагын саналууд','heart','Олж үзэх',()=>SolioCampus.deals()],
+ ['create','Нэмэх','Нийтлэл, хайх хүсэлт, клуб эсвэл эвент нэмэх','plus','Миний хэсэг',()=>create()],
  ['saved','Хадгалсан зар','Зүрх дарж хадгалсан заруудаа үзэх','heart','Миний хэсэг',()=>showSavedListings()],
  ['mine','Миний зарууд','Зараа засах, төлөв солих, үнийн санал үзэх','box','Миний хэсэг',()=>goMyListings()],
  ['requests','Клуб, эвентийн хүсэлтүүд','Илгээсэн хүсэлтийнхээ төлөвийг шалгах','file','Миний хэсэг',()=>SolioSocieties.open({kind:'mine'})],
@@ -29,11 +30,11 @@ const createEntries=[
 function sheet(title,intro,content){
  const dialog=document.querySelector('.dialog');
  dialog.classList.remove('authDialog','detailDialog','quickPostDialog');dialog.classList.add('easyDialog');
- $('modal').classList.add('show');$('modalBody').innerHTML='<div class="easySheet"><span class="easyKicker">SOL1O / ЧАМД ХЭРЭГТЭЙ БҮХЭН</span><h2>'+title+'</h2><p class="easyIntro">'+intro+'</p>'+content+'</div>';dialog.scrollTop=0;
+ $('modal').classList.add('show');$('modalBody').innerHTML='<div class="easySheet"><h2>'+title+'</h2>'+(intro?'<p class="easyIntro">'+intro+'</p>':'')+content+'</div>';dialog.scrollTop=0;
 }
 function choice(key,title,description,icon,attribute){return '<button type="button" class="easyChoice" '+attribute+'="'+key+'">'+boardIcon(icon)+'<span><strong>'+esc(title)+'</strong><small>'+esc(description)+'</small></span><span class="easyArrow" aria-hidden="true">→</span></button>'}
 function menu(){
- sheet('Юу хиймээр байна?','Хэрэгтэй хэсгээ эндээс шууд нээгээрэй.','<label class="easyMenuSearch">Цэснээс хайх<input id="easyMenuQuery" type="search" placeholder="Жишээ: клуб, хадгалсан, зар…" autocomplete="off"></label><div id="easyMenuItems"></div><p id="easyMenuEmpty" role="status" hidden>Тохирох хэсэг алга. Өөр үгээр хайгаарай.</p><details class="easyHelp"><summary>Sol1o-г хэрхэн ашиглах вэ?</summary><p><b>Авах:</b> Зараа нээгээд утас эсвэл Instagram-аар худалдагчтай холбогдоно. Үнийн санал бас илгээж болно.</p><p><b>Зарах:</b> «Нэмэх» → «Зар нэмэх». Нэр, үнэ, сургууль, ангиллаа оруулна. Холбоо барих мэдээлэл нэмбэл бусад хүн холбогдоход амар.</p><p><b>Олдохгүй байвал:</b> «Хайж байна» хэсэгт хэрэгтэй зүйл, төсвөө бичээрэй.</p><p><b>Клуб, эвент:</b> Танилцуулгыг нээгээд зохион байгуулагчийн холбоосоор бүртгүүлнэ. Календарьт нэмэх нь бүртгэл болохгүй.</p><p><b>Хадгалах:</b> Зар дээрх зүрх, клуб/эвент дээрх «Хадгалах» товчийг дарна. Эдгээр нь энэ төхөөрөмжид хадгалагдана.</p></details>');
+ sheet('Цэс','','<label class="easyMenuSearch">Цэснээс хайх<input id="easyMenuQuery" type="search" placeholder="Жишээ: клуб, хадгалсан, зар…" autocomplete="off"></label><div id="easyMenuItems"></div><p id="easyMenuEmpty" role="status" hidden>Тохирох хэсэг алга. Өөр үгээр хайгаарай.</p><details class="easyHelp"><summary>Sol1o-г хэрхэн ашиглах вэ?</summary><p><b>Авах:</b> Зараа нээгээд утас эсвэл Instagram-аар худалдагчтай холбогдоно. Үнийн санал бас илгээж болно.</p><p><b>Зарах:</b> «Зар нэмэх» товчийг дар. Нэр, үнэ, сургууль, ангиллаа оруулна. Холбоо барих мэдээлэл нэмбэл бусад хүн холбогдоход амар.</p><p><b>Олдохгүй байвал:</b> «Хайж байна» хэсэгт хэрэгтэй зүйл, төсвөө бичээрэй.</p><p><b>Клуб, эвент:</b> Танилцуулгыг нээгээд зохион байгуулагчийн холбоосоор бүртгүүлнэ. Календарьт нэмэх нь бүртгэл болохгүй.</p><p><b>Хадгалах:</b> Зар дээрх зүрх, клуб/эвент дээрх «Хадгалах» товчийг дарна. Эдгээр нь энэ төхөөрөмжид хадгалагдана.</p></details>');
  const draw=()=>{const q=$('easyMenuQuery').value.trim().toLocaleLowerCase('mn-MN');const found=entries.filter(x=>x.slice(1,5).join(' ').toLocaleLowerCase('mn-MN').includes(q));$('easyMenuItems').innerHTML=['Олж үзэх','Миний хэсэг','Байгууллагад'].map(group=>{const items=found.filter(x=>x[4]===group);return items.length?'<section class="easyMenuGroup"><h3>'+group+'</h3><div class="easyChoices">'+items.map(x=>choice(...x.slice(0,4),'data-easy-go')).join('')+'</div></section>':''}).join('');$('easyMenuEmpty').hidden=!!found.length};
  $('easyMenuQuery').oninput=draw;$('easyMenuItems').onclick=e=>{const b=e.target.closest('[data-easy-go]');if(!b)return;const entry=entries.find(x=>x[0]===b.dataset.easyGo);closeModal();entry?.[5]()};draw();
 }

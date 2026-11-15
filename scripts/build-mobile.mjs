@@ -31,7 +31,7 @@ for(const match of [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)]){
  const script=match[1].replace("if('serviceWorker' in navigator)","if(!window.Capacitor && 'serviceWorker' in navigator)").replace("import('/image-upload.mjs')","import('"+uploadPath+"')");
  const path=await asset(script,'js',{initial:true,main:true});html=html.replace(match[0],'<script src="'+path+'" defer></script>');
 }
-const early="<script>if(['#market','#search','#schools'].includes(location.hash)||location.hash.startsWith('#listing-'))window.solioFeedRequest=fetch('/api/public/listings?offset=0&limit=24',{credentials:'omit',cache:'no-store'}).catch(()=>null);</script>";
+const early="<script>if(['','#market','#search','#schools','#register'].includes(location.hash)||location.hash.startsWith('#listing-'))window.solioFeedRequest=fetch('/api/public/listings?offset=0&limit=24',{credentials:'omit',cache:'no-store'}).catch(()=>null);</script>";
 html=html.replace('</head>',early+'</head>');await writeFile(resolve(dist,'index.html'),html);
 await mkdir(resolve(dist,'study'),{recursive:true});
 for(const file of ['index.html','guide.css','guide.js','catalog.js'])await copyFile(resolve(root,'study',file),resolve(dist,'study',file));
@@ -43,7 +43,7 @@ await writeFile(resolve(dist,'partner-assets/deals-qr.svg'),qrSvg(SITE_ORIGIN+'/
 for(const file of ['offers.css','share.js','social.png'])await copyFile(resolve(root,'partner-assets',file),resolve(dist,'partner-assets',file));
 // The BSD SDK license accompanies the bundled subset; no CDN dependency at runtime.
 await copyFile(resolve(root,'node_modules/appwrite/LICENSE'),resolve(dist,'THIRD-PARTY-LICENSE.txt'));
-let sw=await readFile('sw.js','utf8');sw=sw.replace(/solio-shell-v\d+/,'solio-shell-v11-'+createHash('sha256').update(assets.map(a=>a.name).join(',')).digest('hex').slice(0,12));
+let sw=await readFile('sw.js','utf8');sw=sw.replace(/solio-shell-v\d+/,'solio-shell-v12-'+createHash('sha256').update(assets.map(a=>a.name).join(',')).digest('hex').slice(0,12));
 sw=sw.replace(/const SHELL=\[[^\]]*\]/,'const SHELL='+JSON.stringify(['/','/index.html','/manifest.webmanifest','/solio-icon.svg',...critical]));await writeFile(resolve(dist,'sw.js'),sw);
 await writeFile(resolve(dist,'_headers'),'/assets/*\n  Cache-Control: public, max-age=31536000, immutable\n');
 const stats={html:Buffer.byteLength(html),initial:assets.filter(a=>a.initial).reduce((n,a)=>n+a.bytes,0),deferred:assets.filter(a=>!a.initial).reduce((n,a)=>n+a.bytes,0),assets};
