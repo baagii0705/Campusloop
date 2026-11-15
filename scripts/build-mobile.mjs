@@ -19,9 +19,9 @@ const sdkPath=await asset(sdk.outputFiles[0].text,'js',{initial:true});
 html=html.replace('<script src="https://unpkg.com/appwrite@17.0.0/dist/iife/sdk.js"></script>','<script src="'+sdkPath+'" defer></script>');
 // Secondary screens load only on navigation; the service worker also fetches them on demand.
 const pricingPath=await asset(await readFile('sponsor-pricing.js','utf8'),'js');
-for(const file of ['board.css','sponsored-banner.css','campus-hub.css','campus-hub.js','societies.css','societies.js','usability.js','vip.js','sponsored-banner.js','sponsor-application.js','admin-dashboard.css','admin-dashboard.js']){
+for(const file of ['board.css','school-directory.js','search-alerts.js','sponsored-banner.css','campus-hub.css','campus-hub.js','societies.css','societies.js','usability.js','vip.js','sponsored-banner.js','sponsor-application.js','admin-dashboard.css','admin-dashboard.js']){
  let content=await readFile(resolve(root,file),'utf8');if(file==='admin-dashboard.js'){const bundled=await build({entryPoints:[resolve(root,file)],bundle:true,write:false,format:'iife',target:'es2020',charset:'utf8'});content=bundled.outputFiles[0].text}if(file.endsWith('.js'))content=content.replace("import('/sponsor-pricing.js')","import('"+pricingPath+"')");
- const initial=['board.css','sponsored-banner.css','sponsored-banner.js','usability.js','vip.js'].includes(file),path=await asset(content,file.endsWith('.css')?'css':'js',{initial});paths.set('/'+file,path);
+ const initial=['board.css','school-directory.js','search-alerts.js','sponsored-banner.css','sponsored-banner.js','usability.js','vip.js'].includes(file),path=await asset(content,file.endsWith('.css')?'css':'js',{initial});paths.set('/'+file,path);
  html=html.replaceAll('href="/'+file+'"','href="'+path+'"').replaceAll('src="/'+file+'"','src="'+path+'"');
 }
 let loader=await readFile('feature-loader.js','utf8');for(const [file,path] of paths)loader=loader.replaceAll("'"+file+"'","'"+path+"'");
@@ -31,8 +31,10 @@ for(const match of [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)]){
  const script=match[1].replace("if('serviceWorker' in navigator)","if(!window.Capacitor && 'serviceWorker' in navigator)").replace("import('/image-upload.mjs')","import('"+uploadPath+"')");
  const path=await asset(script,'js',{initial:true,main:true});html=html.replace(match[0],'<script src="'+path+'" defer></script>');
 }
-const early="<script>if(['','#market','#search','#schools','#register'].includes(location.hash)||location.hash.startsWith('#listing-'))window.solioFeedRequest=fetch('/api/public/listings?offset=0&limit=24',{credentials:'omit',cache:'no-store'}).catch(()=>null);</script>";
-html=html.replace('</head>',early+'</head>');await writeFile(resolve(dist,'index.html'),html);
+const schoolBundle=await build({entryPoints:[resolve(root,'scripts/schools-browser.js')],bundle:true,write:false,format:'iife',target:'es2020',charset:'utf8'});
+const schoolPath=await asset(schoolBundle.outputFiles[0].text,'js',{initial:true});
+html=html.replace('src="/schools-browser.js"','src="'+schoolPath+'"');
+await writeFile(resolve(dist,'index.html'),html);
 await mkdir(resolve(dist,'study'),{recursive:true});
 for(const file of ['index.html','guide.css','guide.js','catalog.js'])await copyFile(resolve(root,'study',file),resolve(dist,'study',file));
 for(const file of ['manifest.webmanifest','solio-icon.svg'])await copyFile(resolve(root,file),resolve(dist,file));
@@ -43,7 +45,7 @@ await writeFile(resolve(dist,'partner-assets/deals-qr.svg'),qrSvg(SITE_ORIGIN+'/
 for(const file of ['offers.css','share.js','social.png'])await copyFile(resolve(root,'partner-assets',file),resolve(dist,'partner-assets',file));
 // The BSD SDK license accompanies the bundled subset; no CDN dependency at runtime.
 await copyFile(resolve(root,'node_modules/appwrite/LICENSE'),resolve(dist,'THIRD-PARTY-LICENSE.txt'));
-let sw=await readFile('sw.js','utf8');sw=sw.replace(/solio-shell-v\d+/,'solio-shell-v12-'+createHash('sha256').update(assets.map(a=>a.name).join(',')).digest('hex').slice(0,12));
+let sw=await readFile('sw.js','utf8');sw=sw.replace(/solio-shell-v\d+/,'solio-shell-v13-'+createHash('sha256').update(assets.map(a=>a.name).join(',')).digest('hex').slice(0,12));
 sw=sw.replace(/const SHELL=\[[^\]]*\]/,'const SHELL='+JSON.stringify(['/','/index.html','/manifest.webmanifest','/solio-icon.svg',...critical]));await writeFile(resolve(dist,'sw.js'),sw);
 await writeFile(resolve(dist,'_headers'),'/assets/*\n  Cache-Control: public, max-age=31536000, immutable\n');
 const stats={html:Buffer.byteLength(html),initial:assets.filter(a=>a.initial).reduce((n,a)=>n+a.bytes,0),deferred:assets.filter(a=>!a.initial).reduce((n,a)=>n+a.bytes,0),assets};

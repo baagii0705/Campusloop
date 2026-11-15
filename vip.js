@@ -22,7 +22,7 @@ function decorate(){
   }
  });
  document.querySelectorAll('[data-vip-listing]').forEach(detail=>{
-  const id=detail.dataset.vipListing,vip=isActive(id)&&listings.find(x=>x.id===id)?.status!=='sold';let badge=detail.querySelector('.vipDetailBadge');
+  const id=detail.dataset.vipListing,vip=isActive(id)&&currentListing(id)?.status!=='sold';let badge=detail.querySelector('.vipDetailBadge');
   if(vip&&!badge){badge=document.createElement('span');badge.className='vipDetailBadge';badge.textContent='VIP · Онцлох зар';detail.prepend(badge)}
   else if(!vip)badge?.remove()
  });

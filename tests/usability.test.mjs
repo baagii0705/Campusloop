@@ -30,7 +30,7 @@ test('closing a listing preserves the underlying search route',()=>{
 test('listing status changes remain owner-scoped and use validated Mongolian choices',async()=>{
  let captured,writes=0;const row={id:'l',user_id:'owner',status:'available'};
  const chain={update(data){writes++;assert.equal(data.status,'sold');return this},eq(field,value){if(field==='user_id')assert.equal(value,'owner');return this},then(resolve){resolve({error:null})}};
- const context={session:{user:{id:'other'}},listings:[row],db:{from:()=>chain},SolioUX:{listingForm(...args){captured=args}},toast(){},render(){}};
+ const context={session:{user:{id:'other'}},listings:[row],currentListing:()=>row,db:{from:()=>chain},SolioUX:{listingForm(...args){captured=args}},toast(){},render(){}};
  const fn=runInNewContext(source('function changeSolioListingStatus(', 'async function openSolioNotifications')+';changeSolioListingStatus',context);
  fn('l');assert.equal(captured,undefined);context.session.user.id='owner';fn('l');assert.match(captured[2],/Зарагдсан/);
  await assert.rejects(captured[4](new Map([['status','injected']])));assert.equal(writes,0);
@@ -39,7 +39,7 @@ test('listing status changes remain owner-scoped and use validated Mongolian cho
 
 test('offer form prevents own offers and rejects invalid amounts before writing',async()=>{
  let captured,writes=0;
- const context={session:{user:{id:'buyer'}},listings:[{id:'l',user_id:'seller',price:5000}],db:{from:()=>({insert:async row=>{writes++;assert.equal(row.buyer_id,'buyer');return {error:null}}})},SolioUX:{listingForm(...args){captured=args}},toast(){}};
+ const context={session:{user:{id:'buyer'}},listings:[{id:'l',user_id:'seller',price:5000}],currentListing:()=>({id:'l',user_id:'seller',price:5000}),db:{from:()=>({insert:async row=>{writes++;assert.equal(row.buyer_id,'buyer');return {error:null}}})},SolioUX:{listingForm(...args){captured=args}},toast(){}};
  const fn=runInNewContext(source('function makeOffer(', 'async function shareListing')+';makeOffer',context);
  fn('l');await assert.rejects(captured[4](new Map([['amount','-2'],['message','']])));assert.equal(writes,0);
  await captured[4](new Map([['amount','4500'],['message','Hello']]));assert.equal(writes,1);

@@ -19,6 +19,9 @@ import {onRequestGet as sponsorsAdminGet,onRequestPost as sponsorsAdminPost} fro
 import {onRequestGet as sponsorsActive} from '../functions/api/sponsors/active.js';
 import {onRequestGet as sponsorsApplyGet,onRequestPost as sponsorsApply} from '../functions/api/sponsors/apply.js';
 import {onRequestPost as sponsorsEvent} from '../functions/api/sponsors/event.js';
+import { onRequestGet as getSaved, onRequestPost as postSaved } from '../functions/api/saved-searches/index.js';
+import { onRequestGet as publicFeed } from '../functions/api/public/[collection].js';
+import { schoolFromPath } from '../schools-data.js';
 import {societyFields} from '../societies-data.js';
 const sqlite=new DatabaseSync(':memory:');
 for(const name of (await readdir('migrations')).filter(n=>n.endsWith('.sql')).sort())sqlite.exec(await readFile('migrations/'+name,'utf8'));
@@ -46,6 +49,7 @@ function seedPreview(){
  insert('event','preview-photo',{title:'Хотын гэрэл — фото алхалт',school:'',category:'Урлаг',club_id:'preview-art',description:'Энэ бол зөвхөн дотоод харагдац шалгах жишээ эвент. Бодит зар биш.',location:'Хотын төв, уулзах цэгийг холбоосоор харна.',starts_at:new Date(+start+86400000).toISOString(),ends_at:new Date(+end+86400000).toISOString(),price_note:'Үнэгүй'});
 }
 const routes={
+ '/api/saved-searches':{GET:getSaved,POST:postSaved},
  '/api/vip':{GET:vipGet,POST:vipPost},'/api/admin/summary':{GET:summary},
  '/api/sponsors/admin':{GET:sponsorsAdminGet,POST:sponsorsAdminPost},'/api/sponsors/active':{GET:sponsorsActive},'/api/sponsors/apply':{GET:sponsorsApplyGet,POST:sponsorsApply},'/api/sponsors/event':{POST:sponsorsEvent},
  '/api/campus':{GET:campus},'/api/deals':{GET:deals},'/api/deals/apply':{POST:apply},'/api/deals/admin':{GET:adminGet,POST:adminPost},
@@ -61,13 +65,15 @@ http.createServer(async(req,res)=>{
   if(dealMatch)context.params={id:decodeURIComponent(dealMatch[1])};
   const route=dealMatch?{GET:offer,HEAD:offerHead}:routes[url.pathname];
   if(route)result=route[req.method]?await route[req.method](context):new Response('Method not allowed',{status:405});
-  else if(url.pathname.startsWith('/api/public/')&&req.method==='GET')result=await fetch('https://sol1o.me'+url.pathname+url.search);
+  else if(url.pathname.startsWith('/api/public/')&&req.method==='GET'){
+   result=await publicFeed({...context,params:{collection:url.pathname.split('/').at(-1)}});
+  }
   else if(url.pathname.startsWith('/api/'))result=new Response('Unknown local API',{status:404});
   if(result){
    const headers=Object.fromEntries([...result.headers].filter(([name])=>!['content-encoding','content-length','transfer-encoding'].includes(name.toLowerCase())));
    res.writeHead(result.status,headers);res.end(Buffer.from(await result.arrayBuffer()));return
   }
-  const path=resolve(root,url.pathname==='/partners'||url.pathname==='/partners/'?'partners.html':'.'+decodeURIComponent(url.pathname));if(path!==root&&!path.startsWith(root+sep)){res.writeHead(403);res.end();return}
+  const path=resolve(root,url.pathname==='/partners'||url.pathname==='/partners/'?'partners.html':schoolFromPath(url.pathname)?'index.html':'.'+decodeURIComponent(url.pathname));if(path!==root&&!path.startsWith(root+sep)){res.writeHead(403);res.end();return}
   const file=(await stat(path)).isDirectory()?resolve(path,'index.html'):path;
   res.setHeader('Content-Type',types[extname(file)]||'application/octet-stream');let content=await readFile(file);
   if(file.endsWith('index.html')&&url.searchParams.get('demo')==='1')content=Buffer.from(content.toString().replace('</body>','<aside style="position:fixed;right:8px;bottom:90px;z-index:2000;background:#fff4bd;border:1px solid #b69744;padding:8px;font:11px monospace">LOCAL PREVIEW · SAMPLE DATA</aside></body>'));
