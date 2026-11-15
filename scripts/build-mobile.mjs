@@ -1,6 +1,8 @@
 import {mkdir,copyFile,readFile,writeFile,rm,cp} from 'node:fs/promises';
 import {resolve} from 'node:path';
 import {createHash} from 'node:crypto';
+import {gunzipSync} from 'node:zlib';
+import {mergeStudyData} from '../study/guide-data.js';
 import {build,transform} from 'esbuild';
 import {partnerLanding,SITE_ORIGIN} from '../partner-pages.js';
 import {qrSvg} from '../offer-qr.js';
@@ -36,6 +38,25 @@ const schoolPath=await asset(schoolBundle.outputFiles[0].text,'js',{initial:true
 html=html.replace('src="/schools-browser.js"','src="'+schoolPath+'"');
 await writeFile(resolve(dist,'index.html'),html);
 await cp(resolve(root,'study'),resolve(dist,'study'),{recursive:true,filter:path=>!path.endsWith('/README.md')});
+const studySource = resolve(root, 'study/catalog/data');
+const [studySchools, studyPrograms] = await Promise.all([
+  readFile(resolve(studySource, 'schools.json'), 'utf8'),
+  readFile(resolve(studySource, 'programs.json.gz')),
+]);
+const studyData = JSON.stringify(mergeStudyData(JSON.parse(studySchools), JSON.parse(gunzipSync(studyPrograms))));
+const studyDataHash = createHash('sha256').update(studyData).digest('hex').slice(0, 16);
+const studyDataPath = '/assets/study-' + studyDataHash + '.json';
+await writeFile(resolve(dist, '.' + studyDataPath), studyData);
+const studyGuide = await build({
+  entryPoints: [resolve(root, 'study/guide.js')], bundle: true, write: false, format: 'esm', target: 'es2020', charset: 'utf8'
+});
+const studyGuidePath = await asset(studyGuide.outputFiles[0].text, 'js');
+const studyCssPath = await asset(await readFile(resolve(root, 'study/guide.css'), 'utf8'), 'css');
+const studyPage = await readFile(resolve(root, 'study/index.html'), 'utf8');
+await writeFile(resolve(dist, 'study/index.html'), studyPage
+  .replace('/study/guide.css', studyCssPath)
+  .replace('/study/guide.js', studyGuidePath)
+  .replace('/study/catalog/data/guide.json', studyDataPath));
 for(const file of ['manifest.webmanifest','solio-icon.svg'])await copyFile(resolve(root,file),resolve(dist,file));
 // Share links and printable QR artwork work independently of the marketplace bundle.
 await mkdir(resolve(dist,'partner-assets'),{recursive:true});

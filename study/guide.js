@@ -1,23 +1,16 @@
 import { admissionYear, schools as curatedSchools, paths, programs as curatedPrograms, faculty } from './catalog.js';
-import { loadStudyData } from './guide-data.js';
-
 const $ = id => document.getElementById(id);
-let studyData;
-try {
-  studyData = await loadStudyData();
-} catch {
-  studyData = { schools: curatedSchools, programs: curatedPrograms };
-  $('study-load-error').hidden = false;
-}
-const { schools, programs } = studyData;
+let schools = curatedSchools;
+let programs = curatedPrograms;
 const programById = new Map(programs.map(program => [program.id, program]));
+let catalogPending = true;
 const views = ['programs', 'schools', 'faculty', 'saved'];
 const compareLimit = 3;
 const pageSize = 24;
 let visibleCount = pageSize;
 const institutionCounts = new Map();
 for (const { school } of programs) institutionCounts.set(school, (institutionCounts.get(school) || 0) + 1);
-const levels = [...new Set(programs.map(program => program.level || 'Бакалавр'))].sort(new Intl.Collator('mn-MN').compare);
+let levels = ['Бакалавр'];
 const storageKey = 'solio.study.saved';
 const symbols = {
   code: '<path d="m8 6-6 6 6 6m8-12 6 6-6 6m-2-15-4 18"/>',
@@ -39,7 +32,8 @@ function validIds(ids) {
 
 function readSaved() {
   try {
-    return new Set(validIds(JSON.parse(localStorage.getItem(storageKey))));
+    const ids = JSON.parse(localStorage.getItem(storageKey));
+    return new Set(Array.isArray(ids) ? ids.filter(id => typeof id === 'string') : []);
   } catch {
     return new Set();
   }
@@ -50,10 +44,10 @@ function readLocation() {
   const view = params.get('view');
   return {
     view: views.includes(view) ? view : 'programs',
-    school: Object.hasOwn(schools, params.get('school')) ? params.get('school') : '',
+    school: catalogPending || Object.hasOwn(schools, params.get('school')) ? params.get('school') || '' : '',
     path: Object.hasOwn(paths, params.get('field')) ? params.get('field') : '',
-    level: levels.includes(params.get('level')) ? params.get('level') : '',
-    compare: validIds((params.get('compare') || '').split(',')).slice(0, compareLimit),
+    level: catalogPending || levels.includes(params.get('level')) ? params.get('level') || '' : '',
+    compare: [...new Set((params.get('compare') || '').split(',').filter(id => /^[a-z0-9-]{1,100}$/.test(id)))].slice(0, compareLimit),
   };
 }
 
@@ -151,6 +145,7 @@ function render() {
   const terms = normalize($('query').value).split(/\s+/).filter(Boolean);
   function matches(schoolId, ...values) {
     if (school && school !== schoolId) return false;
+    if (!terms.length) return true;
     const institution = schools[schoolId];
     const haystack = normalize([...values, institution.short, institution.name].join(' '));
     return terms.every(term => haystack.includes(term));
@@ -182,9 +177,11 @@ function render() {
   const empty = view === 'saved' && !saved.size
     ? 'Сонирхсон хөтөлбөр дээрээ хадгалах товч дараарай.'
     : 'Тохирох ' + unit + ' олдсонгүй. Хайлтаа өөрчилж үзээрэй.';
-  $('results').innerHTML = cards.join('') || '<p class="empty">' + empty + '</p>';
+  $('results').innerHTML = cards.join('') || '<p class="empty">' +
+    (catalogPending ? 'Бүрэн лавлахыг ачаалж байна…' : empty) + '</p>';
   $('result-count').textContent = total.toLocaleString('mn-MN') + ' ' + unit +
-    (cards.length < total ? ' · ' + cards.length.toLocaleString('mn-MN') + ' харагдаж байна' : '');
+    (cards.length < total ? ' · ' + cards.length.toLocaleString('mn-MN') + ' харагдаж байна' : '') +
+    (catalogPending ? ' · Бүрэн лавлах ачаалж байна…' : '');
   $('more-results').hidden = cards.length >= total;
   $('reset').hidden = !hasFilters;
   updateActions();
@@ -206,12 +203,14 @@ function updateActions() {
     button.textContent = active ? 'Сонгосон' : 'Харьцуулах';
     button.setAttribute('aria-label', (active ? 'Харьцуулалтаас хасах · ' : 'Харьцуулах · ') + program.name);
   });
-  $('saved-total').hidden = !saved.size;
-  $('saved-total').textContent = saved.size;
-  $('selection').hidden = !state.compare.length;
-  $('selection-count').textContent = state.compare.length + ' / ' + compareLimit + ' хөтөлбөр сонгосон';
-  $('open-compare').disabled = state.compare.length < 2;
-  $('selected-programs').innerHTML = state.compare.map(id => {
+  const visibleSaved = validIds([...saved]).length;
+  $('saved-total').hidden = !visibleSaved;
+  $('saved-total').textContent = visibleSaved;
+  const selected = validIds(state.compare);
+  $('selection').hidden = !selected.length;
+  $('selection-count').textContent = selected.length + ' / ' + compareLimit + ' хөтөлбөр сонгосон';
+  $('open-compare').disabled = selected.length < 2;
+  $('selected-programs').innerHTML = selected.map(id => {
     const program = programById.get(id);
     const name = escape(schools[program.school].short) + ' · ' + escape(program.name);
     return '<button type="button" data-remove="' + id + '" aria-label="Харьцуулалтаас хасах · ' + name + '">' +
@@ -325,7 +324,7 @@ function showDetail(id) {
 }
 
 function showCompare() {
-  const comparison = state.compare.map(id => programById.get(id));
+  const comparison = validIds(state.compare).map(id => programById.get(id));
   if (comparison.length < 2 || $('comparison').open) return;
   const hasValue = value => value != null && value !== '';
   const rows = programRows.map(([title, get]) => [title, comparison.map(get)])
@@ -345,9 +344,13 @@ $('path-options').innerHTML = Object.entries(paths).map(([id, entry]) => (
   '<button class="path-button" type="button" data-path="' + id + '" aria-pressed="false">' +
   '<span class="path-icon">' + icon(entry.icon) + '</span><span>' + escape(entry.label) + '</span><span aria-hidden="true">↘</span></button>'
 )).join('');
-Object.entries(schools).forEach(([id, school]) => $('school').add(new Option(school.short, id)));
+function updateOptions() {
+  $('school').replaceChildren(new Option('Бүх сургууль', ''),
+    ...Object.entries(schools).map(([id, school]) => new Option(school.short, id)));
+  $('level').replaceChildren(new Option('Бүх түвшин', ''), ...levels.map(level => new Option(level, level)));
+}
+updateOptions();
 Object.entries(paths).forEach(([id, path]) => $('field').add(new Option(path.category, id)));
-levels.forEach(level => $('level').add(new Option(level, level)));
 
 $('path-options').addEventListener('click', event => {
   const button = event.target.closest('[data-path]');
@@ -419,5 +422,45 @@ window.addEventListener('popstate', () => {
 });
 
 syncFilters();
-render();
 if (state.compare.length >= 2) showCompare();
+
+async function loadCatalog() {
+  catalogPending = true;
+  $('study-load-error').hidden = true;
+  render();
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 12000);
+  try {
+    const response = await fetch($('study-data').href, { signal: controller.signal });
+    if (!response.ok) throw new Error('Study data HTTP ' + response.status);
+    const data = await response.json();
+    if (!data.schools || !Array.isArray(data.programs)) throw new Error('Invalid study data');
+    schools = data.schools;
+    programs = data.programs;
+    programById.clear();
+    institutionCounts.clear();
+    for (const program of programs) {
+      programById.set(program.id, program);
+      institutionCounts.set(program.school, (institutionCounts.get(program.school) || 0) + 1);
+    }
+    levels = [...new Set(programs.map(programLevel))].sort(new Intl.Collator('mn-MN').compare);
+    const shouldOpen = waitingForSharedComparison && sharedComparison.every((id, index) => state.compare[index] === id);
+    state.compare = validIds(state.compare);
+    if (!Object.hasOwn(schools, state.school)) state.school = '';
+    if (!levels.includes(state.level)) state.level = '';
+    updateOptions();
+    syncFilters();
+    if (shouldOpen) showCompare();
+  } catch {
+    $('study-load-error').hidden = false;
+  } finally {
+    clearTimeout(timeout);
+    catalogPending = false;
+    render();
+  }
+}
+
+const sharedComparison = [...state.compare];
+const waitingForSharedComparison = state.compare.length >= 2 && validIds(state.compare).length < 2;
+$('study-retry').addEventListener('click', loadCatalog);
+loadCatalog();

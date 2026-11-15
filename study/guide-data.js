@@ -1,15 +1,5 @@
 import { schools as curatedSchools, programs as curatedPrograms } from './catalog.js';
 
-async function read(name) {
-  const response = await fetch(new URL('./catalog/data/' + name, import.meta.url));
-  if (!response.ok) throw new Error('Study data HTTP ' + response.status);
-  if (name.endsWith('.json')) return response.json();
-  const bytes = await response.arrayBuffer();
-  const signature = new Uint8Array(bytes, 0, Math.min(2, bytes.byteLength));
-  if (signature[0] !== 0x1f || signature[1] !== 0x8b) return JSON.parse(new TextDecoder().decode(bytes));
-  return new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'))).json();
-}
-
 // Use source content so shared links survive reordering and insertion of records.
 function recordId(row, used) {
   let hash = 14695981039346656037n;
@@ -54,9 +44,4 @@ export function mergeStudyData(directory, records) {
     };
   }).sort((a, b) => priority(a.period) - priority(b.period));
   return { schools, programs: [...curatedPrograms, ...catalog] };
-}
-
-export async function loadStudyData() {
-  const [directory, records] = await Promise.all([read('schools.json'), read('programs.json.gz')]);
-  return mergeStudyData(directory, records);
 }

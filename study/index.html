@@ -8,6 +8,7 @@
   <link rel="canonical" href="https://sol1o.me/study">
   <link rel="icon" href="/solio-icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/study/guide.css">
+  <link id="study-data" rel="preload" as="fetch" crossorigin="anonymous" href="/study/catalog/data/guide.json">
   <script type="module" src="/study/guide.js"></script>
   <title>Мэргэжил сонголт · Solio</title>
 </head>
@@ -52,7 +53,7 @@
         <p id="result-count" role="status">Хөтөлбөрүүдийг ачаалж байна…</p>
         <button class="text-button" id="reset" type="button" hidden>Шүүлт арилгах</button>
       </div>
-      <p class="study-load-error" id="study-load-error" hidden>Бүрэн лавлахыг ачаалж чадсангүй. <button class="text-button" type="button" onclick="location.reload()">Дахин ачаалах</button></p>
+      <p class="study-load-error" id="study-load-error" hidden>Бүрэн лавлахыг ачаалж чадсангүй. <button class="text-button" type="button" id="study-retry">Дахин ачаалах</button></p>
       <div id="results" class="results"></div>
       <button id="more-results" class="secondary more-results" type="button" hidden>Цааш үзэх</button>
       <noscript><p>Хайлт, харьцуулалтыг ашиглахын тулд JavaScript-ээ идэвхжүүлээрэй.</p></noscript>
