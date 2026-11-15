@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="mn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f3ed">
+  <meta name="description" content="ШУТИС, МУИС, СЭЗИС-ийн бакалаврын хөтөлбөр, элсэлтийн шаардлага, багш нарын мэдээллийг Solio дээр харьцуул.">
+  <link rel="canonical" href="https://sol1o.me/study">
+  <link rel="icon" href="/solio-icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/study/guide.css">
+  <script type="module" src="/study/guide.js"></script>
+  <title>Мэргэжил сонголт · Solio</title>
+</head>
+<body>
+  <a class="skip" href="#directory">Хөтөлбөрүүд рүү очих</a>
+  <header class="top">
+    <div class="wrap top-inner">
+      <a class="brand" href="/" aria-label="Solio нүүр хуудас">sol<span>1</span>o<span>.</span></a>
+      <span class="top-divider"></span>
+      <span class="top-title">Мэргэжил сонголт</span>
+      <a class="market-link" href="/">Зарууд руу <span aria-hidden="true">↗</span></a>
+    </div>
+  </header>
+  <main class="wrap">
+    <section class="hero" aria-labelledby="page-title">
+      <div>
+        <p class="scope">ШУТИС <span>·</span> МУИС <span>·</span> СЭЗИС</p>
+        <h1 id="page-title">Төгсөөд<br> юу хийх вэ<span>?</span></h1>
+        <p class="intro">Хийхийг хүсдэг зүйлээсээ эхэл. Тэр чиглэлээр хаана, юу сурахаа харьцуул.</p>
+      </div>
+      <section class="interest" aria-labelledby="interest-title">
+        <h2 id="interest-title">Чи юу хийх дуртай вэ?</h2>
+        <div id="path-options" class="path-options"></div>
+      </section>
+    </section>
+    <section class="directory" id="directory" aria-labelledby="directory-title">
+      <h2 id="directory-title">Судлах</h2>
+      <nav class="views" aria-label="Мэргэжил сонголтын цэс">
+        <a href="?view=programs" data-view="programs" aria-current="page">Хөтөлбөрүүд</a>
+        <a href="?view=schools" data-view="schools">Сургуулиуд</a>
+        <a href="?view=faculty" data-view="faculty">Багш нар</a>
+        <a href="?view=saved" data-view="saved">Хадгалсан <span id="saved-total" hidden></span></a>
+      </nav>
+      <form class="filters" role="search" id="filters">
+        <label class="query">Хайх <input id="query" type="search" autocomplete="off" placeholder="Хөтөлбөр, багш, ажил мэргэжил…"></label>
+        <label class="filter-school">Сургууль <select id="school" name="school"><option value="">Бүх сургууль</option></select></label>
+        <label id="field-filter">Чиглэл <select id="field" name="field"><option value="">Бүх чиглэл</option></select></label>
+      </form>
+      <div class="results-head">
+        <p id="result-count" role="status"></p>
+        <button class="text-button" id="reset" type="button" hidden>Шүүлт арилгах</button>
+      </div>
+      <div id="results" class="results"></div>
+      <noscript><p>Хайлт, харьцуулалтыг ашиглахын тулд JavaScript-ээ идэвхжүүлээрэй.</p></noscript>
+    </section>
+    <aside class="selection" id="selection" aria-label="Харьцуулах сонголт" hidden>
+      <div><strong id="selection-count"></strong><div class="selected-programs" id="selected-programs"></div></div>
+      <button class="primary" id="open-compare" type="button">Харьцуулах <span aria-hidden="true">↗</span></button>
+    </aside>
+    <p id="notice" class="sr-only" role="status"></p>
+  </main>
+  <footer class="wrap footer">
+    <p>ЭШ-ийн мэдээлэл <strong id="admission-year">2026–2027</strong> оны журамд үндэслэв. Оноо тооцох арга болон шинэ элсэлтийн нөхцөлийг сургуулийн албан ёсны журмаас шалгаарай.</p>
+    <a href="/">Solio нүүр хуудас ↗</a>
+  </footer>
+  <dialog id="detail" aria-labelledby="detail-title">
+    <div class="dialog-inner">
+      <button type="button" class="close" data-close aria-label="Хаах" autofocus>×</button>
+      <div id="detail-content"></div>
+    </div>
+  </dialog>
+  <dialog id="comparison" aria-labelledby="compare-title">
+    <div class="dialog-inner">
+      <button type="button" class="close" data-close aria-label="Хаах" autofocus>×</button>
+      <h2 id="compare-title">Хөтөлбөр харьцуулах</h2>
+      <p id="compare-year" class="compare-year"></p>
+      <div id="compare-content"></div>
+      <button class="secondary share" id="share-compare" type="button">Харьцуулалтын холбоос хуулах</button>
+      <p id="share-status" role="status" hidden></p>
+    </div>
+  </dialog>
+</body>
+</html>
