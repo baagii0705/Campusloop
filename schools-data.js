@@ -71,7 +71,7 @@ export function schoolUrl(school) {
 
 export function schoolProgramPath(school) {
   const id = schoolProgramIds.get(canonicalSchool(school));
-  return id ? '/study/catalog/?view=programs&school=' + id : '';
+  return id ? '/study/?school=' + id + '#directory' : '';
 }
 
 export function schoolFromPath(path) {

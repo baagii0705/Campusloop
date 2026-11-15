@@ -24,10 +24,10 @@
   <main class="wrap">
     <section class="hero" aria-labelledby="page-title">
       <div>
-        <p class="scope">ШУТИС <span>·</span> МУИС <span>·</span> СЭЗИС</p>
+        <p class="scope">Их, дээд сургуулиуд</p>
         <h1 id="page-title">Төгсөөд<br> юу хийх вэ<span>?</span></h1>
         <p class="intro">Хийхийг хүсдэг зүйлээсээ эхэл. Тэр чиглэлээр хаана, юу сурахаа харьцуул.</p>
-        <a class="catalog-entry" href="/study/catalog/">Сургууль, хөтөлбөрийн лавлах →</a>
+        <a class="catalog-entry" href="/study/catalog/?view=index">Улсын индекс, МУИС-ийн нээлттэй өгөгдөл →</a>
       </div>
       <section class="interest" aria-labelledby="interest-title">
         <h2 id="interest-title">Чи юу хийх дуртай вэ?</h2>
@@ -45,13 +45,16 @@
       <form class="filters" role="search" id="filters">
         <label class="query">Хайх <input id="query" type="search" autocomplete="off" placeholder="Хөтөлбөр, багш, ажил мэргэжил…"></label>
         <label class="filter-school">Сургууль <select id="school" name="school"><option value="">Бүх сургууль</option></select></label>
+        <label id="level-filter">Түвшин <select id="level" name="level"><option value="">Бүх түвшин</option></select></label>
         <label id="field-filter">Чиглэл <select id="field" name="field"><option value="">Бүх чиглэл</option></select></label>
       </form>
       <div class="results-head">
-        <p id="result-count" role="status"></p>
+        <p id="result-count" role="status">Хөтөлбөрүүдийг ачаалж байна…</p>
         <button class="text-button" id="reset" type="button" hidden>Шүүлт арилгах</button>
       </div>
+      <p class="study-load-error" id="study-load-error" hidden>Бүрэн лавлахыг ачаалж чадсангүй. <button class="text-button" type="button" onclick="location.reload()">Дахин ачаалах</button></p>
       <div id="results" class="results"></div>
+      <button id="more-results" class="secondary more-results" type="button" hidden>Цааш үзэх</button>
       <noscript><p>Хайлт, харьцуулалтыг ашиглахын тулд JavaScript-ээ идэвхжүүлээрэй.</p></noscript>
     </section>
     <aside class="selection" id="selection" aria-label="Харьцуулах сонголт" hidden>
@@ -61,7 +64,7 @@
     <p id="notice" class="sr-only" role="status"></p>
   </main>
   <footer class="wrap footer">
-    <p>ЭШ-ийн мэдээлэл <strong id="admission-year">2026–2027</strong> оны журамд үндэслэв. Оноо тооцох арга болон шинэ элсэлтийн нөхцөлийг сургуулийн албан ёсны журмаас шалгаарай.</p>
+    <p>Лавлахад өөр өөр оны бүртгэл багтсан. ЭШ-ийн босго нийтлэгдсэн бүртгэлд тухайн үеийн журам үйлчилнэ. МУИС-ийн 2023 оны нээлттэй өгөгдлийн лиценз, эх сурвалжийг <a href="/study/catalog/">лавлахаас</a> харна уу.</p>
     <a href="/">Solio нүүр хуудас ↗</a>
   </footer>
   <dialog id="detail" aria-labelledby="detail-title">

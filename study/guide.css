@@ -143,3 +143,13 @@ body:has(dialog[open]) { overflow: hidden; }
   .dialog-inner { padding: 16px; }
   .details div { grid-template-columns: minmax(94px, .65fr) minmax(0, 1.35fr); }
 }
+
+#filters:has(#level-filter:not([hidden])) { grid-template-columns: minmax(0, 2fr) repeat(3, minmax(0, 1fr)); }
+.more-results { display: block; margin: 18px auto 0; }
+.study-load-error { margin-bottom: 12px; color: var(--muted); font-size: .88rem; }
+.card details summary { cursor: pointer; font-size: .85rem; color: var(--green); }
+.card details ul { margin-block: 8px; padding-inline-start: 18px; font-size: .85rem; }
+@media (max-width: 700px) {
+  #filters:has(#level-filter:not([hidden])) { grid-template-columns: 1fr 1fr; }
+  #filters .query { grid-column: 1 / -1; }
+}
