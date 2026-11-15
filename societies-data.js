@@ -41,7 +41,8 @@ export function societyQuery(url,now=new Date()){
   const school=clean(url.searchParams.get('school'),180),category=clean(url.searchParams.get('category'),40),q=clean(url.searchParams.get('q'),100),club=clean(url.searchParams.get('club_id'),70);
   if(school&&url.searchParams.get('school_only')==='1'){
    const names=schoolValues(school);
-   where.push(names.length?alias+'.school IN ('+names.map(()=>'?').join(',')+')':'0=1');
+   const schoolField=kind==='event'?"COALESCE(NULLIF(e.school,''), c.school)":'c.school';
+   where.push(names.length?schoolField+' IN ('+names.map(()=>'?').join(',')+')':'0=1');
    params.push(...names);
   }else if(school){where.push('('+alias+".school='' OR "+alias+'.school=?)');params.push(school)}
   if(category){where.push(alias+'.category=?');params.push(category)}

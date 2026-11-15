@@ -939,7 +939,7 @@ function updateBottomTabs(active){
  document.querySelectorAll('.mobileBottomNav button').forEach(b=>{const selected=b.id===mobile;b.classList.toggle('active',selected);if(selected)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
  document.querySelectorAll('#desktopNav button').forEach(b=>{const selected=b.dataset.desktopTab===active;b.classList.toggle('is-active',selected);if(selected)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
 }
-function goDesktopListings(){openSolioMarket()}
+function goDesktopListings(){goMobileHome()}
 function goDesktopSearch(){goMobileSearch();if(window.innerWidth>=769)requestAnimationFrame(()=>document.getElementById("solioGlobalSearch")?.focus({preventScroll:true}))}
 function pushSolioRoute(hash){
  const path=schoolView?'/':location.pathname;
@@ -948,7 +948,10 @@ function pushSolioRoute(hash){
  const url=path+(query.size?'?'+query:'')+hash;
  if(url!==location.pathname+location.search+location.hash)history.pushState(null,'',url);
 }
-function goMobileHome(){openSolioMarket()}
+function goMobileHome(){
+ marketSchoolOverride=null;
+ openSolioMarket();
+}
 function openSolioMarket(saved=false,scope){
   pushSolioRoute(saved?'#market':'');
   resetMarketFilters(false);
@@ -1063,7 +1066,7 @@ function closeAdminPanel(){const p=document.getElementById("adminPanel");if(p)p.
 function openAdminPanel(){if(!isCampusAdmin()){toast("Админ эрх шаардлагатай");return}window.SolioAdmin?.open()}
 
 document.getElementById("modal").addEventListener("click",e=>{if(e.target.id==="modal")closeModal()});
-appwriteAuth.onAuthStateChange((_event,s)=>{if(session?.user?.id!==s?.user?.id){profileSchool='';marketSchoolOverride=null}session=s;pendingProfileSchool=loadProfileSchool(s?.user?.id);try{updateNav();syncAdminNav();render();if(document.body.classList.contains('solioCommunityPage'))renderCommunityFeed();startSearchAlerts()}catch(err){console.error('Solio auth UI:',err)}});
+appwriteAuth.onAuthStateChange((_event,s)=>{if(session?.user?.id!==s?.user?.id){profileSchool='';marketSchoolOverride=null;extraListings.clear()}session=s;pendingProfileSchool=loadProfileSchool(s?.user?.id);try{updateNav();syncAdminNav();render();if(document.body.classList.contains('solioCommunityPage'))renderCommunityFeed();startSearchAlerts()}catch(err){console.error('Solio auth UI:',err)}});
 setupSocial();
 const startRoute=location.pathname+location.search+location.hash;
 const homeEntry=!location.hash&&!SolioSchools.schoolFromPath(location.pathname);

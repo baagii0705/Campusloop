@@ -1,13 +1,15 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { DatabaseSync } from 'node:sqlite';
 import { canonicalSchool, directory, schoolFromPath, schoolUrl } from '../schools-data.js';
 import { societyQuery } from '../societies-data.js';
 import { listingQueries, onRequestGet as feed } from '../functions/api/public/[collection].js';
 import { onRequestGet as schoolRoute } from '../functions/schools/[slug].js';
 import { onRequestGet, onRequestPost } from '../functions/api/saved-searches/index.js';
 
+let DatabaseSync;
+try { ({ DatabaseSync } = await import('node:sqlite')); } catch {}
+const sqliteOnly = { skip: !DatabaseSync && 'SQLite integration requires Node 22+' };
 const migration = await readFile(new URL('../migrations/005-saved-searches.sql', import.meta.url), 'utf8');
 function database() {
   const sqlite = new DatabaseSync(':memory:');
@@ -58,7 +60,7 @@ test('school listings and societies keep exact scope through pagination', async 
   assert.equal(filtered.filter(x => x.method === 'or').length, 2);
   for (const kind of ['club', 'event']) {
     const strict = societyQuery(new URL('https://sol1o.me/api/societies?' + new URLSearchParams({ kind, school: 'МУИС', school_only: '1' })));
-    assert.match(strict.sql, /school IN \(\?,\?\)/);
+    assert.match(strict.sql, /IN \(\?,\?\)/);
     assert.doesNotMatch(strict.sql, /\.school=''/);
     assert.match(strict.sql, /\.status='published'/);
     assert.equal(strict.params[0], 'МУИС');
@@ -67,7 +69,7 @@ test('school listings and societies keep exact scope through pagination', async 
   assert.equal(response.status, 400);
 });
 
-test('saved searches are private, matching schools receive one notification and read state persists', async () => {
+test('saved searches are private, matching schools receive one notification and read state persists', sqliteOnly, async () => {
   const db = database();
   const call = (owner, body, origin = 'https://sol1o.me') => {
     const request = new Request('https://sol1o.me/api/saved-searches', {
@@ -123,7 +125,7 @@ test('saved searches are private, matching schools receive one notification and 
   } finally { globalThis.fetch = previous; }
 });
 
-test('inbox recovers missed publications and retries the same time window after a fetch failure', async () => {
+test('inbox recovers missed publications and retries the same time window after a fetch failure', sqliteOnly, async () => {
   const db = database();
   const { storeSavedSearch, syncListingMatches } = await import('../saved-listing-searches.js');
   await storeSavedSearch(db, 'buyer', { term: 'Инженерийн шугам', school: 'ШУТИС' }, new Date('2026-11-01T12:00:00Z'));
@@ -158,7 +160,7 @@ test('inbox recovers missed publications and retries the same time window after 
   } finally { globalThis.fetch = previous; }
 });
 
-test('school event tab returns upcoming and past public events for that school only', async () => {
+test('school event tab returns upcoming and past public events for that school only', sqliteOnly, async () => {
   const sqlite = new DatabaseSync(':memory:');
   sqlite.exec(await readFile(new URL('../migrations/002-clubs-events.sql', import.meta.url), 'utf8'));
   const insert = sqlite.prepare(`
@@ -171,5 +173,8 @@ test('school event tab returns upcoming and past public events for that school o
   insert.run('other', 'ШУТИС', '2026-11-03T12:00:00.000Z', '2026-11-03T13:00:00.000Z', 'published', '2026-10-01');
   insert.run('pending', 'МУИС', '2026-11-03T12:00:00.000Z', '2026-11-03T13:00:00.000Z', 'pending', '2026-10-01');
   const query = societyQuery(new URL('https://sol1o.me/api/societies?kind=event&school_only=1&school=МУИС&scope=school'), new Date('2026-11-02'));
-  assert.deepEqual(sqlite.prepare(query.sql).all(...query.params).map(row => row.id), ['next', 'old']);
+  sqlite.prepare("INSERT INTO society_clubs (id,owner_id,name,school,category,summary,description,search_text,status,created_at) VALUES ('numclub','owner','Club','МУИС','Технологи','summary','description','club','published','2026-10-01')").run();
+  insert.run('linked', '', '2026-11-04T12:00:00.000Z', '2026-11-04T13:00:00.000Z', 'published', '2026-10-01');
+  sqlite.prepare("UPDATE society_events SET club_id='numclub' WHERE id='linked'").run();
+  assert.deepEqual(sqlite.prepare(query.sql).all(...query.params).map(row => row.id), ['next', 'linked', 'old']);
 });
