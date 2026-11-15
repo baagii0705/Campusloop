@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="mn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f3ed">
+  <meta name="description" content="Монголын төрийн их, дээд сургуулиуд, хөтөлбөрийн код, мэргэжлийн улсын индекс болон МУИС-ийн нээлттэй өгөгдлийн лавлах.">
+  <link rel="canonical" href="https://sol1o.me/study/catalog/">
+  <link rel="icon" href="/solio-icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/study/guide.css">
+  <link rel="stylesheet" href="/study/catalog/directory.css">
+  <script type="module" src="/study/catalog/directory.js"></script>
+  <title>Сургууль, хөтөлбөрийн лавлах · Solio</title>
+</head>
+<body>
+  <a class="skip" href="#catalog-query">Хайлт руу очих</a>
+  <header class="top">
+    <div class="wrap top-inner">
+      <a class="brand" href="/" aria-label="Solio нүүр хуудас">sol<span>1</span>o<span>.</span></a>
+      <a class="market-link" href="/study/">Мэргэжил сонголт</a>
+    </div>
+  </header>
+  <main class="wrap">
+    <header class="catalog-heading">
+      <h1>Сургууль, хөтөлбөрийн лавлах</h1>
+      <p class="intro">Монголын төрийн их, дээд сургуулиудын хөтөлбөр, код болон элсэлтийн албан ёсны холбоос.</p>
+    </header>
+    <nav class="views" id="catalog-views" aria-label="Лавлахын хэсгүүд">
+      <a href="?view=schools" data-view="schools" aria-current="page">Сургуулиуд</a>
+      <a href="?view=programs" data-view="programs">Хөтөлбөрүүд</a>
+      <a href="?view=index" data-view="index">Улсын индекс</a>
+      <a href="?view=courses" data-view="courses">МУИС-ийн хичээл</a>
+      <a href="?view=curriculum" data-view="curriculum">МУИС-ийн төлөвлөгөө</a>
+      <a href="?view=relations" data-view="relations">МУИС-ийн залгамж хичээл</a>
+    </nav>
+    <form class="filters" id="catalog-filters" role="search">
+      <label class="query">Хайх <input id="catalog-query" type="search" autocomplete="off" enterkeyhint="search" placeholder="Сургуулийн нэр эсвэл товчлол"></label>
+      <label id="catalog-school-filter" hidden>Сургууль <select id="catalog-school"><option value="">Бүх сургууль</option></select></label>
+      <label id="catalog-level-filter" hidden>Түвшин <select id="catalog-level"><option value="">Бүх түвшин</option></select></label>
+    </form>
+    <p id="catalog-context" class="catalog-note" hidden></p>
+    <div class="results-head">
+      <p id="catalog-status" role="status">Мэдээлэл ачаалж байна…</p>
+      <button id="catalog-reset" class="text-button" type="button" hidden>Шүүлт арилгах</button>
+    </div>
+    <div id="catalog-results" class="results"></div>
+    <div class="catalog-paging">
+      <button id="catalog-more" class="secondary" type="button" hidden>Цааш үзэх</button>
+      <button id="catalog-retry" class="secondary" type="button" hidden>Дахин ачаалах</button>
+    </div>
+    <noscript><p>Лавлахыг хайхын тулд JavaScript-ээ идэвхжүүлээрэй.</p></noscript>
+  </main>
+  <footer class="wrap footer catalog-footer">
+    <details><summary>Эх сурвалж ба ашиглалтын нөхцөл</summary><ul id="catalog-sources"></ul>
+      <p>МУИС-ийн 2023 оны нээлттэй өгөгдлийг лавлахад зориулж нэгтгэж, кодын лавлах тулгалт нэмж боловсруулав. МУИС-ийн боловсруулсан өгөгдөл <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC BY-SA 2.0</a> лицензтэй.</p>
+    </details>
+    <a href="/study/">Мэргэжил сонголт ↗</a>
+  </footer>
+</body>
+</html>

@@ -93,6 +93,10 @@ function showSchoolPage(name) {
     else link.removeAttribute('aria-current');
     link.href = SolioSchools.schoolUrl(name) + (link.dataset.schoolTab === 'listing' ? '' : '?tab=' + link.dataset.schoolTab);
   });
+  const catalogLink = document.getElementById('schoolProgramCatalog');
+  const programPath = SolioSchools.schoolProgramPath(name);
+  catalogLink.hidden = !programPath;
+  if (programPath) catalogLink.href = solioPublicPath(programPath);
   updateBottomTabs('bottomSchools');
   if (kind === 'listing') {
     ensureSolioListings();

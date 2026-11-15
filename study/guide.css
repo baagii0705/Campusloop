@@ -37,6 +37,7 @@ h1, h2, h3, p { margin: 0; }
 .hero h1 { margin-block: 16px; font-size: clamp(3.35rem, 7.7vw, 7rem); font-weight: 820; letter-spacing: -.082em; line-height: .96; }
 .hero h1 span { color: #506c3f; }
 .intro { max-width: 420px; font-size: clamp(.96rem, 1.65vw, 1.12rem); line-height: 1.55; color: var(--muted); }
+.catalog-entry { display: inline-block; margin-top: 18px; font-size: .93rem; font-weight: 720; color: var(--green); }
 .interest { padding: clamp(16px, 3vw, 28px); border-radius: 18px; color: #f8f7f0; background: var(--green); }
 .interest h2 { margin-bottom: 12px; font-size: clamp(1.05rem, 2vw, 1.28rem); }
 .path-options { display: grid; gap: 5px; }

@@ -2,6 +2,30 @@ export const schools = ["Бүх сургууль","МУИС","ШУТИС","АШ�
 
 export const ALL_SCHOOLS = schools[0];
 
+const schoolProgramIds = new Map([
+  ['МУИС', 'num'],
+  ['ШУТИС', 'must'],
+  ['АШУҮИС', 'mnums'],
+  ['МУБИС', 'msue'],
+  ['ХААИС', 'muls'],
+  ['Төмөр замын дээд сургууль', 'rum'],
+  ['Монгол Улсын Консерватори', 'conserv'],
+  ['СУИС', 'suis'],
+  ['Дотоод хэргийн их сургууль', 'uia'],
+  ['Үндэсний батлан хамгаалахын их сургууль', 'mndu'],
+  ['Монгол-Германы хамтарсан ашигт малтмал, технологийн их сургууль', 'gmit'],
+  ['Эрдэнэт цогцолбор дээд сургууль', 'eit'],
+  ['Удирдлагын академи', 'naog'],
+  ['Үндэсний тагнуулын их сургууль', 'intel'],
+  ['ШУТИС-ийн харьяа Өмнөговь аймаг дахь Технологийн дээд сургууль', 'omno'],
+  ['Монгол Улсын консерваторын харьяа Завхан аймаг дахь Хөгжим бүжгийн коллеж', 'zavcon'],
+  ['Шинжлэх ухаан, технологийн их сургуулийн харьяа технологийн коллеж', 'koosen'],
+]);
+
+for (const name of schoolProgramIds.keys()) {
+  if (!schools.includes(name)) schools.push(name);
+}
+
 const aliases = {
   'ШУТИС': ['must', 'Шинжлэх ухаан, технологийн их сургууль'],
   'МУИС': ['num', 'Монгол Улсын Их Сургууль'],
@@ -43,6 +67,11 @@ export function schoolAbbreviation(value) {
 
 export function schoolUrl(school) {
   return '/schools/' + encodeURIComponent(aliases[school]?.[0] || searchText(school).replaceAll(' ', '-'));
+}
+
+export function schoolProgramPath(school) {
+  const id = schoolProgramIds.get(canonicalSchool(school));
+  return id ? '/study/catalog/?view=programs&school=' + id : '';
 }
 
 export function schoolFromPath(path) {

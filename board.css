@@ -1014,7 +1014,7 @@ body.solioCommunityPage #socialHub {
   border-color: #ad4325;
   color: #fff;
 }
-.schoolPageTabs { display: flex; gap: 8px; margin-bottom: 16px; }
+.schoolPageTabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
 .schoolPageTabs a { display: inline-grid; place-items: center; min-width: 64px; }
 .schoolHubCard:focus-visible { outline-offset: 1px !important; }
 #schoolPageHeading .marketHeading h1 { overflow-wrap: anywhere; }

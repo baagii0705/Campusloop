@@ -1,4 +1,4 @@
-import {mkdir,copyFile,readFile,writeFile,rm} from 'node:fs/promises';
+import {mkdir,copyFile,readFile,writeFile,rm,cp} from 'node:fs/promises';
 import {resolve} from 'node:path';
 import {createHash} from 'node:crypto';
 import {build,transform} from 'esbuild';
@@ -35,8 +35,7 @@ const schoolBundle=await build({entryPoints:[resolve(root,'scripts/schools-brows
 const schoolPath=await asset(schoolBundle.outputFiles[0].text,'js',{initial:true});
 html=html.replace('src="/schools-browser.js"','src="'+schoolPath+'"');
 await writeFile(resolve(dist,'index.html'),html);
-await mkdir(resolve(dist,'study'),{recursive:true});
-for(const file of ['index.html','guide.css','guide.js','catalog.js'])await copyFile(resolve(root,'study',file),resolve(dist,'study',file));
+await cp(resolve(root,'study'),resolve(dist,'study'),{recursive:true,filter:path=>!path.endsWith('/README.md')});
 for(const file of ['manifest.webmanifest','solio-icon.svg'])await copyFile(resolve(root,file),resolve(dist,file));
 // Share links and printable QR artwork work independently of the marketplace bundle.
 await mkdir(resolve(dist,'partner-assets'),{recursive:true});

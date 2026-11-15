@@ -1,0 +1,20 @@
+.catalog-heading { padding-block: clamp(22px, 5vw, 54px) 24px; }
+.catalog-heading h1 { margin-bottom: 9px; max-width: 20ch; font-size: clamp(2rem, 6vw, 4.25rem); letter-spacing: -.055em; line-height: 1.06; }
+.catalog-heading .intro { max-width: 48ch; }
+.catalog-note { margin-top: 13px; color: var(--muted); font-size: .85rem; line-height: 1.5; }
+.catalog-card { gap: 9px; overflow-wrap: anywhere; }
+.catalog-card h2 { margin-top: 2px; font-size: clamp(1.05rem, 1.8vw, 1.24rem); line-height: 1.28; letter-spacing: -.024em; }
+.catalog-card .card-actions { align-items: baseline; gap: 8px 14px; }
+.catalog-card details summary, .catalog-footer summary { cursor: pointer; color: var(--green); font-size: .83rem; font-weight: 650; }
+.catalog-card .details { margin: 10px 0 0; }
+.catalog-card .details div { grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); font-size: .8rem; }
+.catalog-card ul, .catalog-footer ul { margin: 8px 0; padding-left: 20px; }
+.catalog-card li, .catalog-footer li { margin-bottom: 5px; font-size: .82rem; }
+.catalog-paging { margin-block: 14px 26px; text-align: center; }
+.catalog-footer { margin-top: 22px; }
+.catalog-footer details p { margin-block: 8px; }
+@media (max-width: 565px) {
+  #catalog-views { column-gap: 4px; }
+  #catalog-views a { padding-inline: 6px; }
+  #catalog-results { grid-template-columns: 1fr; }
+}
