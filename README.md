@@ -17,7 +17,7 @@ npm run build
 npm run dev
 ```
 
-`npm run dev` serves the generated `dist/`, uses an in-memory SQLite database for the D1 APIs, and forwards existing public listing reads to production. It never writes new offers, clubs or events to production. `/?demo=1#societies` adds clearly marked sample clubs/events to that local database for browser QA. These samples are not bundled into the website or deployed database.
+`npm run dev` serves the generated `dist/`, uses an in-memory SQLite database for the D1 APIs, and uses the same public Appwrite listing reads as production. It never writes new offers, clubs or events to production. `/?demo=1#societies` adds clearly marked sample clubs/events to that local database for browser QA. These samples are not bundled into the website or deployed database.
 
 ## Main files
 
@@ -86,7 +86,7 @@ Keep the API handlers, migrations, tests, build/preview scripts, Capacitor confi
 
 ## Navigation and usability
 
-Mobile navigation has five entry points: Home, Search, Add, All features and My account. All features exposes every student and business destination with a short explanation. Add opens a chooser for listings, Wanted requests, posts, events and clubs. Authentication resumes only the requested UI after a successful login; closing the dialog cancels that intent and never submits content automatically.
+Mobile navigation includes listings, schools, new listing, the menu, and the profile. The menu contains Community, Wanted, global search, and a chooser for other kinds of posts. Authentication resumes only the requested UI after a successful login; closing the dialog cancels that intent and never submits content automatically.
 
 Listing details retain the underlying search or feature page. Offers, reports and owner status changes use labelled Mongolian forms. Public search states when its results cover only the loaded listing pages and passes the query to Wanted, Community or clubs/events on request. Feature bundles remain lazy loaded.
 
@@ -97,3 +97,21 @@ Open «Удирдлага» with an Appwrite `admin`-label account. Overview sho
 Approvals, rejections, pauses and deletion use a labelled review dialog and block duplicate submits. Closing the dashboard or changing accounts discards its private DOM and in-memory data. Server-side Appwrite JWT checks and existing collection permissions remain authoritative. Reports have no status column: the UI lists received reports without pretending they are resolved or unresolved. Moderation can open older listings by ID.
 
 Apply `migrations/003-vip.sql` for timed VIP requests. Public badges appear only while approved and unexpired. Existing VIP requests, accounts, images and ads are retained. The old appended administration blocks and their unused styles have been removed; only the on-demand dashboard owns moderation UI.
+
+
+## School pages and saved searches
+
+School URLs use the school directory in `schools-data.js`. For example, `/schools/must`
+and `/schools/num?tab=event` can be opened directly. The homepage uses the school in
+the signed-in user's Appwrite `seller_profiles` document. Visiting a school page
+uses the school in the URL. Club and event tabs read approved content from the
+existing societies API.
+
+Apply [005-saved-searches.sql](migrations/005-saved-searches.sql) to the D1
+database bound as `SPONSOR_DB` before merging to the production branch. It adds
+three tables and two indexes. No Appwrite schema change or API key is needed.
+The API verifies the user's existing Appwrite JWT and uses Appwrite's anonymous
+document permissions to check publication. The existing profile inbox displays
+saved-search matches, and the database keeps one record per user and listing.
+The open app checks for matches every minute and on returning to the tab.
+The inbox also catches up with public listings when a publish request was missed.

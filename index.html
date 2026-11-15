@@ -34,6 +34,7 @@
     <a class="boardWordmark" href="/" onclick="goMobileHome();return false" aria-label="Solio нүүр хуудас">sol<span class="s1LogoOne">1</span>o<span class="s1LogoDot">.</span></a>
     <nav class="boardLinks" id="desktopNav" aria-label="Үндсэн цэс">
       <button type="button" data-desktop-tab="bottomHome" class="is-active" aria-current="page" onclick="goMobileHome()">Зарууд</button>
+      <button type="button" data-desktop-tab="bottomSchools" onclick="goMobileSchools()">Сургуулиуд</button>
       <button type="button" data-desktop-tab="bottomWanted" onclick="openSolioWanted()">Хайж байна</button>
       <a class="boardNavLink s1StudyNav" href="/study/" onclick="this.href=solioPublicPath('/study/')">Мэргэжил сонголт</a>
     </nav>
@@ -41,11 +42,11 @@
       <button type="button" id="adminNavBtn" onclick="openAdminPanel()" hidden>Удирдлага</button>
       <button type="button" class="boardSaved" onclick="toggleFav()" aria-label="Хадгалсан зарууд"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#board-heart"></use></svg> <span id="favCount">0</span></button>
       <button type="button" class="boardMenuButton" onclick="SolioUX.menu()" aria-label="Цэс нээх" aria-haspopup="dialog">Цэс</button>
-      <button type="button" id="boardAccountButton" onclick="openModal('login')">Нэвтрэх</button>
+      <button type="button" id="boardAccountButton" onclick="openModal('login')">Нэвтрэх</button><button type="button" id="navListingAlerts" onclick="openSolioNotifications()" hidden>Мэдэгдэл <span></span></button>
     </div>
   </div>
 </header>
-<main class="wrap" id="solioMain" tabindex="-1"><section id="solioSearchPage" class="solioSearchPage" hidden aria-label="Solio хайлт"><div class="solioSearchHead"><h1>Хайх</h1><p>Зар, сургууль эсвэл бусад хэсгээс хайгаарай.</p></div><label for="solioGlobalSearch">Юу хайж байна?</label><input id="solioGlobalSearch" type="search" autocomplete="off" placeholder="Жишээ: iPad, сурах бичиг, МУИС" oninput="scheduleSolioGlobalSearch()"><button type="button" class="easyTextButton" id="clearGlobalSearch" onclick="clearSolioSearch()" hidden>Хайлтыг арилгах ×</button><div class="easySearchRoutes" aria-label="Бусад хэсгээс хайх"><button type="button" onclick="SolioUX.searchElsewhere('wanted')">Хайж буй зүйл</button><button type="button" onclick="SolioUX.searchElsewhere('event')">Эвент</button><button type="button" onclick="SolioUX.searchElsewhere('club')">Клуб</button><button type="button" onclick="SolioUX.searchElsewhere('community')">Нийтлэл</button></div><p id="globalSearchStatus" role="status" class="easyHint"></p><div class="solioSearchSectionTitle">Сургуулиуд</div><div id="solioSearchSchools" class="solioSearchSchools"></div><button type="button" class="solioAllSchoolsLink" onclick="goMobileSchools()">Бүх сургуулийг үзэх →</button><div class="solioSearchSectionTitle">Зарууд</div><div id="solioSearchListings" class="solioSearchListings"></div><button type="button" class="solioSearchMore" id="solioSearchMore" onclick="loadListings(false)" hidden>Өөр заруудыг ачаалах ↓</button></section><section class="schoolHub" id="schoolHub" aria-label="Сургуулийн тусгай зах"><div class="schoolHubHead"><div><h2>Сургуулиуд</h2></div><button type="button" class="schoolHubAll" onclick="openSchoolMarket('Бүх сургууль')">Бүх зар →</button></div><label class="schoolHubSearchLabel" for="schoolHubSearch">Сургуулиа хайх</label><input id="schoolHubSearch" class="schoolHubSearch" type="search" placeholder="Сургуулийн нэр бичих..." autocomplete="off" oninput="renderSchoolHub()"><div class="schoolHubGrid" id="schoolHubGrid"></div><div class="schoolHubCurrent" id="schoolHubCurrent" hidden><span id="schoolHubCurrentName"></span><button type="button" onclick="openSchoolMarket('Бүх сургууль')">✕ Цэвэрлэх</button></div></section><section class="socialHub" id="socialHub"><div class="socialHead solioWantedHeading"><button type="button" class="solioCommunityBack" onclick="goMobileHome()">← Зарууд</button><h2>Хайж байна</h2></div><div class="socialPanel" id="wantedPanel"><div class="socialBar"><div><p>Хэрэгтэй зүйлээ бичээд оюутнуудаас асуугаарай.</p></div><button onclick="toggleSocialForm('wanted')">+ Хүсэлт нэмэх</button></div><form id="wantedForm" class="socialForm" hidden onsubmit="submitWanted(event)"><label>Сургууль<select id="wantedSchool" required></select></label><label>Юу хайж байна?<input id="wantedTitle" maxlength="120" minlength="3" required placeholder="Жишээ: Инженерийн тооны машин"></label><label>Төсөв (₮)<input id="wantedBudget" type="number" min="0" placeholder="Жишээ: 80000"></label><label>Тайлбар<textarea id="wantedDetails" maxlength="800" rows="3" placeholder="Загвар, нөхцөл, бусад мэдээлэл"></textarea></label><label>Холбоо барих (утас эсвэл Instagram)<input id="wantedContact" maxlength="120" placeholder="Жишээ: @username"></label><p class="easyHint">Төсөв, тайлбар, холбоо барих мэдээлэл заавал биш. Холбоо барих мэдээлэл нийтэд харагдана.</p><button type="submit">Хүсэлт нийтлэх</button><button type="button" onclick="toggleSocialForm('wanted')">Хаах</button><span class="socialStatus" id="wantedStatus"></span></form><div class="wantedSearchBar"><input id="wantedQueryFilter" type="search" placeholder="Хайж буй зүйл хайх..." aria-label="Хайж буй зүйл хайх" autocomplete="off" oninput="filterWantedRequests()"><select id="wantedSchoolFilter" aria-label="Хайж буй зүйлийн сургууль" onchange="filterWantedRequests()"><option value="">Бүх сургууль</option></select></div><div class="socialItems" id="wantedItems"><p>Хүсэлтүүдийг ачаалж байна...</p></div><p id="wantedSearchEmpty" hidden>Тохирох Хайж буй зүйл олдсонгүй.</p></div><div class="socialPanel" id="communityPanel">
+<main class="wrap" id="solioMain" tabindex="-1"><section id="solioSearchPage" class="solioSearchPage" hidden aria-label="Solio хайлт"><div class="solioSearchHead"><h1>Хайх</h1><p>Зар, сургууль эсвэл бусад хэсгээс хайгаарай.</p></div><label for="solioGlobalSearch">Юу хайж байна?</label><input id="solioGlobalSearch" type="search" autocomplete="off" placeholder="Жишээ: iPad, сурах бичиг, МУИС" oninput="scheduleSolioGlobalSearch()"><button type="button" class="easyTextButton" id="clearGlobalSearch" onclick="clearSolioSearch()" hidden>Хайлтыг арилгах ×</button><div class="easySearchRoutes" aria-label="Бусад хэсгээс хайх"><button type="button" onclick="SolioUX.searchElsewhere('wanted')">Хайж буй зүйл</button><button type="button" onclick="SolioUX.searchElsewhere('event')">Эвент</button><button type="button" onclick="SolioUX.searchElsewhere('club')">Клуб</button><button type="button" onclick="SolioUX.searchElsewhere('community')">Нийтлэл</button></div><p id="globalSearchStatus" role="status" class="easyHint"></p><div class="solioSearchSectionTitle">Сургуулиуд</div><div id="solioSearchSchools" class="solioSearchSchools"></div><button type="button" class="solioAllSchoolsLink" onclick="goMobileSchools()">Бүх сургуулийг үзэх →</button><div class="solioSearchSectionTitle">Зарууд</div><div id="solioSearchListings" class="solioSearchListings"></div><button type="button" class="solioSearchMore" id="solioSearchMore" onclick="loadListings(false)" hidden>Өөр заруудыг ачаалах ↓</button></section><section class="schoolHub" id="schoolHub" aria-label="Сургуулиуд"><div class="schoolHubHead"><div><h2>Сургуулиуд</h2></div><button type="button" class="schoolHubAll" onclick="goMobileHome()">Бүх зар →</button></div><label class="schoolHubSearchLabel" for="schoolHubSearch">Сургуулиа хайх</label><input id="schoolHubSearch" class="schoolHubSearch" type="search" placeholder="Сургуулийн нэр бичих..." autocomplete="off" oninput="renderSchoolHub()"><div class="schoolHubGrid" id="schoolHubGrid"></div><div class="schoolHubCurrent" id="schoolHubCurrent" hidden><span id="schoolHubCurrentName"></span><button type="button" onclick="openSchoolMarket('Бүх сургууль')">✕ Цэвэрлэх</button></div></section><section class="socialHub" id="socialHub"><div class="socialHead solioWantedHeading"><button type="button" class="solioCommunityBack" onclick="goMobileHome()">← Зарууд</button><h2>Хайж байна</h2></div><div class="socialPanel" id="wantedPanel"><div class="socialBar"><div><p>Хэрэгтэй зүйлээ бичээд оюутнуудаас асуугаарай.</p></div><button onclick="toggleSocialForm('wanted')">+ Хүсэлт нэмэх</button></div><form id="wantedForm" class="socialForm" hidden onsubmit="submitWanted(event)"><label>Сургууль<select id="wantedSchool" required></select></label><label>Юу хайж байна?<input id="wantedTitle" maxlength="120" minlength="3" required placeholder="Жишээ: Инженерийн тооны машин"></label><label>Төсөв (₮)<input id="wantedBudget" type="number" min="0" placeholder="Жишээ: 80000"></label><label>Тайлбар<textarea id="wantedDetails" maxlength="800" rows="3" placeholder="Загвар, нөхцөл, бусад мэдээлэл"></textarea></label><label>Холбоо барих (утас эсвэл Instagram)<input id="wantedContact" maxlength="120" placeholder="Жишээ: @username"></label><p class="easyHint">Төсөв, тайлбар, холбоо барих мэдээлэл заавал биш. Холбоо барих мэдээлэл нийтэд харагдана.</p><button type="submit">Хүсэлт нийтлэх</button><button type="button" onclick="openSavedSearchForm(document.getElementById('wantedTitle').value,document.getElementById('wantedSchool').value)">Олдвол мэдэгд</button><button type="button" onclick="toggleSocialForm('wanted')">Хаах</button><span class="socialStatus" id="wantedStatus"></span></form><div class="wantedSearchBar"><input id="wantedQueryFilter" type="search" placeholder="Хайж буй зүйл хайх..." aria-label="Хайж буй зүйл хайх" autocomplete="off" oninput="filterWantedRequests()"><select id="wantedSchoolFilter" aria-label="Хайж буй зүйлийн сургууль" onchange="filterWantedRequests()"><option value="">Бүх сургууль</option></select></div><button type="button" class="savedSearchWanted" onclick="openSavedSearchForm(document.getElementById('wantedQueryFilter').value,document.getElementById('wantedSchoolFilter').value || profileSchool)">Олдвол мэдэгд</button><div class="socialItems" id="wantedItems"><p>Хүсэлтүүдийг ачаалж байна...</p></div><p id="wantedSearchEmpty" hidden>Тохирох Хайж буй зүйл олдсонгүй.</p></div><div class="socialPanel" id="communityPanel">
   <header class="campusDiscussionHead">
     <div>
       <h1>Оюутны булан<span>.</span></h1>
@@ -76,25 +77,37 @@
     </nav>
   </div>
 </div></section><section id="market" class="boardMarket" aria-labelledby="boardTitle">
-  <header class="marketHeading">
+  <header class="marketHeading" id="marketHomeHeading">
     <h1 id="boardTitle">Зарын зах</h1>
     <button type="button" class="boardPost" onclick="openModal('post')"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-plus"></use></svg> Зар нэмэх</button>
   </header>
-  <form class="boardFind" role="search" onsubmit="event.preventDefault();render();document.getElementById('search').blur()">
+  <header id="schoolPageHeading" hidden>
+    <div class="marketHeading"><h1 id="schoolPageName"></h1><div class="schoolPageActions"><button type="button" class="schoolControl" onclick="openMySchool()">Миний сургууль</button><button type="button" class="schoolControl" aria-expanded="false" onclick="openSchoolPicker(this,openSchoolPage)">Сургууль солих</button></div></div>
+    <nav class="schoolPageTabs" aria-label="Сургуулийн хэсэг">
+      <a href="#market" data-school-tab="listing">Зар</a><a href="?tab=club" data-school-tab="club">Клуб</a><a href="?tab=event" data-school-tab="event">Эвент</a>
+    </nav>
+  </header>
+  <div class="schoolScope" id="schoolScope" role="group" aria-label="Зар үзэх сургууль">
+    <button type="button" id="marketMySchool" aria-pressed="false" onclick="openMySchool()">Миний сургууль</button>
+    <button type="button" id="marketSwitchSchool" aria-expanded="false" onclick="openSchoolPicker(this,openSchoolPage)">Сургууль солих</button>
+    <button type="button" id="marketAllSchools" aria-pressed="true" onclick="openSolioMarket(false,SolioSchools.ALL_SCHOOLS)">Бүх сургууль</button>
+  </div>
+  <div id="marketListings">
+  <form class="boardFind" role="search" onsubmit="event.preventDefault();scheduleSolioMarketRender(0);document.getElementById('search').blur()">
     <label class="boardSearch"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-search"></use></svg><input id="search" type="search" aria-label="Зар хайх" placeholder="Зар хайх…" autocomplete="off" enterkeyhint="search" oninput="scheduleSolioMarketRender()"></label>
     <button type="submit" class="boardSearchSubmit">Хайх</button>
   </form>
   <div class="marketFilters">
-    <label><span class="boardSrOnly">Сургууль</span><select id="marketSchool" onchange="school=this.value;render()"><option value="Бүх сургууль">Бүх сургууль</option></select></label>
-    <label><span class="boardSrOnly">Ангилал</span><select id="marketCategory" onchange="category=this.value;render()"><option value="Бүх ангилал">Бүх ангилал</option></select></label>
+    <label><span class="boardSrOnly">Ангилал</span><select id="marketCategory" onchange="category=this.value;loadListings()"><option value="Бүх ангилал">Бүх ангилал</option></select></label>
     <details class="boardFilter">
       <summary><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-filter"></use></svg>Шүүлтүүр</summary>
       <div class="boardFilterPanel">
         <label>Эрэмбэ<select id="sort" onchange="render()"><option value="new">Шинэ эхэнд</option><option value="low">Хямд нь эхэнд</option><option value="high">Үнэтэй нь эхэнд</option></select></label>
-        <label>Зарын төлөв<select id="solioListingFilter" onchange="render()"><option value="all">Бүх зар</option><option value="free">Үнэгүй өгөх</option><option value="available">Зарагдаж байгаа</option></select></label>
+        <label>Зарын төлөв<select id="solioListingFilter" onchange="loadListings()"><option value="all">Бүх зар</option><option value="free">Үнэгүй өгөх</option><option value="available">Зарагдаж байгаа</option></select></label>
         <button type="button" id="myListings" aria-pressed="false" onclick="toggleMyListings()">Зөвхөн миний зар</button>
       </div>
     </details>
+    <span id="viewingSchool" class="viewingSchool" aria-live="polite" hidden></span>
   </div>
   <div class="boardFeedHead">
     <div class="boardCount"><h2 id="boardFeedTitle">Шинэ зарууд</h2><span id="results" role="status"></span></div>
@@ -102,8 +115,16 @@
   </div>
   <div class="boardGrid" id="cards"><div class="solioLoadingListings" role="status">Заруудыг ачаалж байна…</div></div>
   <button type="button" class="boardMore" id="loadMoreListings" onclick="loadListings(false)" hidden>Дараагийн зарууд ↓</button>
+  </div>
+  <section id="schoolSocieties" hidden aria-label="Сургуулийн клуб, эвент"><p id="schoolSocietyStatus" role="status"></p><div id="schoolSocietyItems"></div><button type="button" class="boardMore" id="schoolSocietyMore" hidden>Цааш үзэх</button></section>
 </section>
-</main><section id="adminPanel" class="adminPanel wrap" aria-label="Удирдлагын хэсэг" hidden></section><nav class="mobileBottomNav" aria-label="Solio утасны үндсэн цэс"><button type="button" id="bottomHome" onclick="goMobileHome()" class="active" aria-current="page"><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-home"></use></svg></i><small class="bottomLabel">Зарууд</small></button><button type="button" id="bottomWanted" onclick="openSolioWanted()" class=""><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-wanted"></use></svg></i><small class="bottomLabel">Хайж байна</small></button><button type="button" id="bottomAdd" onclick="openModal('post')" class="bottomPost"><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-plus"></use></svg></i><small class="bottomLabel">Зар нэмэх</small></button><button type="button" id="bottomMenu" onclick="SolioUX.menu()" class=""><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-grid"></use></svg></i><small class="bottomLabel">Цэс</small></button><button type="button" id="bottomAccount" onclick="goMobileSpace()" class=""><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-person"></use></svg></i><small class="bottomLabel">Миний</small></button></nav><footer class="footer"><div class="wrap"><b>sol<span>1</span>o.</b><p>© 2026 sol1o</p><a id="solioSponsorFooterCta" href="/partners" onclick="this.href=solioPublicPath('/partners')">Байгууллагад ↗</a></div></footer><div class="modal" id="modal" role="presentation"><div class="dialog" role="dialog" aria-modal="true" aria-label="Solio цонх"><button class="close" type="button" aria-label="Цонх хаах" title="Хаах" onclick="closeModal()">✕</button><div id="modalBody"></div></div></div><div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div><script src="https://unpkg.com/appwrite@17.0.0/dist/iife/sdk.js"></script><script>
+</main><section id="adminPanel" class="adminPanel wrap" aria-label="Удирдлагын хэсэг" hidden></section><nav class="mobileBottomNav" aria-label="Solio утасны үндсэн цэс"><button type="button" id="bottomHome" onclick="goMobileHome()" class="active" aria-current="page"><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-home"></use></svg></i><small class="bottomLabel">Зар</small></button><button type="button" id="bottomSchools" onclick="goMobileSchools()" class=""><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-school"></use></svg></i><small class="bottomLabel">Сургуулиуд</small></button><button type="button" id="bottomAdd" onclick="openModal('post')" class="bottomPost"><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-plus"></use></svg></i><small class="bottomLabel">Зар нэмэх</small></button><button type="button" id="bottomMenu" onclick="SolioUX.menu()" class=""><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-grid"></use></svg></i><small class="bottomLabel">Цэс</small></button><button type="button" id="bottomAccount" onclick="goMobileSpace()" class=""><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-person"></use></svg></i><small class="bottomLabel">Миний</small><span id="listingAlertDot" hidden aria-hidden="true"></span></button></nav><footer class="footer"><div class="wrap"><b>sol<span>1</span>o.</b><p>© 2026 sol1o</p><a id="solioSponsorFooterCta" href="/partners" onclick="this.href=solioPublicPath('/partners')">Байгууллагад ↗</a></div></footer><div class="modal" id="modal" role="presentation"><div class="dialog" role="dialog" aria-modal="true" aria-label="Solio цонх"><button class="close" type="button" aria-label="Цонх хаах" title="Хаах" onclick="closeModal()">✕</button><div id="modalBody"></div></div></div><dialog class="schoolPicker" id="schoolPicker" aria-labelledby="schoolPickerTitle" onclick="if(event.target===this)this.close()">
+  <div class="schoolPickerContent">
+    <header><h2 id="schoolPickerTitle">Сургууль солих</h2><button type="button" aria-label="Хаах" onclick="this.closest('dialog').close()">×</button></header>
+    <input id="schoolPickerQuery" type="search" placeholder="Сургуулийн нэрээр хайх" aria-label="Сургуулийн нэрээр хайх" autocomplete="off">
+    <div id="schoolPickerItems"></div>
+  </div>
+</dialog><div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div><script src="https://unpkg.com/appwrite@17.0.0/dist/iife/sdk.js"></script><script src="/schools-browser.js" defer></script><script src="/school-directory.js" defer></script><script src="/search-alerts.js" defer></script><script>
 const APPWRITE_CONFIG={endpoint:"https://sgp.cloud.appwrite.io/v1",projectId:"6ae367b80007a4d31918",databaseId:"public",storageBucketId:"6ae3b5970003d472ee8f"};
 const appwriteClient=new Appwrite.Client().setEndpoint(APPWRITE_CONFIG.endpoint).setProject(APPWRITE_CONFIG.projectId);
 const appwriteAccount=new Appwrite.Account(appwriteClient);const appwriteDatabases=new Appwrite.Databases(appwriteClient);const appwriteStorage=new Appwrite.Storage(appwriteClient);const appwriteListeners=[];
@@ -126,21 +147,72 @@ const appwriteStorageApi={from(bucket){return {upload:async(path,file)=>{if(!APP
 const db={from:appwriteCollection,storage:appwriteStorageApi};
 let savedOnly=false;let listings=[],session=null,school="Бүх сургууль",category="Бүх ангилал",onlyMine=false;
 function readSolioFavorites(){try{const values=JSON.parse(localStorage.getItem("solio_favorites")||"[]");return new Set(Array.isArray(values)?values.filter(x=>typeof x==="string"):[])}catch{return new Set()}}
-const favorites=readSolioFavorites(),schools=["Бүх сургууль","МУИС","ШУТИС","АШУҮИС","МУБИС","СЭЗИС","ХААИС","Төмөр замын дээд сургууль","Монгол Улсын Консерватори","СУИС","ХИС","ОУУБИС","Отгонтэнгэр их сургууль","Их Засаг олон улсын их сургууль","Улаанбаатар Эрдэм их сургууль","Хүмүүнлэгийн ухааны их сургууль","Монголын Үндэсний Их Сургууль","Үндэсний Техникийн Их Сургууль","Этүгэн их сургууль","Ач Анагаах Ухааны Их Сургууль","Эм Зүйн Шинжлэх Ухааны Их Сургууль","Оточ Манрамба Их Сургууль","Монос их сургууль","Улаанбаатар их сургууль","Сити их сургууль","Рояаль олон улсын их сургууль","Глобал удирдагч их сургууль","Идэр их сургууль","Шихихутуг их сургууль","Санхүү эдийн засгийн их сургууль","Дотоод хэргийн их сургууль","Үндэсний батлан хамгаалахын их сургууль","Монгол-Германы хамтарсан ашигт малтмал, технологийн их сургууль","Хөдөлмөр, нийгмийн харилцааны дээд сургууль","Мандах их сургууль","Зохиомж дээд сургууль","Ховд их сургууль","Дорнод их сургууль","Орхон их сургууль","Эрдэнэт цогцолбор дээд сургууль","Дархан-Уул аймаг дахь АШУҮИС-ийн салбар сургууль"],cats=["Бүх ангилал","Ном, сурах бичиг","Электрон хэрэгсэл","Хувцас, хэрэглээ","Дотуур байр","Хичээлийн хэрэгсэл","Бие даалт","Бусад"];
+const favorites=readSolioFavorites(),schools=SolioSchools.schools,cats=["Бүх ангилал","Ном, сурах бичиг","Электрон хэрэгсэл","Хувцас, хэрэглээ","Дотуур байр","Хичээлийн хэрэгсэл","Бие даалт","Бусад"];
 function escapeHTML(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function toast(t){const e=document.getElementById("toast");e.textContent=t;e.style.display="block";setTimeout(()=>e.style.display="none",4000)}
 
 function solioStatusLabel(s){return ({available:'🟢 Зарагдаж байна',reserved:'🟡 Захиалагдсан',sold:'⚫ Зарагдсан'})[s]||'🟢 Зарагдаж байна'}
 function changeSolioListingStatus(id){
- const x=listings.find(z=>z.id===id);if(!session||!x||x.user_id!==session.user.id)return;
+ const x=currentListing(id);if(!session||!x||x.user_id!==session.user.id)return;
  const labels={available:'Зарагдаж байна',reserved:'Захиалагдсан',sold:'Зарагдсан'};
  SolioUX.listingForm(id,'Зарын төлөв','<label>Одоогийн төлөв<select name="status">'+Object.entries(labels).map(([key,label])=>'<option value="'+key+'" '+(key===(x.status||'available')?'selected':'')+'>'+label+'</option>').join('')+'</select></label>','Төлөв хадгалах',async data=>{
   const status=data.get('status');if(!labels[status]||x.user_id!==session?.user?.id)throw Error('Энэ зарыг удирдах эрхгүй байна.');
   const {error}=await db.from('listings').update({status}).eq('id',id).eq('user_id',session.user.id);if(error)throw error;x.status=status;render();toast('Зарын төлөв шинэчлэгдлээ.');
  });
 }
-async function openSolioNotifications(){if(!session){openModal('login');return}document.getElementById('modal').classList.add('show');const body=document.getElementById('modalBody');body.innerHTML='<div class="solioNotifs"><button type="button" class="solioNotifBack" onclick="openSolioProfile()">← Профайл руу буцах</button><h2>🔔 Мэдэгдэл</h2><div id="solioNotifList">Ачаалж байна...</div></div>';const {data,error}=await db.from('solio_notifications').select('id,kind,title,body,listing_id,read_at,created_at').order('created_at',{ascending:false}).limit(60);const el=document.getElementById('solioNotifList');if(!el)return;if(error){el.textContent='Мэдэгдэл уншихад алдаа гарлаа';return}el.innerHTML=data?.length?data.map(n=>'<button type="button" class="solioNotifItem" data-notif="'+escapeHTML(n.id)+'"><b>'+escapeHTML(n.title)+'</b><span>'+escapeHTML(n.body)+'</span></button>').join(''):'<p>Одоогоор мэдэгдэл алга.</p>';el.querySelectorAll('[data-notif]').forEach(b=>b.onclick=async()=>{const n=data.find(z=>z.id===b.dataset.notif);await db.from('solio_notifications').update({read_at:new Date().toISOString()}).eq('id',n.id);refreshSolioNotificationCount();if(n.kind==='chat'){toast('Solio Chat үйлчилгээг сайтаас хассан.')}else if(n.listing_id){const x=listings.find(z=>z.id===n.listing_id);if(x)openListing(x.id);else{closeModal();toast('Зарыг жагсаалтаас хайна уу')}}})}
-async function refreshSolioNotificationCount(){const badge=document.getElementById('solioNotifCount');if(!badge)return;if(!session){badge.textContent='';return}const {data,error}=await db.from('solio_notifications').select('id,read_at').eq('user_id',session.user.id).limit(100);if(!error){const count=(data||[]).filter(x=>!x.read_at).length;badge.textContent=count?(' '+(count>=100?'99+':count)):''}}
+async function openSolioNotifications(){
+ const user=session?.user?.id;
+ if(!user){openModal('login');return}
+ const body=document.getElementById('modalBody');
+ document.getElementById('modal').classList.add('show');
+ body.innerHTML='<div class="solioNotifs"><button type="button" class="solioNotifBack" onclick="openSolioProfile()">← Профайл</button><h2>Мэдэгдэл</h2><div id="solioNotifList" role="status">Ачаалж байна…</div></div>';
+ const root=document.getElementById('solioNotifList');
+ const [legacy,matches]=await Promise.all([
+  db.from('solio_notifications').select('id,kind,title,body,listing_id,read_at,created_at').eq('user_id',user).order('created_at',{ascending:false}).limit(60),
+  syncSearchAlerts().catch(()=>null)
+ ]);
+ if(!root.isConnected||session?.user?.id!==user)return;
+ const rows=[...(legacy.data||[]),...(matches?.notifications||[]).map(row=>({...row,kind:'listing_match'}))]
+   .sort((a,b)=>String(b.created_at).localeCompare(String(a.created_at)));
+ root.innerHTML=rows.map((row,i)=>'<button type="button" class="solioNotifItem" data-notif-index="'+i+'">'+
+   '<b>'+escapeHTML(row.title)+(row.read_at?'':' · Шинэ')+'</b><span>'+escapeHTML(row.body)+'</span></button>').join('')||
+   '<p>'+(legacy.error&&!matches?'Мэдэгдлүүдийг ачаалж чадсангүй.':'Одоогоор мэдэгдэл алга.')+'</p>';
+ if(!matches||matches.pending){
+  const retry=document.createElement('button');
+  retry.type='button';
+  retry.textContent='Хадгалсан хайлтын мэдэгдлийг шинэчлэх';
+  retry.onclick=openSolioNotifications;
+  root.append(retry);
+ }
+ root.onclick=async event=>{
+  const button=event.target.closest('[data-notif-index]');
+  if(!button)return;
+  const row=rows[Number(button.dataset.notifIndex)];
+  button.disabled=true;
+  try{
+   if(row.kind==='listing_match'){
+    await savedSearchRequest({action:'read',id:row.listing_id});
+    if(!row.read_at)searchAlertUnread=Math.max(0,searchAlertUnread-1);
+    showSearchAlertCount();
+   }else{
+    await db.from('solio_notifications').update({read_at:new Date().toISOString()}).eq('id',row.id).eq('user_id',user);
+   }
+   if(row.listing_id&&row.kind!=='chat'){
+    if(!await openListingById(row.listing_id,()=>button.isConnected&&session?.user?.id===user)&&button.isConnected)toast('Зар олдсонгүй.');
+   }else if(button.isConnected)await openSolioNotifications();
+  }catch(error){toast(error.message)}
+  finally{button.disabled=false}
+ };
+}
+async function refreshSolioNotificationCount(){
+ const badge=document.getElementById('solioNotifCount'),user=session?.user?.id;
+ if(!badge||!user)return;
+ const {data}=await db.from('solio_notifications').select('id,read_at').eq('user_id',user).limit(100);
+ if(!badge.isConnected||session?.user?.id!==user)return;
+ const count=(data||[]).filter(x=>!x.read_at).length+searchAlertUnread;
+ badge.textContent=count?' '+(count>=100?'99+':count):'';
+}
+
 let solioModalReturnFocus=null,solioListingReturnHash='#market';
 function closeModal(restoreRoute=true){solioAfterAuth=null;document.getElementById("modal").classList.remove("show");requestAnimationFrame(()=>{if(!document.getElementById("modal").classList.contains("show"))solioModalReturnFocus?.focus({preventScroll:true})});document.querySelector(".dialog").classList.remove("detailDialog","authDialog","quickPostDialog","easyDialog");if(restoreRoute){if(location.hash==="#register")history.replaceState(null,"",location.pathname+location.search);if(location.hash.startsWith("#listing-"))history.replaceState(null,"",location.pathname+location.search+solioListingReturnHash);window.SolioCampus?.restoreModalRoute();window.SolioSocieties?.restoreModalRoute()}}
 
@@ -182,10 +254,9 @@ function leaveSolioCommunity(){window.SolioCancelFeatureNavigation?.();window.So
 function toggleSocialForm(mode,force=false){
  if(!session){requireSolioAccount(()=>toggleSocialForm(mode,true),mode==='wanted'?'Хайж буй зүйлээ бичих':'Нийтлэл бичих');return}
  const el=document.getElementById(mode==='wanted'?'wantedForm':'communityForm');el.hidden=force?false:!el.hidden;
- if(!el.hidden){let selected='';try{selected=localStorage.getItem('solio_my_school')||localStorage.getItem('solio_last_school')||''}catch{}const schoolField=el.querySelector('select');if(selected&&!el.dataset.started){schoolField.value=selected;el.dataset.started='true'}el.scrollIntoView({behavior:'smooth',block:'center'});el.querySelector('input,textarea')?.focus({preventScroll:true})}
+ if(!el.hidden){let selected='';try{selected=profileSchool||localStorage.getItem('solio_last_school')||''}catch{}const schoolField=el.querySelector('select');if(selected&&!el.dataset.started){schoolField.value=selected;el.dataset.started='true'}el.scrollIntoView({behavior:'smooth',block:'center'});el.querySelector('input,textarea')?.focus({preventScroll:true})}
 }
 function setupSocial(){const opts=schools.slice(1).map(s=>'<option value="'+escapeHTML(s)+'">'+escapeHTML(s)+'</option>').join('');document.getElementById('wantedSchool').innerHTML=opts;document.getElementById('communityPostSchool').innerHTML=opts;document.getElementById('communitySchool').innerHTML='<option value="">Бүх сургууль</option>'+opts;document.getElementById('wantedSchoolFilter').innerHTML='<option value="">Бүх сургууль</option>'+opts;
- for(const name of schools.slice(1))document.getElementById('marketSchool').add(new Option(name,name));
  for(const name of cats.slice(1))document.getElementById('marketCategory').add(new Option(name,name));
 }
 async function loadWantedPosts(){
@@ -270,14 +341,32 @@ async function deleteCommunityComment(id){
 async function submitWanted(event){event.preventDefault();if(!session){requireSolioAccount(()=>toggleSocialForm('wanted',true),'Нийтлэх');return}const submit=event.target.querySelector('[type=submit]');if(submit.disabled)return;submit.disabled=true;try{const status=document.getElementById('wantedStatus');status.textContent='Нийтэлж байна...';const row={user_id:session.user.id,school:document.getElementById('wantedSchool').value,title:document.getElementById('wantedTitle').value.trim(),details:document.getElementById('wantedDetails').value.trim(),budget:document.getElementById('wantedBudget').value===''?null:Number(document.getElementById('wantedBudget').value),contact:document.getElementById('wantedContact').value.trim()};const {error}=await db.from('wanted_posts').insert(row);status.textContent=error?'Алдаа: '+error.message:'Хүсэлт нийтлэгдлээ.';if(!error){toast(status.textContent);event.target.reset();event.target.hidden=true;await loadWantedPosts()}}catch{document.getElementById('wantedStatus').textContent='Холболтоо шалгаад дахин оролдоно уу.'}finally{submit.disabled=false}}
 async function submitCommunity(event){event.preventDefault();if(!session){requireSolioAccount(()=>toggleSocialForm('community',true),'Нийтлэх');return}const submit=event.target.querySelector('[type=submit]');if(submit.disabled)return;submit.disabled=true;try{const status=document.getElementById('communityStatus');status.textContent='Нийтэлж байна...';const {error}=await db.from('campus_posts').insert({user_id:session.user.id,school:document.getElementById('communityPostSchool').value,content:document.getElementById('communityContent').value.trim()});status.textContent=error?'Алдаа: '+error.message:'Нийтлэл нийтлэгдлээ.';if(!error){toast(status.textContent);event.target.reset();event.target.hidden=true;await loadCommunityPosts()}}catch{document.getElementById('communityStatus').textContent='Холболтоо шалгаад дахин оролдоно уу.'}finally{submit.disabled=false}}
 async function deleteSocial(table,id){if(!session||!confirm('Энэ нийтлэлийг устгах уу?'))return;const {error}=await db.from(table).delete().eq('id',id).eq('user_id',session.user.id);if(error){alert('Устгаж чадсангүй: '+error.message);return}if(table==='campus_posts')await loadCommunityPosts();else await loadWantedPosts()}
-function openSchoolMarket(name){ensureSolioListings();leaveSolioCommunity();leaveSolioSearch();leaveMobileSchools();pushSolioRoute('#market');school=schools.includes(name)?name:'Бүх сургууль';savedOnly=false;onlyMine=false;category='Бүх ангилал';document.getElementById('search').value='';render();updateBottomTabs('bottomHome');document.getElementById('market').scrollIntoView({behavior:'smooth',block:'start'})}
+function openSchoolMarket(name){openSolioMarket(false,SolioSchools.canonicalSchool(name)||SolioSchools.ALL_SCHOOLS)}
 /* Original Solio campus marks: not affiliated with or copied from university logos. */
 function solioCampusMark(name){const initials=({'МУИС':'МУ','ШУТИС':'ШУ','АШУҮИС':'АШ','МУБИС':'МБ','СЭЗИС':'СЭ','ХААИС':'ХА','Төмөр замын дээд сургууль':'ТЗ'})[name]||name.split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]).join('').toLocaleUpperCase('mn-MN');let hash=0;for(const ch of name)hash=(hash*31+ch.charCodeAt(0))>>>0;const palettes=[['#5D32A5','#B894F2'],['#176F81','#79CFD4'],['#AD4D6B','#F2A8B9'],['#295C9B','#93C5F4'],['#82601F','#E5C37C'],['#426D51','#9AD3A4'],['#7A438B','#D6A4E5'],['#A34E36','#F0AE8E']];const [dark,light]=palettes[hash%palettes.length];const shape=hash%3;const decoration=shape===0?'<circle cx="42" cy="18" r="15" fill="'+light+'" opacity=".35"/>':shape===1?'<path d="M33 4 60 27 37 54 10 30Z" fill="'+light+'" opacity=".3"/>':'<path d="M4 39 37 5 61 39 37 61Z" fill="'+light+'" opacity=".3"/>';return '<svg class="solioCampusLogo" viewBox="0 0 64 64" role="img" aria-label="'+escapeHTML(name)+' сургуулийн Solio тэмдэг"><rect width="64" height="64" rx="17" fill="'+dark+'"/>'+decoration+'<circle cx="32" cy="32" r="23" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1.5"/><text x="32" y="38" text-anchor="middle" font-size="'+(initials.length>2?'15':'20')+'" font-weight="800" fill="#fff" font-family="system-ui, sans-serif">'+escapeHTML(initials)+'</text></svg>'}
-function renderSchoolHub(){const grid=document.getElementById('schoolHubGrid');if(!grid)return;const term=(document.getElementById('schoolHubSearch')?.value||'').trim().toLocaleLowerCase('mn-MN');const visible=schools.slice(1).filter(s=>s.toLocaleLowerCase('mn-MN').includes(term));grid.innerHTML=visible.map(s=>{const count=listings.filter(x=>x.school===s).length;return '<button type="button" class="schoolHubCard '+(school===s?'selected':'')+'" data-campus="'+escapeHTML(s)+'"><span class="schoolHubMonogram">'+solioCampusMark(s)+'</span><span class="schoolHubName">'+escapeHTML(s)+'</span><span class="schoolHubCount">'+count+' зар <span aria-hidden="true"><svg class="boardIcon s1ArrowIcon" viewBox="0 0 24 24"><use href="#board-arrow"></use></svg></span></span></button>'}).join('')||'<p class="schoolHubNoResults">Сургууль олдсонгүй. Нэрийг өөрөөр бичээд үзээрэй.</p>';grid.querySelectorAll('[data-campus]').forEach(b=>b.onclick=()=>openSchoolMarket(b.dataset.campus));const current=document.getElementById('schoolHubCurrent');current.hidden=school==='Бүх сургууль';document.getElementById('schoolHubCurrentName').textContent=school==='Бүх сургууль'?'':school+' · тусгай зах'}
+function renderSchoolHub(){
+ const grid=document.getElementById('schoolHubGrid');
+ const names=SolioSchools.matchSchoolNames(document.getElementById('schoolHubSearch').value);
+ grid.innerHTML=names.map(name=>'<a class="schoolHubCard" href="'+escapeHTML(solioPublicPath(SolioSchools.schoolUrl(name)))+'" data-school-name="'+escapeHTML(name)+'"><span class="schoolHubMonogram">'+solioCampusMark(name)+'</span><span class="schoolHubName">'+escapeHTML(name)+'</span></a>').join('')||
+  '<p class="schoolHubNoResults">Сургууль олдсонгүй.</p>';
+ grid.onclick=event=>{
+  const link=event.target.closest('[data-school-name]');
+  if(!link||event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;
+  event.preventDefault();openSchoolPage(link.dataset.schoolName);
+ };
+}
+document.querySelector('.schoolPageTabs').addEventListener('click',event=>{
+ const link=event.target.closest('[data-school-tab]');
+ if(!link||event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;
+ event.preventDefault();
+ if(link.getAttribute('aria-current')==='page')return;
+ history.pushState(null,'',link.href);
+ showSchoolPage(schoolView);
+});
 let solioMarketRenderTimer=null;
-function scheduleSolioMarketRender(){
+function scheduleSolioMarketRender(delay=220){
   clearTimeout(solioMarketRenderTimer);
-  solioMarketRenderTimer=setTimeout(()=>{solioMarketRenderTimer=null;render()},150);
+  solioMarketRenderTimer=setTimeout(()=>{solioMarketRenderTimer=null;if(!document.getElementById('marketListings').hidden&&document.getElementById('market').getClientRects().length)loadListings()},delay);
 }
 function solioCardPrice(price){
   const number=Number(price);
@@ -296,17 +385,16 @@ function solioCardDate(value){
 function render(){
   const cards=document.getElementById('cards');
   if(!cards)return;
-  clearTimeout(solioMarketRenderTimer);
-  solioMarketRenderTimer=null;
   if(document.body.classList.contains('solioSchoolsPage'))renderSchoolHub();
-  document.getElementById('marketSchool').value=school;
+  syncSchoolControls();
   document.getElementById('marketCategory').value=category;
-  const q=(document.getElementById('search')?.value||'').trim().toLocaleLowerCase('mn-MN');
+  const q=document.getElementById('search').value.trim().slice(0,120);
+  const terms=SolioSchools.searchTerms(q);
   const filter=document.getElementById('solioListingFilter')?.value||'all';
   let visible=listings.filter(x=>{
-    if(school!=='Бүх сургууль'&&x.school!==school)return false;
+    if(school!==SolioSchools.ALL_SCHOOLS&&SolioSchools.canonicalSchool(x.school)!==school)return false;
     if(category!=='Бүх ангилал'&&x.category!==category)return false;
-    if(q&&![x.title,x.description,x.school,x.category].some(v=>String(v||'').toLocaleLowerCase('mn-MN').includes(q)))return false;
+    if(terms.length){const text=SolioSchools.searchableListing(x);if(!terms.every(term=>text.includes(term)))return false;}
     if(filter==='free'&&Number(x.price)!==0)return false;
     if(filter==='available'&&(x.status||'available')!=='available')return false;
     if(onlyMine&&x.user_id!==session?.user?.id)return false;
@@ -315,7 +403,8 @@ function render(){
   });
   const sort=document.getElementById('sort')?.value||'new';
   const sortListings=(x,y)=>{
-    const vipX=window.SolioVIP?.isActive?.(x.id)?1:0,vipY=window.SolioVIP?.isActive?.(y.id)?1:0;
+    const vipX=x.status!=='sold'&&window.SolioVIP?.isActive?.(x.id)?1:0;
+    const vipY=y.status!=='sold'&&window.SolioVIP?.isActive?.(y.id)?1:0;
     if(vipX!==vipY)return vipY-vipX;
     if(sort==='low')return Number(x.price)-Number(y.price);
     if(sort==='high')return Number(y.price)-Number(x.price);
@@ -323,20 +412,20 @@ function render(){
   };
   visible.sort(sortListings);
   const results=document.getElementById('results');
-  const pending=loadingListings&&listingPage===0&&!listings.length;
-  results.textContent=pending?'':visible.length+' зар';
+  const pending=loadingListings;
+  results.textContent=pending||feedError?'':visible.length+' зар';
   const filtered=Boolean(q||filter!=='all'||category!=='Бүх ангилал'||school!=='Бүх сургууль');
   const feedTitle=document.getElementById('boardFeedTitle');
   if(savedOnly)feedTitle.textContent='Хадгалсан зар';
   else if(onlyMine)feedTitle.textContent='Миний зар';
   else if(q)feedTitle.textContent='Хайлтын дүн';
   else if(category!=='Бүх ангилал')feedTitle.textContent=category;
-  else feedTitle.textContent=(sort==='new'&&!filtered)?'Шинэ зарууд':'Зарууд';
-  document.getElementById('boardReset').hidden=!(filtered||sort!=='new'||savedOnly||onlyMine);
+  else feedTitle.textContent=(sort==='new'&&!schoolView)?'Шинэ зарууд':'Зарууд';
+  document.getElementById('boardReset').hidden=!(q||filter!=='all'||category!=='Бүх ангилал'||sort!=='new'||savedOnly||onlyMine);
   const ownBtn=document.getElementById('myListings');
   if(ownBtn)ownBtn.setAttribute('aria-pressed',String(onlyMine));
   if(solioImageObserver)cards.querySelectorAll('img[data-src]').forEach(img=>solioImageObserver.unobserve(img));
-  cards.innerHTML=visible.map((x,index)=>{
+  cards.innerHTML=(feedError&&!pending)?'<div class="boardEmpty solioListingError" role="alert">Заруудыг ачаалж чадсангүй. <button type="button" onclick="loadListings()">Дахин оролдох</button></div>':visible.map((x,index)=>{
     const mine=session?.user?.id===x.user_id;
     const sold=x.status==='sold';
     const reserved=x.status==='reserved';
@@ -344,9 +433,9 @@ function render(){
     const saved=favorites.has(x.id);
     const title=escapeHTML(x.title||'Нэргүй зар');
     const price=escapeHTML(solioCardPrice(x.price));
-    const schoolName=escapeHTML(x.school||'');
+    const schoolName=escapeHTML(SolioSchools.schoolAbbreviation(x.school));
     const date=escapeHTML(solioCardDate(x.created_at));
-    const vip=window.SolioVIP?.isActive?.(x.id);
+    const vip=!sold&&window.SolioVIP?.isActive?.(x.id);
     const vipRequest=mine&&window.SolioVIP?.statusFor?.(x.id);
     const description=String(x.description||'').trim();
     const note=description && description!==String(x.title||'').trim()
@@ -361,11 +450,12 @@ function render(){
       +(solioListingGallery(x).length>1?'<span class="boardPhotoCount" aria-label="'+solioListingGallery(x).length+' зураг">'+boardIcon('image')+solioListingGallery(x).length+'</span>':'')
       +'<button class="boardHeart" type="button" data-fav="'+escapeHTML(x.id)+'" aria-label="'+(saved?'Хадгалснаас хасах':'Зарыг хадгалах')+'" aria-pressed="'+String(saved)+'">'+boardIcon('heart')+'</button></div>'
       +'<div class="boardListingInfo"><strong class="boardPrice">'+price+'</strong><h3><button class="boardListingLink" type="button" aria-label="'+title+' — '+price+'">'+title+'</button></h3>'
-      +'<div class="boardMeta">'+(schoolName?'<span>'+schoolName+'</span>':'')+(date?'<time>'+date+'</time>':'')+'</div>'
+      +'<div class="boardMeta">'+(schoolName?'<span title="'+escapeHTML(x.school)+'">'+schoolName+'</span>':'')+(date?'<time>'+date+'</time>':'')+'</div>'
       +(vipRequest?'<small class="vipRequestStatus">'+escapeHTML({pending:'VIP хүсэлт хянагдаж байна',active:'VIP идэвхтэй',rejected:'VIP хүсэлт татгалзсан'}[vipRequest]||vipRequest)+'</small>':'')
       +(mine?'<div class="solioCardManage"><button type="button" data-edit="'+escapeHTML(x.id)+'">Засах</button><button type="button" data-delete="'+escapeHTML(x.id)+'">Устгах</button></div>':'')
       +'</div></article>';
-  }).join('')||(pending?'<div class="solioLoadingListings" role="status">Заруудыг ачаалж байна…</div>':'<div class="boardEmpty">'+(savedOnly?'Хадгалсан зар алга. Таалагдсан зарынхаа зүрхэн дээр дараарай.':onlyMine?'Энд чиний нийтэлсэн зарууд харагдана.':filtered?'Тохирох зар олдсонгүй. Өөр үгээр хайх эсвэл шүүлтүүрээ цэвэрлээрэй.':'Одоогоор зар алга.')+'</div>');
+  }).join('')||(pending?'<div class="solioLoadingListings" role="status">Заруудыг ачаалж байна…</div>':'<div class="boardEmpty">'+(savedOnly?'Хадгалсан зар алга. Таалагдсан зарынхаа зүрхэн дээр дараарай.':onlyMine?'Энд чиний нийтэлсэн зарууд харагдана.':q?(moreListings?'Энэ хуудсанд тохирох зар алга. Дараагийн заруудыг үзээрэй.':'Тохирох зар олдсонгүй.'):(school!==SolioSchools.ALL_SCHOOLS&&!moreListings?'Энэ сургуульд одоогоор зар алга.':filtered?'Тохирох зар олдсонгүй.':'Одоогоор зар алга.'))+
+    (q.length>=3&&!moreListings&&!savedOnly&&!onlyMine?'<button type="button" class="emptyAlertButton" onclick="saveCurrentListingSearch()">Олдвол мэдэгд</button>':'')+'</div>');
   observeSolioImages(cards);
   if(document.body.classList.contains('solioSearchMode'))observeSolioImages(document.getElementById('solioSearchListings'));
   const favCount=document.getElementById('favCount');
@@ -478,7 +568,7 @@ function solioListingGallery(x){
   return [...new Set([x.image_url,...stored,...(Array.isArray(x.images)?x.images:[])]
     .filter(url=>typeof url==="string"&&/^https?:\/\//i.test(url)))];
 }
-function openListing(id){const x=listings.find(z=>z.id===id);if(!x)return;if(!location.hash.startsWith("#listing-"))solioListingReturnHash=location.hash;document.querySelector(".dialog").classList.remove("authDialog","quickPostDialog","easyDialog");const own=session?.user?.id===x.user_id;const photo='<div class="boardDetailMedia">'+solioCoverImage(x,'detailPhoto',true)+'<span class="boardDetailNoPhoto">'+boardIcon('image')+'Зураг харах боломжгүй</span></div>';const tel=x.phone?String(x.phone).replace(/[^+0-9]/g,''):'';const ig=x.instagram?String(x.instagram).replace(/^@/,'').split('instagram.com/').pop().split('/')[0]:'';const gallery=solioListingGallery(x);const thumbs=gallery.length>1?'<div class="detailThumbs">'+gallery.map((u,i)=>'<button type="button" data-photo="'+i+'">'+solioThumbImage(u,'Зураг '+(i+1))+'</button>').join('')+'</div>':'';const body=document.getElementById('modalBody');document.getElementById('modal').classList.add('show');document.querySelector('.dialog').classList.add('detailDialog');document.querySelector('.dialog').scrollTop=0;body.innerHTML='<div class="detailTop"><span>Solio / Зарын дэлгэрэнгүй</span><span>№ '+escapeHTML(x.id.slice(0,8))+'</span></div><div class="detailGrid"><div class="detailLeft">'+photo+thumbs+'<div class="detailDescription"><h3>Барааны тухай</h3><p>'+escapeHTML(x.description||'Тайлбар оруулаагүй байна.')+'</p></div><p class="detailSafety">Бараагаа биечлэн шалгаад төлбөрөө шилжүүлээрэй.</p></div><div class="detailRight" data-vip-listing="'+escapeHTML(x.id)+'"><h2>'+escapeHTML(x.title)+'</h2><div class="detailPrice">'+escapeHTML(solioCardPrice(x.price))+'</div><div class="detailFacts"><div><span>Сургууль</span><strong>'+escapeHTML(x.school)+'</strong></div><div><span>Ангилал</span><strong>'+escapeHTML(x.category)+'</strong></div><div><span>Нийтэлсэн</span><strong>'+new Date(x.created_at).toLocaleDateString('mn-MN')+'</strong></div></div>'+(x.meeting_place?'<a class="solioMeetingMap" href="https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(x.meeting_place)+'" target="_blank" rel="noopener noreferrer">Газрын зураг дээр хайх ↗</a>':'')+'<button type="button" class="solioSellerLink" id="sellerProfileLink">'+boardIcon('person')+'Худалдагчийн профайл</button><h3 class="detailContactTitle">Худалдагчтай холбогдох</h3>'+(tel?'<a class="detailAction" href="tel:'+escapeHTML(tel)+'">'+boardIcon('phone')+''+escapeHTML(x.phone)+' · Залгах ↗</a>':'')+(ig?'<a class="detailAction detailInstagram" href="https://www.instagram.com/'+encodeURIComponent(ig)+'/" target="_blank" rel="noopener noreferrer">◎ @'+escapeHTML(ig)+' · Instagram ↗</a>':'')+(!tel&&!ig?'<p class="hint">Худалдагч холбоо барих мэдээлэл оруулаагүй байна.</p>':'') +(!own?'<button class="detailAction" id="makeOffer" type="button">'+boardIcon('chat')+'Үнийн санал илгээх</button>':'')+(own?'<button class="detailSecondary" id="solioChangeStatus">Зарын төлөв өөрчлөх</button>':'')+'<button class="detailSecondary" id="detailReport">'+boardIcon('flag')+'Зарыг мэдээлэх</button><button class="detailSecondary" id="detailShare">'+boardIcon('share')+'Зарын холбоос хуваалцах</button><button class="detailSecondary" id="detailFav">'+boardIcon('heart')+(favorites.has(x.id)?'Хадгалснаас хасах':'Дуртайд хадгалах')+'</button>'+(own?'<button class="detailSecondary" id="detailEdit">Өөрийн зараа засах</button>':'')+'</div></div>';document.querySelectorAll('[data-photo]').forEach(b=>b.onclick=()=>{const img=body.querySelector('.detailPhoto');if(img){img.hidden=false;img.dataset.photoIndex=b.dataset.photo;img.src=gallery[Number(b.dataset.photo)]}});const statusBtn=document.getElementById('solioChangeStatus');if(statusBtn)statusBtn.onclick=()=>changeSolioListingStatus(x.id);const sellerProfileLink=document.getElementById('sellerProfileLink');if(sellerProfileLink)sellerProfileLink.onclick=()=>openSolioProfile(x.user_id);const offerButton=document.getElementById('makeOffer');if(offerButton)offerButton.onclick=()=>makeOffer(x.id);document.getElementById('detailReport').onclick=()=>reportListing(x.id);document.getElementById('detailShare').onclick=()=>shareListing(x.id);document.getElementById('detailFav').onclick=()=>{favorites.has(x.id)?favorites.delete(x.id):favorites.add(x.id);localStorage.setItem('solio_favorites',JSON.stringify([...favorites]));render();openListing(x.id)};if(own){const vipButton=document.createElement('button');vipButton.className='detailSecondary';vipButton.textContent='VIP зар болгох';vipButton.onclick=()=>SolioVIP.request(x.id);body.querySelector('.detailRight').append(vipButton);document.getElementById('detailEdit').onclick=()=>{closeModal();openModal('edit',x.id)};const offersBtn=document.createElement('button');offersBtn.className='detailSecondary';offersBtn.textContent='💬 Ирсэн үнийн саналууд';offersBtn.onclick=()=>showListingOffers(x.id);body.querySelector('.detailRight').appendChild(offersBtn)}history.replaceState(null,'','#listing-'+encodeURIComponent(id));window.SolioVIP?.decorate()}
+function openListing(id){const x=currentListing(id);if(!x)return;if(!location.hash.startsWith("#listing-"))solioListingReturnHash=location.hash;document.querySelector(".dialog").classList.remove("authDialog","quickPostDialog","easyDialog");const own=session?.user?.id===x.user_id;const photo='<div class="boardDetailMedia">'+solioCoverImage(x,'detailPhoto',true)+'<span class="boardDetailNoPhoto">'+boardIcon('image')+'Зураг харах боломжгүй</span></div>';const tel=x.phone?String(x.phone).replace(/[^+0-9]/g,''):'';const ig=x.instagram?String(x.instagram).replace(/^@/,'').split('instagram.com/').pop().split('/')[0]:'';const gallery=solioListingGallery(x);const thumbs=gallery.length>1?'<div class="detailThumbs">'+gallery.map((u,i)=>'<button type="button" data-photo="'+i+'">'+solioThumbImage(u,'Зураг '+(i+1))+'</button>').join('')+'</div>':'';const body=document.getElementById('modalBody');document.getElementById('modal').classList.add('show');document.querySelector('.dialog').classList.add('detailDialog');document.querySelector('.dialog').scrollTop=0;body.innerHTML='<div class="detailTop"><span>Solio / Зарын дэлгэрэнгүй</span><span>№ '+escapeHTML(x.id.slice(0,8))+'</span></div><div class="detailGrid"><div class="detailLeft">'+photo+thumbs+'<div class="detailDescription"><h3>Барааны тухай</h3><p>'+escapeHTML(x.description||'Тайлбар оруулаагүй байна.')+'</p></div><p class="detailSafety">Бараагаа биечлэн шалгаад төлбөрөө шилжүүлээрэй.</p></div><div class="detailRight" data-vip-listing="'+escapeHTML(x.id)+'"><h2>'+escapeHTML(x.title)+'</h2><div class="detailPrice">'+escapeHTML(solioCardPrice(x.price))+'</div><div class="detailFacts"><div><span>Сургууль</span><strong>'+escapeHTML(x.school)+'</strong></div><div><span>Ангилал</span><strong>'+escapeHTML(x.category)+'</strong></div><div><span>Нийтэлсэн</span><strong>'+new Date(x.created_at).toLocaleDateString('mn-MN')+'</strong></div></div>'+(x.meeting_place?'<a class="solioMeetingMap" href="https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(x.meeting_place)+'" target="_blank" rel="noopener noreferrer">Газрын зураг дээр хайх ↗</a>':'')+'<button type="button" class="solioSellerLink" id="sellerProfileLink">'+boardIcon('person')+'Худалдагчийн профайл</button><h3 class="detailContactTitle">Худалдагчтай холбогдох</h3>'+(tel?'<a class="detailAction" href="tel:'+escapeHTML(tel)+'">'+boardIcon('phone')+''+escapeHTML(x.phone)+' · Залгах ↗</a>':'')+(ig?'<a class="detailAction detailInstagram" href="https://www.instagram.com/'+encodeURIComponent(ig)+'/" target="_blank" rel="noopener noreferrer">◎ @'+escapeHTML(ig)+' · Instagram ↗</a>':'')+(!tel&&!ig?'<p class="hint">Худалдагч холбоо барих мэдээлэл оруулаагүй байна.</p>':'') +(!own?'<button class="detailAction" id="makeOffer" type="button">'+boardIcon('chat')+'Үнийн санал илгээх</button>':'')+(own?'<button class="detailSecondary" id="solioChangeStatus">Зарын төлөв өөрчлөх</button>':'')+'<button class="detailSecondary" id="detailReport">'+boardIcon('flag')+'Зарыг мэдээлэх</button><button class="detailSecondary" id="detailShare">'+boardIcon('share')+'Зарын холбоос хуваалцах</button><button class="detailSecondary" id="detailFav">'+boardIcon('heart')+(favorites.has(x.id)?'Хадгалснаас хасах':'Дуртайд хадгалах')+'</button>'+(own?'<button class="detailSecondary" id="detailEdit">Өөрийн зараа засах</button>':'')+'</div></div>';document.querySelectorAll('[data-photo]').forEach(b=>b.onclick=()=>{const img=body.querySelector('.detailPhoto');if(img){img.hidden=false;img.dataset.photoIndex=b.dataset.photo;img.src=gallery[Number(b.dataset.photo)]}});const statusBtn=document.getElementById('solioChangeStatus');if(statusBtn)statusBtn.onclick=()=>changeSolioListingStatus(x.id);const sellerProfileLink=document.getElementById('sellerProfileLink');if(sellerProfileLink)sellerProfileLink.onclick=()=>openSolioProfile(x.user_id);const offerButton=document.getElementById('makeOffer');if(offerButton)offerButton.onclick=()=>makeOffer(x.id);document.getElementById('detailReport').onclick=()=>reportListing(x.id);document.getElementById('detailShare').onclick=()=>shareListing(x.id);document.getElementById('detailFav').onclick=()=>{favorites.has(x.id)?favorites.delete(x.id):favorites.add(x.id);localStorage.setItem('solio_favorites',JSON.stringify([...favorites]));render();openListing(x.id)};if(own){const vipButton=document.createElement('button');vipButton.className='detailSecondary';vipButton.textContent='VIP зар болгох';vipButton.onclick=()=>SolioVIP.request(x.id);body.querySelector('.detailRight').append(vipButton);document.getElementById('detailEdit').onclick=()=>{closeModal();openModal('edit',x.id)};const offersBtn=document.createElement('button');offersBtn.className='detailSecondary';offersBtn.textContent='💬 Ирсэн үнийн саналууд';offersBtn.onclick=()=>showListingOffers(x.id);body.querySelector('.detailRight').appendChild(offersBtn)}history.replaceState(null,'','#listing-'+encodeURIComponent(id));window.SolioVIP?.decorate()}
 function reportListing(id){
  if(!session){requireSolioAccount(()=>reportListing(id),'Зарыг мэдээлэх');return}
  const reasons=['Хуурамч зар','Зохисгүй агуулга','Спам','Бусад'];
@@ -489,95 +579,142 @@ function reportListing(id){
 async function showListingOffers(id){if(!session)return;const listing=listings.find(x=>x.id===id);if(!listing||listing.user_id!==session.user.id){toast('Энэ зарыг удирдах эрхгүй байна');return}const {data,error}=await db.from('listing_offers').select('id,amount,message,status,created_at').eq('listing_id',id).order('created_at',{ascending:false}).limit(100);if(error){toast('Санал уншихад алдаа: '+error.message);return}const body=document.getElementById('modalBody');body.innerHTML='<h2>Ирсэн үнийн саналууд</h2><p class="hint">Зөвшөөрсөн тохиолдолд худалдан авагчтай холбогдож тохиролцоно уу.</p>'+(data.length?data.map(o=>'<div class="offerRow"><b>'+Number(o.amount).toLocaleString('en-US')+' ₮</b><p>'+escapeHTML(o.message||'Зурвасгүй')+'</p><small>'+escapeHTML(({pending:'Хүлээгдэж байна',accepted:'Зөвшөөрсөн',declined:'Татгалзсан'})[o.status]||o.status)+'</small>'+(o.status==='pending'?'<div><button class="btn primary" data-offer="'+o.id+'" data-status="accepted">Зөвшөөрөх</button> <button class="btn soft" data-offer="'+o.id+'" data-status="declined">Татгалзах</button></div>':'')+'</div>').join(''):'<p>Одоогоор үнийн санал ирээгүй байна.</p>')+'<button class="detailSecondary" id="backToListing">← Зар руу буцах</button>';document.getElementById('backToListing').onclick=()=>openListing(id);body.querySelectorAll('[data-offer]').forEach(b=>b.onclick=async()=>{b.disabled=true;const {error}=await db.from('listing_offers').update({status:b.dataset.status}).eq('id',b.dataset.offer).eq('listing_id',id);if(error){toast('Алдаа: '+error.message);b.disabled=false}else{toast('Саналын төлөв шинэчлэгдлээ');showListingOffers(id)}})}
 function makeOffer(id){
  if(!session){requireSolioAccount(()=>makeOffer(id),'Үнийн санал илгээх');return}
- const x=listings.find(z=>z.id===id);if(!x||x.user_id===session.user.id)return;
+ const x=currentListing(id);if(!x||x.user_id===session.user.id)return;
  SolioUX.listingForm(id,'Үнийн санал өгөх','<label>Санал болгох үнэ (₮)<input name="amount" type="number" inputmode="numeric" min="1" step="1" required value="'+(Number(x.price)>0?Number(x.price):'')+'"></label><label>Худалдагчид үлдээх зурвас (заавал биш)<textarea name="message" maxlength="500" rows="4" placeholder="Үнэ, уулзах хугацаа зэргээ тохироорой."></textarea></label><p class="easyHint">Энэ нь үнийн санал илгээнэ. Төлбөр шилжүүлэхгүй.</p>','Санал илгээх',async data=>{
   if(!session)throw Error('Дахин нэвтэрнэ үү.');const amount=Number(data.get('amount'));if(!Number.isSafeInteger(amount)||amount<=0)throw Error('Зөв үнэ оруулна уу.');const {error}=await db.from('listing_offers').insert({listing_id:id,buyer_id:session.user.id,amount,message:data.get('message').trim()});if(error)throw error;toast('Үнийн санал илгээгдлээ.');
  });
 }
-async function shareListing(id){const x=listings.find(z=>z.id===id);if(!x)return;const url=location.origin+location.pathname+'#listing-'+encodeURIComponent(id);const message=x.title+' — '+Number(x.price).toLocaleString('en-US')+' ₮ | Solio';try{if(navigator.share)await navigator.share({title:message,text:x.description||'',url});else{await navigator.clipboard.writeText(message+' '+url);toast('Зарын холбоос хуулагдлаа')}}catch(e){if(e.name!=='AbortError')toast('Хуваалцах боломжгүй байна')}}
+async function shareListing(id){const x=currentListing(id);if(!x)return;const url=location.origin+'/#listing-'+encodeURIComponent(id);const message=x.title+' — '+Number(x.price).toLocaleString('en-US')+' ₮ | Solio';try{if(navigator.share)await navigator.share({title:message,text:x.description||'',url});else{await navigator.clipboard.writeText(message+' '+url);toast('Зарын холбоос хуулагдлаа')}}catch(e){if(e.name!=='AbortError')toast('Хуваалцах боломжгүй байна')}}
 let listingPage=0,moreListings=true,loadingListings=false;
-function ensureSolioListings(){if(listingPage===0&&!loadingListings)loadListings()}
+let activeFeedKey='',requestedFeedKey='',feedError=false,feedSequence=0;
+const extraListings=new Map();
+
+function currentListing(id){return extraListings.get(id)||listings.find(x=>x.id===id)}
+async function openListingById(id,guard=()=>true){
+ if(!guard())return false;
+ const result=await db.from('listings').select('*').eq('id',id).maybeSingle();
+ if(!guard())return false;
+ if(result.error)throw result.error;
+ if(!result.data)return false;
+ extraListings.set(id,result.data);
+ openListing(id);
+ return true;
+}
+function listingFeedQuery(){
+ const params=new URLSearchParams();
+ const globalSearch=document.body.classList.contains('solioSearchMode');
+ if(globalSearch){
+  const q=document.getElementById('solioGlobalSearch').value.trim().slice(0,120);
+  if(q)params.set('q',q);
+ }else{
+  if(!savedOnly&&school!==SolioSchools.ALL_SCHOOLS)params.set('school',school);
+  const q=document.getElementById('search').value.trim().slice(0,120);
+  if(q)params.set('q',q);
+  if(category!=='Бүх ангилал')params.set('category',category);
+  if(document.getElementById('solioListingFilter').value==='free')params.set('filter','free');
+ }
+ return params;
+}
+function ensureSolioListings(){
+ const key=listingFeedQuery().toString();
+ if((loadingListings&&requestedFeedKey===key)||(!feedError&&activeFeedKey===key&&listingPage))return;
+ loadListings();
+}
 async function loadListings(reset=true){
-  if(loadingListings||(!reset&&!moreListings))return;
-  loadingListings=true;
-  const marketMore=document.getElementById('loadMoreListings');
-  const searchMore=document.getElementById('solioSearchMore');
-  for(const button of [marketMore,searchMore])if(button)button.disabled=true;
-  if(reset){
-    listingPage=0;
-    moreListings=true;
-    if(!listings.length){
-      const root=document.getElementById('cards');
-      if(root)root.innerHTML='<div class="solioLoadingListings" role="status">Заруудыг ачаалж байна...</div>';
-    }
-  }
+ const params=listingFeedQuery(),key=params.toString();
+ if(!reset&&(loadingListings||!moreListings||key!==activeFeedKey))return;
+ const sequence=++feedSequence;
+ requestedFeedKey=key;
+ loadingListings=true;
+ feedError=false;
+ if(reset){
+  listingPage=0;
+  moreListings=true;
+  listings=[];
+ }
+ const pageSize=24,offset=listingPage*pageSize;
+ const marketMore=document.getElementById('loadMoreListings'),searchMore=document.getElementById('solioSearchMore');
+ for(const button of [marketMore,searchMore])button.disabled=true;
+ render();
+ try{
+  let data,vip=[];
   try{
-    const pageSize=24;
-    let data,error=null;
-    try{
-      // Public marketplace feed is loaded through the same-origin Cloudflare API.
-      // This is independent of sponsored_ads and does not change any listing.
-      const early=reset?window.solioFeedRequest:null;
-      if(reset)window.solioFeedRequest=null;
-      const response=(early&&await early)||await fetch('/api/public/listings?offset='+(listingPage*pageSize)+'&limit='+pageSize,{credentials:'omit',cache:'no-store'});
-      if(!response.ok)throw new Error('Public listings API HTTP '+response.status);
-      const payload=await response.json();
-      if(!Array.isArray(payload.documents))throw new Error('Public listings API returned invalid data');
-      data=payload.documents.map(normalizeAppwriteDocument);
-    }catch(proxyError){
-      console.warn('Solio public listings API:',proxyError);
-      const fallback=await db.from('listings').select('*').order('created_at',{ascending:false}).range(listingPage*pageSize,(listingPage+1)*pageSize-1);
-      data=fallback.data;
-      error=fallback.error;
-      if(error)error=new Error('Cloudflare: '+String(proxyError.message||proxyError)+'; Appwrite: '+String(error.message||error));
-    }
-    if(error)throw error;
-    const page=Array.isArray(data)?data:[];
-    if(reset)listings=page;
-    else{
-      const ids=new Set(listings.map(x=>x.id));
-      listings=listings.concat(page.filter(x=>!ids.has(x.id)));
-    }
-    moreListings=page.length===pageSize;
-    listingPage++;
-    render();
-    if(reset&&location.hash.startsWith('#listing-')){
-      let id='';
-      try{id=decodeURIComponent(location.hash.slice('#listing-'.length))}catch(e){id=''}
-      if(id){
-        let selected=listings.find(x=>x.id===id);
-        if(!selected){
-          try{
-            const row=await db.from('listings').select('*').eq('id',id).maybeSingle();
-            if(row.data){
-              selected=row.data;
-              listings.push(row.data);
-              render();
-            }
-          }catch(e){console.warn('Solio direct listing lookup:',e)}
-        }
-        if(selected)setTimeout(()=>{if(location.hash==='#listing-'+encodeURIComponent(id))openListing(id)},120);
-      }
-    }
+   const url=new URLSearchParams(params);
+   url.set('limit',pageSize);
+   url.set('offset',offset);
+   const response=await fetch('/api/public/listings?'+url,{credentials:'omit',cache:'no-store'});
+   if(!response.ok)throw Error('Public listings HTTP '+response.status);
+   const payload=await response.json();
+   if(!Array.isArray(payload.documents))throw Error('Invalid listings response');
+   data=payload.documents;
+   vip=payload.vip_documents||[];
   }catch(error){
-    console.error('Solio listings:',error);
-    toast('Зар ачаалахад алдаа гарлаа. Дахин оролдоно уу.');
-    if(reset&&!listings.length){
-      const root=document.getElementById('cards');
-      if(root){root.innerHTML='<div class="solioListingError" role="alert"><p>Заруудыг ачаалж чадсангүй.</p><p id="solioListingErrorDetail" style="font-size:12px;overflow-wrap:anywhere"></p><button type="button" onclick="loadListings(true)">Дахин оролдох ↻</button></div>';const detail=document.getElementById('solioListingErrorDetail');if(detail)detail.textContent='Алдааны мэдээлэл: '+String(error?.message||error?.code||'Тодорхойгүй алдаа').slice(0,300);}
-    }
-  }finally{
-    loadingListings=false;
-    if(marketMore){marketMore.hidden=!moreListings;marketMore.disabled=false}
-    if(searchMore){searchMore.hidden=!moreListings;searchMore.disabled=false}
-    if(document.body.classList.contains('solioSearchMode'))renderSolioGlobalSearch();
+   // Keep the SDK fallback for local/Capacitor and older public proxies.
+   const queries=[Appwrite.Query.orderDesc('created_at'),Appwrite.Query.limit(pageSize),Appwrite.Query.offset(offset)];
+   if(params.has('school'))queries.push(Appwrite.Query.equal('school',SolioSchools.schoolValues(params.get('school'))));
+   if(params.has('category'))queries.push(Appwrite.Query.equal('category',params.get('category')));
+   if(params.has('filter'))queries.push(Appwrite.Query.equal('price',0));
+   for(const term of SolioSchools.searchTerms(params.get('q'))){
+    queries.push(Appwrite.Query.or(['title','description','school','category'].map(attribute=>Appwrite.Query.contains(attribute,term))));
+   }
+   const result=await appwriteDatabases.listDocuments(APPWRITE_CONFIG.databaseId,'listings',queries);
+   data=result.documents;
   }
+  if(sequence!==feedSequence)return;
+  const rows=new Map([...listings,...vip.map(normalizeAppwriteDocument),...data.map(normalizeAppwriteDocument)].map(item=>[item.id,item]));
+  listings=[...rows.values()];
+  for(const item of listings)extraListings.delete(item.id);
+  moreListings=data.length===pageSize&&offset<10000;
+  listingPage++;
+ }catch(error){
+  if(sequence!==feedSequence)return;
+  console.error('Solio listings:',error);
+  feedError=reset;
+  if(!reset)toast('Заруудыг ачаалж чадсангүй. Дахин оролдоно уу.');
+ }finally{
+  if(sequence===feedSequence){
+   activeFeedKey=key;
+   loadingListings=false;
+   render();
+   for(const button of [marketMore,searchMore]){
+    button.hidden=!moreListings||(feedError&&listingPage===0);
+    button.disabled=false;
+   }
+   if(document.body.classList.contains('solioSearchMode'))renderSolioGlobalSearch();
+  }
+ }
+}
+
+function openListingLink(){
+ const hash=location.hash,path=location.pathname;
+ let id;
+ try{id=decodeURIComponent(hash.slice('#listing-'.length))}catch{return}
+ if(!id)return;
+ const current=()=>location.hash===hash&&location.pathname===path;
+ openListingById(id,current).then(opened=>{
+  if(!opened&&current())toast('Зар олдсонгүй.');
+ }).catch(()=>{if(current())toast('Зарыг нээж чадсангүй.')});
 }
 function updateNav(){const b=document.getElementById('boardAccountButton');if(b)b.textContent=session?"Миний бүртгэл":"Нэвтрэх"}
 
 
-async function openSolioProfile(userId){if(!userId){if(!session){openModal('login');return}userId=session.user.id}const mine=session?.user?.id===userId;const body=document.getElementById('modalBody');document.getElementById('modal').classList.add('show');document.querySelector('.dialog').classList.remove('detailDialog','easyDialog','authDialog','quickPostDialog');body.innerHTML='<div class="solioProfileLoading">Профайл ачаалж байна...</div>';const [p,ls]=await Promise.all([db.from('seller_profiles').select('display_name,school,bio').eq('user_id',userId).maybeSingle(),db.from('listings').select('id,title,price,school,image_url,created_at').eq('user_id',userId).order('created_at',{ascending:false}).limit(100)]);if(p.error||ls.error){body.textContent='Профайлыг ачаалж чадсангүй.';return}const data=p.data||{};const display=data.display_name||(mine?session.user.email?.split('@')[0]:'Solio хэрэглэгч');const items=ls.data||[];const initial=(display||'S').trim().slice(0,1).toUpperCase();body.innerHTML='<div class="solioProfile"><div class="solioProfileHero"><div class="solioAvatar">'+escapeHTML(initial)+'</div><div><span class="solioProfileKicker">SOLIO PROFILE</span><h2>'+escapeHTML(display)+'</h2><p>'+escapeHTML(data.school||'Сургууль сонгоогүй')+'</p></div></div><p class="solioProfileBio">'+escapeHTML(data.bio||'Танилцуулга оруулаагүй байна.')+'</p><div class="solioProfileStats"><div><strong>'+items.length+'</strong><span>Нийтэлсэн зар</span></div><div><strong>'+new Set(items.map(x=>x.school)).size+'</strong><span>Сургуулийн зах</span></div></div>'+(mine?'<button type="button" class="solioProfileNotifications" id="profileNotifications">🔔 Мэдэгдэл <span id="solioNotifCount"></span></button><button class="solioProfileEdit" id="profileEdit">✎ Профайлаа засах</button><button class="solioProfileLogout" id="profileLogout">Бүртгэлээс гарах</button>':'')+'<h3 class="solioProfileListTitle">Нийтэлсэн зарууд</h3><div class="solioProfileListings">'+(items.length?items.map(x=>'<button type="button" class="solioProfileListing" data-profile-listing="'+escapeHTML(x.id)+'"><span class="solioProfileListingPhoto">'+(x.image_url?solioThumbImage(x.image_url,''):'▣')+'</span><span><b>'+escapeHTML(x.title)+'</b><small>'+escapeHTML(x.school||'')+'</small></span><strong>'+Number(x.price).toLocaleString('en-US')+' ₮</strong></button>').join(''):'<p>Одоогоор зар оруулаагүй байна.</p>')+'</div></div>';body.querySelectorAll('[data-profile-listing]').forEach(b=>b.onclick=async()=>{b.disabled=true;try{let item=listings.find(x=>x.id===b.dataset.profileListing);if(!item){const result=await db.from('listings').select('*').eq('id',b.dataset.profileListing).maybeSingle();if(result.error||!result.data)throw Error('Зар олдсонгүй.');item=result.data;listings.push(item)}if(document.getElementById('modal').classList.contains('show')&&b.isConnected)openListing(item.id)}catch{toast('Зарыг нээж чадсангүй. Дахин оролдоно уу.')}finally{b.disabled=false}});if(mine){document.getElementById('profileNotifications').onclick=()=>openSolioNotifications();refreshSolioNotificationCount();document.getElementById('profileEdit').onclick=()=>editSolioProfile(data);document.getElementById('profileLogout').onclick=async()=>{const {error}=await appwriteAuth.signOut();if(error){toast('Гарахад алдаа гарлаа');return}closeModal();toast('Амжилттай гарлаа')}}}
-function editSolioProfile(data){const body=document.getElementById('modalBody');body.innerHTML='<div class="solioProfile"><h2>Профайлаа засах</h2><p class="solioProfileBio">Таны нэр, сургууль, танилцуулга бусад хэрэглэгчдэд харагдана.</p><form id="solioProfileForm" class="solioProfileForm"><label>Харагдах нэр<input id="profileName" maxlength="50" placeholder="Таны нэр" value="'+escapeHTML(data.display_name||'')+'"></label><label>Сургууль<select id="profileSchool"><option value="">Сургууль сонгох</option>'+schools.slice(1).map(s=>'<option value="'+escapeHTML(s)+'" '+(s===data.school?'selected':'')+'>'+escapeHTML(s)+'</option>').join('')+'</select></label><label>Танилцуулга<textarea id="profileBio" maxlength="300" rows="4" placeholder="Өөрийн тухай товч...">'+escapeHTML(data.bio||'')+'</textarea></label><div class="solioProfileActions"><button type="submit">Хадгалах</button><button type="button" id="profileCancel">Буцах</button></div><p id="profileStatus" role="status"></p></form></div>';document.getElementById('profileCancel').onclick=()=>openSolioProfile(session.user.id);document.getElementById('solioProfileForm').onsubmit=async(e)=>{e.preventDefault();const status=document.getElementById('profileStatus');status.textContent='Хадгалж байна...';const row={user_id:session.user.id,display_name:document.getElementById('profileName').value.trim(),school:document.getElementById('profileSchool').value,bio:document.getElementById('profileBio').value.trim(),updated_at:new Date().toISOString()};const {error}=await db.from('seller_profiles').upsert(row,{onConflict:'user_id'});if(error){status.textContent='Алдаа: '+error.message;return}toast('Профайл шинэчлэгдлээ');openSolioProfile(session.user.id)}}
+async function openSolioProfile(userId){if(!userId){if(!session){openModal('login');return}userId=session.user.id}const mine=session?.user?.id===userId;const body=document.getElementById('modalBody');document.getElementById('modal').classList.add('show');document.querySelector('.dialog').classList.remove('detailDialog','easyDialog','authDialog','quickPostDialog');body.innerHTML='<div class="solioProfileLoading">Профайл ачаалж байна...</div>';const [p,ls]=await Promise.all([db.from('seller_profiles').select('display_name,school,bio').eq('user_id',userId).maybeSingle(),db.from('listings').select('id,title,price,school,image_url,created_at').eq('user_id',userId).order('created_at',{ascending:false}).limit(100)]);if(p.error||ls.error){body.textContent='Профайлыг ачаалж чадсангүй.';return}const data=p.data||{};const display=data.display_name||(mine?session.user.email?.split('@')[0]:'Solio хэрэглэгч');const items=ls.data||[];const initial=(display||'S').trim().slice(0,1).toUpperCase();body.innerHTML='<div class="solioProfile"><div class="solioProfileHero"><div class="solioAvatar">'+escapeHTML(initial)+'</div><div><span class="solioProfileKicker">SOLIO PROFILE</span><h2>'+escapeHTML(display)+'</h2><p>'+escapeHTML(data.school||'Сургууль сонгоогүй')+'</p></div></div><p class="solioProfileBio">'+escapeHTML(data.bio||'Танилцуулга оруулаагүй байна.')+'</p><div class="solioProfileStats"><div><strong>'+items.length+'</strong><span>Нийтэлсэн зар</span></div><div><strong>'+new Set(items.map(x=>x.school)).size+'</strong><span>Сургуулийн зах</span></div></div>'+(mine?'<button type="button" class="solioProfileNotifications" id="profileNotifications">🔔 Мэдэгдэл <span id="solioNotifCount"></span></button><button type="button" class="solioProfileEdit" onclick="openSavedSearches()">Хадгалсан хайлтууд</button><button class="solioProfileEdit" id="profileEdit">✎ Профайлаа засах</button><button class="solioProfileLogout" id="profileLogout">Бүртгэлээс гарах</button>':'')+'<h3 class="solioProfileListTitle">Нийтэлсэн зарууд</h3><div class="solioProfileListings">'+(items.length?items.map(x=>'<button type="button" class="solioProfileListing" data-profile-listing="'+escapeHTML(x.id)+'"><span class="solioProfileListingPhoto">'+(x.image_url?solioThumbImage(x.image_url,''):'▣')+'</span><span><b>'+escapeHTML(x.title)+'</b><small>'+escapeHTML(x.school||'')+'</small></span><strong>'+Number(x.price).toLocaleString('en-US')+' ₮</strong></button>').join(''):'<p>Одоогоор зар оруулаагүй байна.</p>')+'</div></div>';body.querySelectorAll('[data-profile-listing]').forEach(b=>b.onclick=async()=>{b.disabled=true;try{if(!await openListingById(b.dataset.profileListing,()=>document.getElementById('modal').classList.contains('show')&&b.isConnected)&&b.isConnected)throw Error('Зар олдсонгүй.')}catch{toast('Зарыг нээж чадсангүй. Дахин оролдоно уу.')}finally{b.disabled=false}});if(mine){document.getElementById('profileNotifications').onclick=()=>openSolioNotifications();refreshSolioNotificationCount();document.getElementById('profileEdit').onclick=()=>editSolioProfile(data);document.getElementById('profileLogout').onclick=async()=>{const {error}=await appwriteAuth.signOut();if(error){toast('Гарахад алдаа гарлаа');return}closeModal();toast('Амжилттай гарлаа')}}}
+async function saveSellerProfile(row){
+ const {data,error}=await db.from('seller_profiles').select('*').eq('user_id',row.user_id).maybeSingle();
+ if(error)return {error};
+ if(data)return db.from('seller_profiles').update(row).eq('id',data.id).eq('user_id',row.user_id);
+ try{
+  await appwriteDatabases.createDocument(APPWRITE_CONFIG.databaseId,'seller_profiles',row.user_id,
+   {...row,created_at:new Date().toISOString()},
+   [Appwrite.Permission.read(Appwrite.Role.any()),Appwrite.Permission.update(Appwrite.Role.user(row.user_id)),Appwrite.Permission.delete(Appwrite.Role.user(row.user_id))]);
+  return {error:null};
+ }catch(e){
+  if(e.code===409)return db.from('seller_profiles').update(row).eq('user_id',row.user_id);
+  return {error:e};
+ }
+}
+function editSolioProfile(data){const body=document.getElementById('modalBody');body.innerHTML='<div class="solioProfile"><h2>Профайлаа засах</h2><p class="solioProfileBio">Таны нэр, сургууль, танилцуулга бусад хэрэглэгчдэд харагдана.</p><form id="solioProfileForm" class="solioProfileForm"><label>Харагдах нэр<input id="profileName" maxlength="50" placeholder="Таны нэр" value="'+escapeHTML(data.display_name||'')+'"></label><label>Сургууль<select id="profileSchool"><option value="">Сургууль сонгох</option>'+schools.slice(1).map(s=>'<option value="'+escapeHTML(s)+'" '+(s===SolioSchools.canonicalSchool(data.school)?'selected':'')+'>'+escapeHTML(s)+'</option>').join('')+'</select></label><label>Танилцуулга<textarea id="profileBio" maxlength="300" rows="4" placeholder="Өөрийн тухай товч...">'+escapeHTML(data.bio||'')+'</textarea></label><div class="solioProfileActions"><button type="submit">Хадгалах</button><button type="button" id="profileCancel">Буцах</button></div><p id="profileStatus" role="status"></p></form></div>';document.getElementById('profileCancel').onclick=()=>openSolioProfile(session.user.id);document.getElementById('solioProfileForm').onsubmit=async(e)=>{e.preventDefault();const status=document.getElementById('profileStatus');const submit=e.currentTarget.querySelector('[type=submit]');if(submit.disabled||!session)return;submit.disabled=true;status.textContent='Хадгалж байна...';const row={user_id:session.user.id,display_name:document.getElementById('profileName').value.trim(),school:document.getElementById('profileSchool').value,bio:document.getElementById('profileBio').value.trim(),updated_at:new Date().toISOString()};const {error}=await saveSellerProfile(row);submit.disabled=false;if(error){status.textContent='Алдаа: '+error.message;return}if(session?.user?.id!==row.user_id)return;
+ ++profileSchoolRequest;applyProfileSchool(row.school);toast('Профайл шинэчлэгдлээ');openSolioProfile(row.user_id)}}
 let solioAfterAuth=null;
 function requireSolioAccount(action,label){
  if(session){action();return}
@@ -650,16 +787,21 @@ if(authDialog){
   return;
 }
 if(!session){requireSolioAccount(()=>openModal(mode,id),mode==="edit"?"Зараа засах":"Зар нэмэх");return}
-const x=mode==="edit"?listings.find(z=>z.id===id):null;
+const x=mode==="edit"?currentListing(id):null;
 const schoolOptions=schools.slice(1).map(name=>'<option value="'+escapeHTML(name)+'">'+escapeHTML(name)+'</option>').join("");
 const categoryOptions=cats.slice(1).map(name=>'<option value="'+escapeHTML(name)+'">'+escapeHTML(name)+'</option>').join("");
 const listingFormHTML="<div class=\"quickPost\"><div class=\"quickPostHead\"><h2>__HEADING__</h2></div>\n<form id=\"postForm\"><div class=\"quickPostMain\">\n<div class=\"uploadZone quickPostUpload\"><label class=\"quickPostUploadLabel\" for=\"newImageFile\"><svg class=\"boardIcon\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><use href=\"#board-image\"></use></svg><span><strong>Зураг нэмэх</strong><small>10 хүртэл зураг сонгох</small></span><span class=\"quickPostUploadArrow\" aria-hidden=\"true\">＋</span></label><input id=\"newImageFile\" type=\"file\" multiple accept=\"image/jpeg,image/png,image/webp,image/gif\" aria-label=\"Барааны зураг сонгох\"><div id=\"imagePreviewGrid\" class=\"imagePreviewGrid\" aria-live=\"polite\"></div><small class=\"quickPostPictureHint\" id=\"postImageNote\">Зураг бүр 5 MB-аас бага. Эхний зураг нүүр зураг болно.</small></div>\n<div class=\"quickPostField\"><label for=\"newTitle\">Барааны нэр <span>*</span></label><input id=\"newTitle\" name=\"title\" maxlength=\"120\" minlength=\"3\" required autocomplete=\"off\" placeholder=\"Жишээ: iPad 9, сурах бичиг\" value=\"__TITLE__\"></div>\n<div class=\"quickPostRow\"><div class=\"quickPostField\"><label for=\"newPrice\">Үнэ (₮) <span>*</span></label><div class=\"quickPostPrice\"><input id=\"newPrice\" name=\"price\" type=\"number\" inputmode=\"numeric\" min=\"0\" step=\"1\" required placeholder=\"50 000\" value=\"__PRICE__\"><button type=\"button\" id=\"postFreeToggle\" aria-pressed=\"false\">Үнэгүй</button></div></div>\n<div class=\"quickPostField\"><label for=\"newSchool\">Сургууль <span>*</span></label><select id=\"newSchool\" name=\"school\" required><option value=\"\" disabled selected>Сургуулиа сонгох</option>__SCHOOLS__</select></div></div>\n<div class=\"quickPostField\"><label for=\"newCategory\">Ангилал <span>*</span></label><select id=\"newCategory\" name=\"category\" required><option value=\"\" disabled selected>Ангиллаа сонгох</option>__CATEGORIES__</select></div>\n</div>\n<details class=\"quickPostExtras\" id=\"quickPostExtras\" __EXTRAS_OPEN__><summary>Нэмэлт мэдээлэл <span>Тайлбар, утас, Instagram, уулзах газар</span></summary><div class=\"quickPostExtrasBody\">\n<div class=\"quickPostField\"><label for=\"newDesc\">Барааны тайлбар</label><textarea id=\"newDesc\" maxlength=\"1500\" rows=\"3\" placeholder=\"Барааны байдал, хэмжээ, доголдол зэргээ бичээрэй.\">__DESC__</textarea></div>\n<div class=\"quickPostRow\"><div class=\"quickPostField\"><label for=\"newPhone\">Холбогдох утас</label><input id=\"newPhone\" type=\"tel\" inputmode=\"tel\" autocomplete=\"tel\" maxlength=\"25\" placeholder=\"9911 2233\" value=\"__PHONE__\"></div><div class=\"quickPostField\"><label for=\"newInstagram\">Instagram</label><input id=\"newInstagram\" maxlength=\"60\" autocapitalize=\"off\" spellcheck=\"false\" placeholder=\"@username\" value=\"__INSTAGRAM__\"></div></div>\n<div class=\"quickPostField\"><label for=\"newMeetingPlace\">Уулзах газар</label><input id=\"newMeetingPlace\" maxlength=\"160\" placeholder=\"Жишээ: Сургуулийн номын сан\" value=\"__MEETING__\"><small>Олон нийтийн газар сонгоорой. Гэрийн хаяг бүү бичээрэй.</small></div>\n<div class=\"quickPostField quickPostUrl\"><label for=\"newImage\">Зургийн HTTPS холбоос (зураг сонгоогүй бол)</label><input id=\"newImage\" type=\"url\" inputmode=\"url\" placeholder=\"https://\" value=\"__IMAGE__\"></div>\n</div></details>\n<section class=\"quickPostVip\" id=\"postVipOption\"><label for=\"newVip\"><input type=\"checkbox\" id=\"newVip\" name=\"vip\"><span><strong>VIP зар болгох</strong><small>Онцлох хүрээ, VIP тэмдэгтэй харагдана.</small></span><b class=\"vipPreviewTag\" aria-hidden=\"true\">VIP</b></label><p id=\"postVipHint\">Сонговол зар нийтлэгдсэний дараа VIP хүсэлт илгээгдэнэ. Админ баталсны дараа идэвхжинэ. Төлбөр автоматаар авахгүй.</p></section><div class=\"quickPostFooter\"><p id=\"postStatus\" role=\"status\" aria-live=\"polite\"></p><button class=\"btn primary quickPostSubmit\" type=\"submit\">__SUBMIT__ →</button><small>Нийтэлсний дараа зараа засах боломжтой.</small></div>\n</form></div>";
 body.innerHTML=listingFormHTML.replace("__HEADING__",()=>x?"Зараа засах":"Шинэ зар нэмэх").replace("__TITLE__",()=>escapeHTML(x?.title||"")).replace("__PRICE__",()=>x?.price??"").replace("__SCHOOLS__",()=>schoolOptions).replace("__CATEGORIES__",()=>categoryOptions).replace("__EXTRAS_OPEN__",()=>x?"open":"").replace("__DESC__",()=>escapeHTML(x?.description||"")).replace("__PHONE__",()=>escapeHTML(x?.phone||"")).replace("__INSTAGRAM__",()=>escapeHTML(x?.instagram||"")).replace("__MEETING__",()=>escapeHTML(x?.meeting_place||"")).replace("__IMAGE__",()=>escapeHTML(x?.image_url||"")).replace("__SUBMIT__",()=>x?"Өөрчлөлт хадгалах":"Зар нийтлэх");
 document.getElementById("postVipOption").hidden=!!x;
 document.getElementById("newVip").setAttribute("aria-describedby","postVipHint");
-let rememberedSchool="",rememberedCategory="";
-try{rememberedSchool=localStorage.getItem("solio_my_school")||localStorage.getItem("solio_last_school")||"";rememberedCategory=localStorage.getItem("solio_last_category")||""}catch(e){}
-document.getElementById("newSchool").value=x?.school||rememberedSchool||"";
+let rememberedCategory="";
+try{rememberedCategory=localStorage.getItem("solio_last_category")||""}catch(e){}
+const schoolField=document.getElementById("newSchool");
+if(x?.school&&!schools.includes(x.school))schoolField.add(new Option(x.school,x.school));
+schoolField.value=x ? (x.school || '') : profileSchool;
+if(!x&&pendingProfileSchool)pendingProfileSchool.then(()=>{
+ if(schoolField.isConnected&&!schoolField.value)schoolField.value=profileSchool;
+}).catch(()=>{});
 document.getElementById("newCategory").value=x?.category||rememberedCategory||"";
 const freeToggle=document.getElementById("postFreeToggle"),priceInput=document.getElementById("newPrice");
 const syncFreeToggle=()=>freeToggle.setAttribute("aria-pressed",String(priceInput.value==="0"));
@@ -724,7 +866,7 @@ async function saveListing(id){
   if(files.some(file=>file.size>5242880||!["image/jpeg","image/png","image/webp","image/gif"].includes(file.type))){
     fail("Зураг бүр 5 MB-аас бага JPG, PNG, WebP эсвэл GIF байх ёстой.",document.getElementById("newImageFile"));return;
   }
-  const previous=id?listings.find(x=>x.id===id):null;
+  const previous=id?currentListing(id):null;
   const obj={user_id:session.user.id,title,price,school,category,description,
     created_at:previous?.created_at||new Date().toISOString()};
   if(phone||previous?.phone)obj.phone=phone;
@@ -765,6 +907,9 @@ async function saveListing(id){
       ?await db.from("listings").update(obj).eq("id",id).eq("user_id",session.user.id)
       :await db.from("listings").insert(obj);
     if(error)throw error;
+    const publishedId=savedListing?.id||savedListing?.$id;
+    if(!id&&publishedId)window.queueListingMatch?.(publishedId);
+    if(id)extraListings.delete(id);
     try{
       localStorage.setItem("solio_last_school",school);
       localStorage.setItem("solio_last_category",category);
@@ -785,24 +930,30 @@ async function saveListing(id){
     submit.textContent=original;
   }
 }
-async function deleteListing(id){if(!confirm("Энэ зарыг устгах уу?"))return;const {error}=await db.from("listings").delete().eq("id",id).eq("user_id",session.user.id);if(error)toast(error.message);else{toast("Зар устгагдлаа");await loadListings()}}
+async function deleteListing(id){if(!confirm("Энэ зарыг устгах уу?"))return;const {error}=await db.from("listings").delete().eq("id",id).eq("user_id",session.user.id);if(error)toast(error.message);else{toast("Зар устгагдлаа");extraListings.delete(id);await loadListings()}}
 function toggleMyListings(){if(!session){requireSolioAccount(toggleMyListings,'Миний зарууд');return}onlyMine=!onlyMine;render()}
-function resetMarketFilters(update=true){school='Бүх сургууль';category='Бүх ангилал';onlyMine=false;document.getElementById('search').value='';document.getElementById('sort').value='new';document.getElementById('solioListingFilter').value='all';savedOnly=false;if(update)render()}
+function resetMarketFilters(update=true){category='Бүх ангилал';onlyMine=false;document.getElementById('search').value='';document.getElementById('sort').value='new';document.getElementById('solioListingFilter').value='all';savedOnly=false;if(update)loadListings()}
 function toggleFav(){showSavedListings()}
 function updateBottomTabs(active){
- const mobile=['bottomHome','bottomWanted','bottomAccount'].includes(active)?active:'bottomMenu';
+ const mobile=['bottomHome','bottomSchools','bottomAccount'].includes(active)?active:'bottomMenu';
  document.querySelectorAll('.mobileBottomNav button').forEach(b=>{const selected=b.id===mobile;b.classList.toggle('active',selected);if(selected)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
  document.querySelectorAll('#desktopNav button').forEach(b=>{const selected=b.dataset.desktopTab===active;b.classList.toggle('is-active',selected);if(selected)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
 }
 function goDesktopListings(){openSolioMarket()}
 function goDesktopSearch(){goMobileSearch();if(window.innerWidth>=769)requestAnimationFrame(()=>document.getElementById("solioGlobalSearch")?.focus({preventScroll:true}))}
 function pushSolioRoute(hash){
- if(location.hash!==hash)history.pushState(null,'',location.pathname+location.search+hash);
+ const path=schoolView?'/':location.pathname;
+ const query=new URLSearchParams(location.search);
+ if(schoolView)query.delete('tab');
+ const url=path+(query.size?'?'+query:'')+hash;
+ if(url!==location.pathname+location.search+location.hash)history.pushState(null,'',url);
 }
 function goMobileHome(){openSolioMarket()}
-function openSolioMarket(saved=false){
+function openSolioMarket(saved=false,scope){
   pushSolioRoute(saved?'#market':'');
   resetMarketFilters(false);
+  if(scope!==undefined)marketSchoolOverride=scope;
+  school=saved?SolioSchools.ALL_SCHOOLS:selectedHomeSchool();
   savedOnly=saved;
   restoreSolioPage();
   render();
@@ -815,12 +966,20 @@ function goMobileSchools(){
  restoreSolioPage();
  window.scrollTo({top:0,behavior:'instant'});
 }
-function leaveMobileSchools(){document.body.classList.remove("solioSchoolsPage")}
+function leaveMobileSchools(){document.body.classList.remove("solioSchoolsPage");resetSchoolPage()}
 function restoreSolioPage(){
+ clearTimeout(solioMarketRenderTimer);
+ clearTimeout(solioSearchRenderTimer);
  const hash=location.hash;
  leaveSolioCommunity();
  leaveSolioSearch();
  leaveMobileSchools();
+ const pathSchool=SolioSchools.schoolFromPath(location.pathname);
+ if(pathSchool&&(!hash||hash.startsWith('#listing-'))){
+  showSchoolPage(pathSchool);
+  if(hash.startsWith('#listing-'))openListingLink();
+  return;
+ }
  if(hash==='#community'){
   showSolioSocial('community');
  }else if(hash==="#wanted"){
@@ -838,8 +997,9 @@ function restoreSolioPage(){
   renderSchoolHub();
  }else if(!/^#(?:campus|deals|societies)(?:\/|$)/.test(hash)){
   updateBottomTabs('bottomHome');
-  if(hash.startsWith('#listing-'))loadListings();
-  else ensureSolioListings();
+  if(!savedOnly)school=selectedHomeSchool();
+  ensureSolioListings();
+  if(hash.startsWith('#listing-'))openListingLink();
   if(hash==='#register')Promise.resolve().then(()=>solioSessionReady).then(()=>{if(location.hash==='#register')openModal('register')});
  }
 }
@@ -856,18 +1016,19 @@ function leaveSolioSearch(){document.body.classList.remove("solioSearchMode");co
 let solioSearchRenderTimer=null;
 function scheduleSolioGlobalSearch(){
   clearTimeout(solioSearchRenderTimer);
-  solioSearchRenderTimer=setTimeout(()=>{solioSearchRenderTimer=null;renderSolioGlobalSearch()},120);
+  solioSearchRenderTimer=setTimeout(()=>{solioSearchRenderTimer=null;if(document.body.classList.contains('solioSearchMode'))loadListings()},220);
 }
-function clearSolioSearch(){document.getElementById('solioGlobalSearch').value='';renderSolioGlobalSearch();document.getElementById('solioGlobalSearch').focus()}
+function clearSolioSearch(){document.getElementById('solioGlobalSearch').value='';loadListings();document.getElementById('solioGlobalSearch').focus()}
 function renderSolioGlobalSearch(){
   const input=document.getElementById('solioGlobalSearch');
   if(!input)return;
   const q=input.value.trim().toLocaleLowerCase('mn-MN');
   document.getElementById('clearGlobalSearch').hidden=!q;
-  const matchingSchools=schools.slice(1).filter(n=>!q||n.toLocaleLowerCase('mn-MN').includes(q)).slice(0,q?20:6);
+  const matchingSchools=SolioSchools.matchSchoolNames(q).slice(0,q?20:6);
   const schoolsRoot=document.getElementById('solioSearchSchools');
   schoolsRoot.innerHTML=matchingSchools.map(n=>'<button type="button" data-school-search="'+escapeHTML(n)+'">'+solioCampusMark(n)+'<span>'+escapeHTML(n)+'</span></button>').join('')||'<p>Тохирох сургууль алга.</p>';
-  const matches=listings.filter(x=>!q||[x.title,x.description,x.school,x.category].some(v=>String(v||'').toLocaleLowerCase('mn-MN').includes(q)));
+  const terms=SolioSchools.searchTerms(q);
+  const matches=listings.filter(x=>{const text=SolioSchools.searchableListing(x);return terms.every(term=>text.includes(term))});
   const listRoot=document.getElementById('solioSearchListings');
   listRoot.innerHTML=matches.map(x=>'<button type="button" data-listing-search="'+escapeHTML(x.id)+'" aria-label="'+escapeHTML(x.title||'Нэргүй зар')+' дэлгэрэнгүй">'
     +'<span class="solioSearchResultImage">'+boardIcon('image')+solioCoverImage(x,'boardSearchPhoto')+'</span>'
@@ -888,7 +1049,7 @@ if(solioSearchResultsRoot)solioSearchResultsRoot.addEventListener('click',event=
 const solioSearchSchoolsRoot=document.getElementById('solioSearchSchools');
 if(solioSearchSchoolsRoot)solioSearchSchoolsRoot.addEventListener('click',event=>{
   const target=event.target.closest('[data-school-search]');
-  if(target)openSchoolMarket(target.dataset.schoolSearch);
+  if(target)openSchoolPage(target.dataset.schoolSearch);
 });
 function goMobileSpace(){requireSolioAccount(()=>openSolioProfile(),"Миний бүртгэл")}
 async function goMyListings(){
@@ -902,15 +1063,22 @@ function closeAdminPanel(){const p=document.getElementById("adminPanel");if(p)p.
 function openAdminPanel(){if(!isCampusAdmin()){toast("Админ эрх шаардлагатай");return}window.SolioAdmin?.open()}
 
 document.getElementById("modal").addEventListener("click",e=>{if(e.target.id==="modal")closeModal()});
-appwriteAuth.onAuthStateChange((_event,s)=>{session=s;try{updateNav();syncAdminNav();render();if(document.body.classList.contains('solioCommunityPage'))renderCommunityFeed()}catch(err){console.error('Solio auth UI:',err)}});
-// Start only the active public feed before checking the visitor's session.
+appwriteAuth.onAuthStateChange((_event,s)=>{if(session?.user?.id!==s?.user?.id){profileSchool='';marketSchoolOverride=null}session=s;pendingProfileSchool=loadProfileSchool(s?.user?.id);try{updateNav();syncAdminNav();render();if(document.body.classList.contains('solioCommunityPage'))renderCommunityFeed();startSearchAlerts()}catch(err){console.error('Solio auth UI:',err)}});
 setupSocial();
-restoreSolioPage();
-const solioSessionReady=appwriteAuth.getSession().then(({data,error})=>{
+const startRoute=location.pathname+location.search+location.hash;
+const homeEntry=!location.hash&&!SolioSchools.schoolFromPath(location.pathname);
+let authChanged=false;
+appwriteAuth.onAuthStateChange(()=>{authChanged=true});
+const solioSessionReady=appwriteAuth.getSession().then(async({data,error})=>{
+  if(authChanged)return;
   if(error)console.warn('Solio session:',error.message);
   session=data?.session||null;
-  try{updateNav();syncAdminNav();if(session)render();if(document.body.classList.contains('solioCommunityPage'))renderCommunityFeed()}catch(err){console.error('Solio navigation:',err)}
-}).catch(err=>console.error('Solio session startup:',err));
+  if(session)await loadProfileSchool(session.user.id);
+  try{updateNav();syncAdminNav();if(session)render();if(document.body.classList.contains('solioCommunityPage'))renderCommunityFeed();startSearchAlerts()}catch(err){console.error('Solio navigation:',err)}
+}).catch(err=>console.error('Solio session startup:',err)).finally(()=>{
+  if(homeEntry&&startRoute===location.pathname+location.search+location.hash)restoreSolioPage();
+});
+if(!homeEntry)restoreSolioPage();
 
 // PWA registration and optional install prompt; never blocks the marketplace.
 let solioInstallEvent=null;

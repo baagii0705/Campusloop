@@ -1,3 +1,4 @@
+import {schoolValues} from './schools-data.js';
 import {clean,safeURL,safeDate,checkDateRange} from './sponsor-api-utils.js';
 export const SOCIETY_CATEGORIES=['Технологи','Урлаг','Спорт','Сайн дурын ажил','Карьер, сургалт','Бусад'];
 export const CLUB_FIELDS=['id','name','school','category','summary','description','image_url','join_url','meeting_info','created_at'];
@@ -38,18 +39,29 @@ export function societyQuery(url,now=new Date()){
  if(id){where.push(alias+'.id=?');params.push(id)}
  else{
   const school=clean(url.searchParams.get('school'),180),category=clean(url.searchParams.get('category'),40),q=clean(url.searchParams.get('q'),100),club=clean(url.searchParams.get('club_id'),70);
-  if(school){where.push('('+alias+".school='' OR "+alias+'.school=?)');params.push(school)}
+  if(school&&url.searchParams.get('school_only')==='1'){
+   const names=schoolValues(school);
+   where.push(names.length?alias+'.school IN ('+names.map(()=>'?').join(',')+')':'0=1');
+   params.push(...names);
+  }else if(school){where.push('('+alias+".school='' OR "+alias+'.school=?)');params.push(school)}
   if(category){where.push(alias+'.category=?');params.push(category)}
   if(q){where.push(alias+".search_text LIKE ? ESCAPE '\\'");params.push(likeTerm(q))}
   if(kind==='event'){
    const scope=url.searchParams.get('scope')||'upcoming';
-   where.push(scope==='past'?'e.ends_at<=?':'e.ends_at>?');params.push(now.toISOString());
+   if(scope!=='school'||url.searchParams.get('school_only')!=='1'||!school){
+    where.push(scope==='past'?'e.ends_at<=?':'e.ends_at>?');
+    params.push(now.toISOString());
+   }
    if(scope==='week'){where.push('e.starts_at<?');params.push(new Date(+now+7*86400000).toISOString())}
    if(club){where.push('e.club_id=?');params.push(club)}
   }
  }
  const fields=kind==='club'?CLUB_FIELDS.map(f=>'c.'+f).join(','):EVENT_FIELDS.map(f=>f==='club_name'?"COALESCE(c.name,'') AS club_name":'e.'+f).join(',');
  const offset=Math.max(0,Math.min(2400,parseInt(url.searchParams.get('offset')||'0',10)||0));
- const order=kind==='club'?'c.created_at DESC,c.id':(url.searchParams.get('scope')==='past'?'e.starts_at DESC,e.id':'e.starts_at ASC,e.id');
+ const schoolEvents=kind==='event'&&!id&&url.searchParams.get('scope')==='school'&&url.searchParams.get('school_only')==='1'&&!!url.searchParams.get('school');
+ if(schoolEvents)params.push(now.toISOString(),now.toISOString(),now.toISOString());
+ const order=kind==='club'?'c.created_at DESC,c.id':schoolEvents?
+  'CASE WHEN e.ends_at>? THEN 0 ELSE 1 END, CASE WHEN e.ends_at>? THEN e.starts_at END ASC, CASE WHEN e.ends_at<=? THEN e.starts_at END DESC, e.id':
+  (url.searchParams.get('scope')==='past'?'e.starts_at DESC,e.id':'e.starts_at ASC,e.id');
  return {kind,id,sql:'SELECT '+fields+' FROM '+table+' '+alias+(kind==='event'?' LEFT JOIN society_clubs c ON c.id=e.club_id':'')+' WHERE '+where.join(' AND ')+' ORDER BY '+order+' LIMIT '+(id?'1':'25 OFFSET ?'),params:id?params:[...params,offset]};
 }

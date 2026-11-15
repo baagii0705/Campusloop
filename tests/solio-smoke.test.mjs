@@ -20,19 +20,19 @@ test('Solio JavaScript can be parsed', () => {
 test('Mobile has five readable entry points and a shared feature menu', () => {
   const nav = section('<nav class="mobileBottomNav"', '</nav>');
   assert.equal((nav.match(/<button\b/g) || []).length, 5);
-  for (const id of ['bottomHome','bottomWanted','bottomAdd','bottomMenu','bottomAccount']) {
+  for (const id of ['bottomHome','bottomSchools','bottomAdd','bottomMenu','bottomAccount']) {
     assert.equal((nav.match(new RegExp('id="' + id + '"', 'g')) || []).length, 1);
   }
   assert.match(nav, /onclick="SolioUX.menu\(\)"/);
   assert.match(nav, /id="bottomAdd" onclick="openModal\(\x27post\x27\)"/);
-  assert.match(nav, /onclick="openSolioWanted\(\)"/);
+  assert.match(nav, /onclick="goMobileSchools\(\)"/);
 });
 
 test('The marketplace puts search, posting and each filter in one place', () => {
   const market = section('<section id="market"');
   assert.match(market, /id="boardTitle">Зарын зах/);
   assert.equal((market.match(/openModal\('post'\)/g) || []).length, 1);
-  for (const id of ['search','marketSchool','marketCategory','sort','solioListingFilter']) {
+  for (const id of ['search','marketMySchool','marketSwitchSchool','marketAllSchools','marketCategory','sort','solioListingFilter']) {
     assert.equal((market.match(new RegExp('id="' + id + '"', 'g')) || []).length, 1);
   }
   assert.doesNotMatch(market, /boardQuickFilters|boardCategories|s1Intro/);
@@ -60,7 +60,7 @@ test('Listing previews are lazy-loaded, and the feed has error recovery', () => 
   assert.match(inlineScript, /solioStatusReserved/);
   assert.match(inlineScript, /function scheduleSolioMarketRender/);
   assert.match(inlineScript, /function scheduleSolioGlobalSearch/);
-  assert.match(inlineScript, /class="solioListingError"/);
+  assert.match(inlineScript, /solioListingError/);
   assert.match(inlineScript, /function loadListings\(reset=true\)/);
 });
 
@@ -75,7 +75,7 @@ test('Card price formatting handles free and invalid prices', () => {
 
 test('PWA cache is refreshed for the redesigned UI', () => {
   const sw = readFileSync(new URL('../sw.js', import.meta.url), 'utf8');
-  assert.match(sw, /solio-shell-v12/);
+  assert.match(sw, /solio-shell-v13/);
   assert.ok(sw.includes("'/board.css'"));
   assert.ok(staticHtml.includes('href="/board.css"'));
 });
@@ -89,7 +89,7 @@ test('DOM element IDs are unique', () => {
 test('essential marketplace destinations remain in the page', () => {
   for(const id of ['market','cards','schoolHub','schoolHubGrid','solioSearchPage',
     'solioSearchSchools','solioSearchListings','socialHub','communityPanel',
-    'wantedPanel','bottomHome','bottomMenu','bottomAdd','bottomWanted',
+    'wantedPanel','bottomHome','bottomMenu','bottomAdd','bottomSchools',
     'bottomAccount']){
     assert.ok(staticHtml.includes('id="'+id+'"'),id);
   }
@@ -314,18 +314,20 @@ test('large uploads shrink without upscaling and decoding failure retains the fi
 });
 
 test('The marketplace is the default and Community opens from its own route',async()=>{
-  const start=inlineScript.indexOf('// Start only the active public feed');
+  const start=inlineScript.lastIndexOf('setupSocial();');
   const startup=inlineScript.slice(start,inlineScript.indexOf('// PWA registration',start));
   assert.ok(startup.includes('restoreSolioPage();'));
-  assert.ok(startup.indexOf('restoreSolioPage();')<startup.indexOf('appwriteAuth.getSession()'));
+  assert.match(startup,/if\(!homeEntry\)restoreSolioPage\(\)/);
   const source=inlineScript.slice(inlineScript.indexOf('function restoreSolioPage()'),inlineScript.indexOf('function leaveSolioSearch()'));
-  const visit=async hash=>{
+  const visit=async (hash,pathname='/')=>{
     const visible=[],load=[];
     runInNewContext(source+';restoreSolioPage()',{
-      location:{hash},document:{body:{classList:{add(){}}},getElementById(){return {hidden:true}}},
+      location:{hash,pathname},clearTimeout(){},solioMarketRenderTimer:null,solioSearchRenderTimer:null,school:'',savedOnly:false,
+      SolioSchools:{schoolFromPath:path=>path==='/schools/num'?'МУИС':''},selectedHomeSchool:()=> 'ШУТИС',
+      showSchoolPage:name=>visible.push(name),document:{body:{classList:{add(){}}},getElementById(){return {hidden:true}}},
       window:{addEventListener(){}},leaveSolioCommunity(){},leaveSolioSearch(){},leaveMobileSchools(){},
       showSolioSocial:mode=>visible.push(mode),updateBottomTabs:tab=>visible.push(tab),
-      ensureSolioListings:()=>load.push('listings'),loadListings:()=>load.push('listing-link'),
+      ensureSolioListings:()=>load.push('listings'),openListingLink:()=>load.push('listing-link'),
       solioSessionReady:Promise.resolve(),openModal:mode=>visible.push(mode),renderSchoolHub(){},renderSolioGlobalSearch(){},
     });
     await new Promise(resolve=>setImmediate(resolve));
@@ -335,8 +337,9 @@ test('The marketplace is the default and Community opens from its own route',asy
   assert.deepEqual(await visit('#community'),{visible:['community'],load:[]});
   assert.deepEqual(await visit('#wanted'),{visible:['wanted'],load:[]});
   assert.deepEqual(await visit('#market'),{visible:['bottomHome'],load:['listings']});
-  assert.deepEqual(await visit('#listing-example'),{visible:['bottomHome'],load:['listing-link']});
+  assert.deepEqual(await visit('#listing-example'),{visible:['bottomHome'],load:['listings','listing-link']});
   assert.deepEqual(await visit('#register'),{visible:['bottomHome','register'],load:['listings']});
+  assert.deepEqual(await visit('','/schools/num'),{visible:['МУИС'],load:[]});
   assert.deepEqual(await visit('#deals/apply'),{visible:[],load:[]});
   assert.doesNotMatch(startup,/setInterval|refreshSolioNotificationCount/);
 });

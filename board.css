@@ -642,7 +642,7 @@ button,a{ -webkit-tap-highlight-color: transparent; }
 .boardMeta span + time::before{ content: "·"; margin-right: 5px; }
 .boardMore{ display: block; min-width: 220px; min-height: 46px; margin: 32px auto 0; padding: 0 22px; border: 1px solid #c5bca9; border-radius: 8px; background: transparent; color: #6e6656; font-size: 13px; font-weight: 600; }
 .boardMore:hover{ background: #f0ebe0; }
-.boardEmpty,.boardGrid .solioLoadingListings,.boardGrid .solioListingError{ grid-column: 1/-1; padding: 60px 16px; border: 1px dashed #d9d1bd; border-radius: 10px; background: #f5f1e7; color: #9a8f78; text-align: center; font-size: 14px; line-height: 1.7; }
+.boardEmpty,.boardGrid .solioLoadingListings,.boardGrid .solioListingError{ grid-column: 1/-1; padding: 48px 16px; border: 1px dashed #d9d1bd; border-radius: 10px; background: #f5f1e7; color: #665b47; text-align: center; font-size: 14px; line-height: 1.7; }
 @media (hover:hover) { .boardListing:hover .boardPhoto{ transform: scale(1.025); } .boardListing:hover h3{ color: var(--board-accent); } }
 
 
@@ -995,4 +995,71 @@ body.solioCommunityPage #socialHub {
   .marketFilters .boardFilter summary .boardIcon { display: none; }
   .mobileBottomNav > button.bottomPost > .bottomIcon { background: #ad4325; }
   .mobileBottomNav .bottomPost .bottomLabel { color: #ad4325; }
+}
+
+.schoolScope { display: flex; gap: 6px; margin: 0 0 12px; }
+.schoolScope button, .schoolControl, .schoolPageTabs a {
+  min-height: 44px;
+  padding: 0 11px;
+  border: 1px solid var(--board-rule);
+  border-radius: 7px;
+  background: #fffefa;
+  color: var(--board-ink);
+  font-size: 14px;
+  font-weight: 650;
+}
+.schoolScope button[aria-pressed="true"], .schoolScope button[data-selected="true"],
+.schoolPageTabs a[aria-current="page"], .schoolPrimary, .emptyAlertButton {
+  background: #ad4325;
+  border-color: #ad4325;
+  color: #fff;
+}
+.schoolPageTabs { display: flex; gap: 8px; margin-bottom: 16px; }
+.schoolPageTabs a { display: inline-grid; place-items: center; min-width: 64px; }
+.schoolHubCard:focus-visible { outline-offset: 1px !important; }
+#schoolPageHeading .marketHeading h1 { overflow-wrap: anywhere; }
+.schoolControl { flex: none; }
+.marketFilters { grid-template-columns: minmax(0, 180px) auto minmax(0, 1fr); }
+.viewingSchool { align-self: center; color: #7c361d; font-size: 13px; font-weight: 700; padding: 3px 6px; }
+#schoolSocietyItems { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr)); gap: 10px; }
+#schoolSocietyStatus:empty { display: none; }
+.schoolSocietyCard { padding: 15px; border: 1px solid var(--board-rule); border-radius: 8px; background: #fffefa; }
+.schoolSocietyCard h3 { margin: 6px 0; }
+.schoolSocietyCard a { text-decoration: underline; text-underline-offset: 3px; }
+.schoolSocietyCard span, .schoolSocietyCard time { color: #6d4a37; font-size: 13px; }
+.schoolSocietyCard p { margin-bottom: 0; color: #514b41; }
+.schoolPicker { position: fixed; left: var(--picker-left); top: var(--picker-top); margin: 0; width: 330px; max-width: calc(100vw - 24px); max-height: calc(100dvh - var(--picker-top) - 10px); padding: 0; border: 1px solid var(--board-rule); border-radius: 9px; background: var(--board-paper); color: var(--board-ink); box-shadow: 0 12px 28px #31251b25; }
+.schoolPicker::backdrop { background: #30261e25; }
+.schoolPickerContent { padding: 13px; }
+.schoolPicker header { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 9px; }
+.schoolPicker h2 { margin: 0; font-size: 18px; }
+.schoolPicker header button { min-width: 44px; min-height: 44px; border: 0; background: transparent; font-size: 24px; }
+.schoolPicker input, .savedSearchDialog input, .savedSearchDialog select { width: 100%; min-height: 44px; border: 1px solid var(--board-rule); border-radius: 6px; background: #fffefa; padding: 7px 9px; font-size: 16px; }
+#schoolPickerItems { margin-top: 8px; }
+#schoolPickerItems button { display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; min-height: 44px; border: 0; border-bottom: 1px solid var(--board-rule); background: transparent; color: var(--board-ink); text-align: left; padding: 8px; }
+#schoolPickerItems button[aria-current="true"], #schoolPickerItems button:hover { background: #fae7dc; color: #87351b; }
+#schoolPickerItems small { flex: none; }
+.emptyAlertButton,.schoolPrimary,.savedSearchWanted { display: inline-block; min-height: 44px; border: 1px solid #ad4325; border-radius: 7px; padding: 8px 13px; font-weight: 650; }
+.emptyAlertButton { display: block; margin: 12px auto 0; }
+.savedSearchWanted { margin: 0 0 12px; background: #fffefa; color: #87351b; }
+.savedSearchDialog form { display: grid; gap: 11px; }
+.savedSearchDialog label { display: grid; gap: 6px; }
+#savedSearchItems article { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 0; border-bottom: 1px solid var(--board-rule); }
+#savedSearchItems small { display: block; color: #685d52; }
+#savedSearchItems button { min-height: 40px; padding-inline: 10px; }
+#listingAlertDot { width: 8px; height: 8px; border-radius: 50%; background: #ad4325; position: absolute; top: 8px; left: calc(50% + 10px); }
+#bottomAccount { position: relative; }
+@media (max-width: 768px) {
+  .schoolScope button, .schoolControl { padding-inline: 7px; font-size: 12px; }
+  .schoolScope button { flex: 1; white-space: nowrap; }
+  .marketFilters { grid-template-columns: minmax(0, 1.2fr) auto minmax(0, .75fr); }
+  .schoolPicker { left: 0; top: auto; bottom: 0; width: 100%; max-width: 100%; max-height: 78dvh; border-radius: 14px 14px 0 0; }
+  .schoolPickerContent { padding-bottom: calc(18px + env(safe-area-inset-bottom, 0px)); }
+  #navListingAlerts { display: none; }
+}
+.schoolPageActions { display: flex; flex-wrap: wrap; justify-content: end; gap: 6px; }
+#schoolPageHeading .marketHeading > h1 { min-width: 0; font-size: clamp(25px, 3.5vw, 38px); }
+@media (max-width: 560px) {
+  #schoolPageHeading .marketHeading { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .schoolPageActions { justify-content: start; }
 }

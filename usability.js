@@ -5,7 +5,8 @@ const $=id=>document.getElementById(id),esc=escapeHTML;
 const entries=[
  ['search','Бүх хэсгээс хайх','Зар, сургууль, клуб, нийтлэл хайх','search','Олж үзэх',()=>goMobileSearch()],
  ['wanted','Хайж байна','Олдохгүй байгаа зүйлээ оюутнуудаас асуух','wanted','Олж үзэх',()=>openSolioWanted()],
- ['campus','Миний сургууль','Сургуулийн зар, хүсэлт, нийтлэл нэг дор','school','Олж үзэх',()=>SolioCampus.open()],
+ ['schools','Сургуулиуд','Сургуулийн зар, клуб, эвент үзэх','school','Олж үзэх',()=>goMobileSchools()],
+ ['campus','Кампусын самбар','Сургуулийн зар, хүсэлт, нийтлэл нэг дор','school','Олж үзэх',()=>SolioCampus.open()],
  ['societies','Клуб, эвент','Клубтэй танилцах, арга хэмжээ олох','person','Олж үзэх',()=>SolioSocieties.open()],
  ['community','Оюутны булан','Асуулт, зөвлөгөө, сургуулийн сонин','chat','Олж үзэх',()=>openSolioCommunity()],
  ['study','Мэргэжил сонголт','Хөтөлбөр харьцуулах, сургуулийн багш нарыг судлах','school','Олж үзэх',()=>location.assign(solioPublicPath('/study'))],
@@ -41,7 +42,7 @@ function menu(){
 function create(){sheet('Юу нэмэх вэ?','Хийх үйлдлээ сонго. Нэвтрэх шаардлагатай бол эндээс үргэлжлүүлнэ.','<div class="easyChoices easyCreate">'+createEntries.map(x=>choice(...x.slice(0,4),'data-easy-create')).join('')+'</div>');$('modalBody').querySelector('.easyCreate').onclick=e=>{const b=e.target.closest('[data-easy-create]');if(!b)return;closeModal();createEntries.find(x=>x[0]===b.dataset.easyCreate)?.[4]()}}
 function searchElsewhere(kind){const q=$('solioGlobalSearch').value.trim();if(kind==='wanted'){openSolioWanted();$('wantedQueryFilter').value=q;filterWantedRequests()}else if(kind==='community'){openSolioCommunity();$('communitySearch').value=q;renderCommunityFeed()}else SolioSocieties.open({kind,q})}
 function listingForm(id,title,content,submitText,onSave){
- const x=listings.find(item=>item.id===id);if(!x)return;
+ const x=currentListing(id);if(!x)return;
  sheet(title,x.title,'<form id="easyActionForm" class="easyActionForm">'+content+'<p id="easyActionStatus" role="status"></p><div class="easyFormActions"><button type="button" id="easyActionBack">← Зар руу буцах</button><button class="easyPrimary" type="submit">'+submitText+'</button></div></form>');
  $('easyActionBack').onclick=()=>openListing(id);
  const form=$('easyActionForm');form.onsubmit=async e=>{e.preventDefault();const button=form.querySelector('[type=submit]');if(button.disabled)return;button.disabled=true;$('easyActionStatus').textContent='Хадгалж байна…';try{await onSave(new FormData(form));if($('easyActionForm')===form&&$('modal').classList.contains('show'))openListing(id)}catch(error){if($('easyActionForm')===form)$('easyActionStatus').textContent=error.message||'Холболтоо шалгаад дахин оролдоно уу.';else toast('Үйлдэл амжилтгүй. Дахин оролдоно уу.')}finally{button.disabled=false}};
