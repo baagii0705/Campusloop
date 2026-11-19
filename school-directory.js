@@ -12,7 +12,8 @@ function selectedHomeSchool() {
 
 function applyProfileSchool(value) {
   profileSchool = SolioSchools.canonicalSchool(value);
-  if (!schoolView && !location.hash && marketSchoolOverride === null) {
+  loadStudentHomeFeeds();
+  if (!schoolView && location.hash === '#market' && !savedOnly && marketSchoolOverride === null) {
     school = selectedHomeSchool();
     ensureSolioListings();
     render();

@@ -1,6 +1,7 @@
-<!doctype html><html lang="mn"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f06435"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="sol1o"><meta name="mobile-web-app-capable" content="yes"><link rel="manifest" href="/manifest.webmanifest"><link rel="icon" type="image/svg+xml" href="/solio-icon.svg?v=4"><meta name="description" content="Solio-ийн оюутны зарын зах. Ном, электрон хэрэгсэл, хувцас хайж, өөрийн зараа нийтлээрэй."><link rel="preconnect" href="https://sgp.cloud.appwrite.io"><title>sol1o — Оюутны амьдралын талбай</title>
+<!doctype html><html lang="mn"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f06435"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="sol1o"><meta name="mobile-web-app-capable" content="yes"><link rel="manifest" href="/manifest.webmanifest"><link rel="icon" type="image/svg+xml" href="/solio-icon.svg?v=4"><meta name="description" content="Хичээлийн хуваарь, оюутны хөнгөлөлт, эвент болон зар нэг дор."><link rel="preconnect" href="https://sgp.cloud.appwrite.io"><title>sol1o — Оюутны амьдралын талбай</title>
 <link rel="stylesheet" href="/sponsored-banner.css">
 <link rel="stylesheet" href="/board.css">
+<link rel="stylesheet" href="/student-home.css">
 
 </head><body><script id="solio-initial-route">if(location.hash==="#community")document.body.classList.add("solioCommunityPage");</script><a class="boardSkip" href="#solioMain" onclick="document.getElementById('solioMain').focus();return false">Үндсэн агуулга руу очих</a><svg class="boardSymbols" width="0" height="0" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
   <symbol id="board-heart" viewBox="0 0 24 24"><path d="M20.5 5.7a5 5 0 0 0-7.1 0L12 7.1l-1.4-1.4a5 5 0 0 0-7.1 7.1L12 21l8.5-8.2a5 5 0 0 0 0-7.1Z"/></symbol>
@@ -33,7 +34,8 @@
   <div class="wrap boardNav">
     <a class="boardWordmark" href="/" onclick="goMobileHome();return false" aria-label="Solio нүүр хуудас">sol<span class="s1LogoOne">1</span>o<span class="s1LogoDot">.</span></a>
     <nav class="boardLinks" id="desktopNav" aria-label="Үндсэн цэс">
-      <button type="button" data-desktop-tab="bottomHome" class="is-active" aria-current="page" onclick="goMobileHome()">Зарууд</button>
+      <button type="button" data-desktop-tab="bottomHome" class="is-active" aria-current="page" onclick="goMobileHome()">Нүүр</button>
+      <button type="button" data-desktop-tab="bottomMarket" onclick="goDesktopListings()">Зар</button>
       <button type="button" data-desktop-tab="bottomSchools" onclick="goMobileSchools()">Сургуулиуд</button>
       <button type="button" data-desktop-tab="bottomWanted" onclick="openSolioWanted()">Хайж байна</button>
       <a class="boardNavLink s1StudyNav" href="/study/" onclick="this.href=solioPublicPath('/study/')">Мэргэжил сонголт</a>
@@ -46,7 +48,30 @@
     </div>
   </div>
 </header>
-<main class="wrap" id="solioMain" tabindex="-1"><section id="solioSearchPage" class="solioSearchPage" hidden aria-label="Solio хайлт"><div class="solioSearchHead"><h1>Хайх</h1><p>Зар, сургууль эсвэл бусад хэсгээс хайгаарай.</p></div><label for="solioGlobalSearch">Юу хайж байна?</label><input id="solioGlobalSearch" type="search" autocomplete="off" placeholder="Жишээ: iPad, сурах бичиг, МУИС" oninput="scheduleSolioGlobalSearch()"><button type="button" class="easyTextButton" id="clearGlobalSearch" onclick="clearSolioSearch()" hidden>Хайлтыг арилгах ×</button><div class="easySearchRoutes" aria-label="Бусад хэсгээс хайх"><button type="button" onclick="SolioUX.searchElsewhere('wanted')">Хайж буй зүйл</button><button type="button" onclick="SolioUX.searchElsewhere('event')">Эвент</button><button type="button" onclick="SolioUX.searchElsewhere('club')">Клуб</button><button type="button" onclick="SolioUX.searchElsewhere('community')">Нийтлэл</button></div><p id="globalSearchStatus" role="status" class="easyHint"></p><div class="solioSearchSectionTitle">Сургуулиуд</div><div id="solioSearchSchools" class="solioSearchSchools"></div><button type="button" class="solioAllSchoolsLink" onclick="goMobileSchools()">Бүх сургуулийг үзэх →</button><div class="solioSearchSectionTitle">Зарууд</div><div id="solioSearchListings" class="solioSearchListings"></div><button type="button" class="solioSearchMore" id="solioSearchMore" onclick="loadListings(false)" hidden>Өөр заруудыг ачаалах ↓</button></section><section class="schoolHub" id="schoolHub" aria-label="Сургуулиуд"><div class="schoolHubHead"><div><h2>Сургуулиуд</h2></div><button type="button" class="schoolHubAll" onclick="goMobileHome()">Бүх зар →</button></div><label class="schoolHubSearchLabel" for="schoolHubSearch">Сургуулиа хайх</label><input id="schoolHubSearch" class="schoolHubSearch" type="search" placeholder="Сургуулийн нэр бичих..." autocomplete="off" oninput="renderSchoolHub()"><div class="schoolHubGrid" id="schoolHubGrid"></div><div class="schoolHubCurrent" id="schoolHubCurrent" hidden><span id="schoolHubCurrentName"></span><button type="button" onclick="openSchoolMarket('Бүх сургууль')">✕ Цэвэрлэх</button></div></section><section class="socialHub" id="socialHub"><div class="socialHead solioWantedHeading"><button type="button" class="solioCommunityBack" onclick="goMobileHome()">← Зарууд</button><h2>Хайж байна</h2></div><div class="socialPanel" id="wantedPanel"><div class="socialBar"><div><p>Хэрэгтэй зүйлээ бичээд оюутнуудаас асуугаарай.</p></div><button onclick="toggleSocialForm('wanted')">+ Хүсэлт нэмэх</button></div><form id="wantedForm" class="socialForm" hidden onsubmit="submitWanted(event)"><label>Сургууль<select id="wantedSchool" required></select></label><label>Юу хайж байна?<input id="wantedTitle" maxlength="120" minlength="3" required placeholder="Жишээ: Инженерийн тооны машин"></label><label>Төсөв (₮)<input id="wantedBudget" type="number" min="0" placeholder="Жишээ: 80000"></label><label>Тайлбар<textarea id="wantedDetails" maxlength="800" rows="3" placeholder="Загвар, нөхцөл, бусад мэдээлэл"></textarea></label><label>Холбоо барих (утас эсвэл Instagram)<input id="wantedContact" maxlength="120" placeholder="Жишээ: @username"></label><p class="easyHint">Төсөв, тайлбар, холбоо барих мэдээлэл заавал биш. Холбоо барих мэдээлэл нийтэд харагдана.</p><button type="submit">Хүсэлт нийтлэх</button><button type="button" onclick="openSavedSearchForm(document.getElementById('wantedTitle').value,document.getElementById('wantedSchool').value)">Олдвол мэдэгд</button><button type="button" onclick="toggleSocialForm('wanted')">Хаах</button><span class="socialStatus" id="wantedStatus"></span></form><div class="wantedSearchBar"><input id="wantedQueryFilter" type="search" placeholder="Хайж буй зүйл хайх..." aria-label="Хайж буй зүйл хайх" autocomplete="off" oninput="filterWantedRequests()"><select id="wantedSchoolFilter" aria-label="Хайж буй зүйлийн сургууль" onchange="filterWantedRequests()"><option value="">Бүх сургууль</option></select></div><button type="button" class="savedSearchWanted" onclick="openSavedSearchForm(document.getElementById('wantedQueryFilter').value,document.getElementById('wantedSchoolFilter').value || profileSchool)">Олдвол мэдэгд</button><div class="socialItems" id="wantedItems"><p>Хүсэлтүүдийг ачаалж байна...</p></div><p id="wantedSearchEmpty" hidden>Тохирох Хайж буй зүйл олдсонгүй.</p></div><div class="socialPanel" id="communityPanel">
+<main class="wrap" id="solioMain" tabindex="-1">
+<section id="studentHome" aria-labelledby="studentHomeTitle">
+  <header class="studentHomeTitle">
+    <h1 id="studentHomeTitle">Хичээлийн хуваарь</h1>
+    <button type="button" class="boardPost" id="studentLessonAdd"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-plus"></use></svg> Хичээл нэмэх</button>
+  </header>
+  <div class="studentSchedule">
+    <div id="studentScheduleDays" class="studentScheduleDays" role="group" aria-label="Гараг сонгох"></div>
+    <h2 id="studentScheduleDay" class="studentScheduleDay"></h2>
+    <p id="studentScheduleStatus" class="studentHomeStatus" role="status"></p>
+    <ul id="studentScheduleLessons" class="studentScheduleLessons"></ul>
+  </div>
+  <div class="studentHomeFeeds">
+    <section aria-labelledby="studentHomeDealsTitle">
+      <header><h2 id="studentHomeDealsTitle">Оюутны хөнгөлөлт</h2><a href="#deals">Бүгдийг үзэх</a></header>
+      <div id="studentHomeDeals"></div>
+    </section>
+    <section aria-labelledby="studentHomeEventsTitle">
+      <header><h2 id="studentHomeEventsTitle">Удахгүй болох эвент</h2><a href="#societies">Бүгдийг үзэх</a></header>
+      <div id="studentHomeEvents"></div>
+    </section>
+  </div>
+</section>
+<section id="solioSearchPage" class="solioSearchPage" hidden aria-label="Solio хайлт"><div class="solioSearchHead"><h1>Хайх</h1><p>Зар, сургууль эсвэл бусад хэсгээс хайгаарай.</p></div><label for="solioGlobalSearch">Юу хайж байна?</label><input id="solioGlobalSearch" type="search" autocomplete="off" placeholder="Жишээ: iPad, сурах бичиг, МУИС" oninput="scheduleSolioGlobalSearch()"><button type="button" class="easyTextButton" id="clearGlobalSearch" onclick="clearSolioSearch()" hidden>Хайлтыг арилгах ×</button><div class="easySearchRoutes" aria-label="Бусад хэсгээс хайх"><button type="button" onclick="SolioUX.searchElsewhere('wanted')">Хайж буй зүйл</button><button type="button" onclick="SolioUX.searchElsewhere('event')">Эвент</button><button type="button" onclick="SolioUX.searchElsewhere('club')">Клуб</button><button type="button" onclick="SolioUX.searchElsewhere('community')">Нийтлэл</button></div><p id="globalSearchStatus" role="status" class="easyHint"></p><div class="solioSearchSectionTitle">Сургуулиуд</div><div id="solioSearchSchools" class="solioSearchSchools"></div><button type="button" class="solioAllSchoolsLink" onclick="goMobileSchools()">Бүх сургуулийг үзэх →</button><div class="solioSearchSectionTitle">Зарууд</div><div id="solioSearchListings" class="solioSearchListings"></div><button type="button" class="solioSearchMore" id="solioSearchMore" onclick="loadListings(false)" hidden>Өөр заруудыг ачаалах ↓</button></section><section class="schoolHub" id="schoolHub" aria-label="Сургуулиуд"><div class="schoolHubHead"><div><h2>Сургуулиуд</h2></div><button type="button" class="schoolHubAll" onclick="goMobileHome()">Бүх зар →</button></div><label class="schoolHubSearchLabel" for="schoolHubSearch">Сургуулиа хайх</label><input id="schoolHubSearch" class="schoolHubSearch" type="search" placeholder="Сургуулийн нэр бичих..." autocomplete="off" oninput="renderSchoolHub()"><div class="schoolHubGrid" id="schoolHubGrid"></div><div class="schoolHubCurrent" id="schoolHubCurrent" hidden><span id="schoolHubCurrentName"></span><button type="button" onclick="openSchoolMarket('Бүх сургууль')">✕ Цэвэрлэх</button></div></section><section class="socialHub" id="socialHub"><div class="socialHead solioWantedHeading"><button type="button" class="solioCommunityBack" onclick="goMobileHome()">← Зарууд</button><h2>Хайж байна</h2></div><div class="socialPanel" id="wantedPanel"><div class="socialBar"><div><p>Хэрэгтэй зүйлээ бичээд оюутнуудаас асуугаарай.</p></div><button onclick="toggleSocialForm('wanted')">+ Хүсэлт нэмэх</button></div><form id="wantedForm" class="socialForm" hidden onsubmit="submitWanted(event)"><label>Сургууль<select id="wantedSchool" required></select></label><label>Юу хайж байна?<input id="wantedTitle" maxlength="120" minlength="3" required placeholder="Жишээ: Инженерийн тооны машин"></label><label>Төсөв (₮)<input id="wantedBudget" type="number" min="0" placeholder="Жишээ: 80000"></label><label>Тайлбар<textarea id="wantedDetails" maxlength="800" rows="3" placeholder="Загвар, нөхцөл, бусад мэдээлэл"></textarea></label><label>Холбоо барих (утас эсвэл Instagram)<input id="wantedContact" maxlength="120" placeholder="Жишээ: @username"></label><p class="easyHint">Төсөв, тайлбар, холбоо барих мэдээлэл заавал биш. Холбоо барих мэдээлэл нийтэд харагдана.</p><button type="submit">Хүсэлт нийтлэх</button><button type="button" onclick="openSavedSearchForm(document.getElementById('wantedTitle').value,document.getElementById('wantedSchool').value)">Олдвол мэдэгд</button><button type="button" onclick="toggleSocialForm('wanted')">Хаах</button><span class="socialStatus" id="wantedStatus"></span></form><div class="wantedSearchBar"><input id="wantedQueryFilter" type="search" placeholder="Хайж буй зүйл хайх..." aria-label="Хайж буй зүйл хайх" autocomplete="off" oninput="filterWantedRequests()"><select id="wantedSchoolFilter" aria-label="Хайж буй зүйлийн сургууль" onchange="filterWantedRequests()"><option value="">Бүх сургууль</option></select></div><button type="button" class="savedSearchWanted" onclick="openSavedSearchForm(document.getElementById('wantedQueryFilter').value,document.getElementById('wantedSchoolFilter').value || profileSchool)">Олдвол мэдэгд</button><div class="socialItems" id="wantedItems"><p>Хүсэлтүүдийг ачаалж байна...</p></div><p id="wantedSearchEmpty" hidden>Тохирох Хайж буй зүйл олдсонгүй.</p></div><div class="socialPanel" id="communityPanel">
   <header class="campusDiscussionHead">
     <div>
       <h1>Оюутны булан<span>.</span></h1>
@@ -76,7 +101,7 @@
       <a href="#societies" onclick="SolioSocieties.open();return false"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-person"></use></svg><span>Клуб, эвент</span><span aria-hidden="true">→</span></a>
     </nav>
   </div>
-</div></section><section id="market" class="boardMarket" aria-labelledby="boardTitle">
+</div></section><section id="market" class="boardMarket" aria-labelledby="boardTitle" hidden>
   <header class="marketHeading" id="marketHomeHeading">
     <h1 id="boardTitle">Зарын зах</h1>
     <button type="button" class="boardPost" onclick="openModal('post')"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-plus"></use></svg> Зар нэмэх</button>
@@ -119,13 +144,26 @@
   </div>
   <section id="schoolSocieties" hidden aria-label="Сургуулийн клуб, эвент"><p id="schoolSocietyStatus" role="status"></p><div id="schoolSocietyItems"></div><button type="button" class="boardMore" id="schoolSocietyMore" hidden>Цааш үзэх</button></section>
 </section>
-</main><section id="adminPanel" class="adminPanel wrap" aria-label="Удирдлагын хэсэг" hidden></section><nav class="mobileBottomNav" aria-label="Solio утасны үндсэн цэс"><button type="button" id="bottomHome" onclick="goMobileHome()" class="active" aria-current="page"><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-home"></use></svg></i><small class="bottomLabel">Зар</small></button><button type="button" id="bottomSchools" onclick="goMobileSchools()" class=""><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-school"></use></svg></i><small class="bottomLabel">Сургуулиуд</small></button><button type="button" id="bottomAdd" onclick="openModal('post')" class="bottomPost"><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-plus"></use></svg></i><small class="bottomLabel">Зар нэмэх</small></button><button type="button" id="bottomMenu" onclick="SolioUX.menu()" class=""><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-grid"></use></svg></i><small class="bottomLabel">Цэс</small></button><button type="button" id="bottomAccount" onclick="goMobileSpace()" class=""><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-person"></use></svg></i><small class="bottomLabel">Миний</small><span id="listingAlertDot" hidden aria-hidden="true"></span></button></nav><footer class="footer"><div class="wrap"><b>sol<span>1</span>o.</b><p>© 2026 sol1o</p><a id="solioSponsorFooterCta" href="/partners" onclick="this.href=solioPublicPath('/partners')">Байгууллагад ↗</a></div></footer><div class="modal" id="modal" role="presentation"><div class="dialog" role="dialog" aria-modal="true" aria-label="Solio цонх"><button class="close" type="button" aria-label="Цонх хаах" title="Хаах" onclick="closeModal()">✕</button><div id="modalBody"></div></div></div><dialog class="schoolPicker" id="schoolPicker" aria-labelledby="schoolPickerTitle" onclick="if(event.target===this)this.close()">
+</main><section id="adminPanel" class="adminPanel wrap" aria-label="Удирдлагын хэсэг" hidden></section><nav class="mobileBottomNav" aria-label="Solio утасны үндсэн цэс"><button type="button" id="bottomHome" onclick="goMobileHome()" class="active" aria-current="page"><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-home"></use></svg></i><small class="bottomLabel">Нүүр</small></button><button type="button" id="bottomMarket" onclick="goDesktopListings()"><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-box"></use></svg></i><small class="bottomLabel">Зар</small></button><button type="button" id="bottomSchools" onclick="goMobileSchools()" class=""><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-school"></use></svg></i><small class="bottomLabel">Сургуулиуд</small></button><button type="button" id="bottomMenu" onclick="SolioUX.menu()" class=""><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-grid"></use></svg></i><small class="bottomLabel">Цэс</small></button><button type="button" id="bottomAccount" onclick="goMobileSpace()" class=""><i class="bottomIcon"><svg class="boardIcon" viewBox="0 0 24 24" aria-hidden="true"><use href="#board-person"></use></svg></i><small class="bottomLabel">Миний</small><span id="listingAlertDot" hidden aria-hidden="true"></span></button></nav><footer class="footer"><div class="wrap"><b>sol<span>1</span>o.</b><p>© 2026 sol1o</p><a id="solioSponsorFooterCta" href="/partners" onclick="this.href=solioPublicPath('/partners')">Байгууллагад ↗</a></div></footer><div class="modal" id="modal" role="presentation"><div class="dialog" role="dialog" aria-modal="true" aria-label="Solio цонх"><button class="close" type="button" aria-label="Цонх хаах" title="Хаах" onclick="closeModal()">✕</button><div id="modalBody"></div></div></div><dialog id="studentLessonDialog" aria-labelledby="studentLessonTitle">
+  <form id="studentLessonForm">
+    <header><h2 id="studentLessonTitle">Хичээл нэмэх</h2><button type="button" id="studentLessonClose" aria-label="Хаах">×</button></header>
+    <label>Хичээлийн нэр<input name="name" required maxlength="100" autocomplete="off"></label>
+    <label>Гараг<select name="day"></select></label>
+    <div class="studentLessonHours">
+      <label>Эхлэх цаг<input name="start" type="time" required></label>
+      <label>Дуусах цаг<input name="end" type="time" required></label>
+    </div>
+    <label>Байр, өрөө<input name="room" maxlength="80" autocomplete="off" placeholder="Жишээ нь 2-р байр, 305 тоот"></label>
+    <p id="studentLessonStatus" class="studentHomeStatus" role="status"></p>
+    <footer><button type="button" id="studentLessonDelete" hidden>Устгах</button><button type="submit" class="boardPost">Хадгалах</button></footer>
+  </form>
+</dialog><dialog class="schoolPicker" id="schoolPicker" aria-labelledby="schoolPickerTitle" onclick="if(event.target===this)this.close()">
   <div class="schoolPickerContent">
     <header><h2 id="schoolPickerTitle">Сургууль солих</h2><button type="button" aria-label="Хаах" onclick="this.closest('dialog').close()">×</button></header>
     <input id="schoolPickerQuery" type="search" placeholder="Сургуулийн нэрээр хайх" aria-label="Сургуулийн нэрээр хайх" autocomplete="off">
     <div id="schoolPickerItems"></div>
   </div>
-</dialog><div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div><script src="https://unpkg.com/appwrite@17.0.0/dist/iife/sdk.js"></script><script src="/schools-browser.js" defer></script><script src="/school-directory.js" defer></script><script src="/search-alerts.js" defer></script><script>
+</dialog><div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div><script src="https://unpkg.com/appwrite@17.0.0/dist/iife/sdk.js"></script><script src="/schools-browser.js" defer></script><script src="/school-directory.js" defer></script><script src="/search-alerts.js" defer></script><script src="/student-home.js" defer></script><script>
 const APPWRITE_CONFIG={endpoint:"https://sgp.cloud.appwrite.io/v1",projectId:"6ae367b80007a4d31918",databaseId:"public",storageBucketId:"6ae3b5970003d472ee8f"};
 const appwriteClient=new Appwrite.Client().setEndpoint(APPWRITE_CONFIG.endpoint).setProject(APPWRITE_CONFIG.projectId);
 const appwriteAccount=new Appwrite.Account(appwriteClient);const appwriteDatabases=new Appwrite.Databases(appwriteClient);const appwriteStorage=new Appwrite.Storage(appwriteClient);const appwriteListeners=[];
@@ -936,11 +974,11 @@ function toggleMyListings(){if(!session){requireSolioAccount(toggleMyListings,'�
 function resetMarketFilters(update=true){category='Бүх ангилал';onlyMine=false;document.getElementById('search').value='';document.getElementById('sort').value='new';document.getElementById('solioListingFilter').value='all';savedOnly=false;if(update)loadListings()}
 function toggleFav(){showSavedListings()}
 function updateBottomTabs(active){
- const mobile=['bottomHome','bottomSchools','bottomAccount'].includes(active)?active:'bottomMenu';
+ const mobile=['bottomHome','bottomMarket','bottomSchools','bottomAccount'].includes(active)?active:'bottomMenu';
  document.querySelectorAll('.mobileBottomNav button').forEach(b=>{const selected=b.id===mobile;b.classList.toggle('active',selected);if(selected)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
  document.querySelectorAll('#desktopNav button').forEach(b=>{const selected=b.dataset.desktopTab===active;b.classList.toggle('is-active',selected);if(selected)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
 }
-function goDesktopListings(){goMobileHome()}
+function goDesktopListings(){marketSchoolOverride=null;openSolioMarket()}
 function goDesktopSearch(){goMobileSearch();if(window.innerWidth>=769)requestAnimationFrame(()=>document.getElementById("solioGlobalSearch")?.focus({preventScroll:true}))}
 function pushSolioRoute(hash){
  const path=schoolView?'/':location.pathname;
@@ -950,11 +988,12 @@ function pushSolioRoute(hash){
  if(url!==location.pathname+location.search+location.hash)history.pushState(null,'',url);
 }
 function goMobileHome(){
- marketSchoolOverride=null;
- openSolioMarket();
+ pushSolioRoute('');
+ restoreSolioPage();
+ window.scrollTo({top:0,behavior:'instant'});
 }
 function openSolioMarket(saved=false,scope){
-  pushSolioRoute(saved?'#market':'');
+  pushSolioRoute('#market');
   resetMarketFilters(false);
   if(scope!==undefined)marketSchoolOverride=scope;
   school=saved?SolioSchools.ALL_SCHOOLS:selectedHomeSchool();
@@ -979,7 +1018,17 @@ function restoreSolioPage(){
  leaveSolioSearch();
  leaveMobileSchools();
  const pathSchool=SolioSchools.schoolFromPath(location.pathname);
+ const onHome=(!hash||hash==='#register')&&!pathSchool;
+ document.getElementById('studentHome').hidden=!onHome;
+ document.getElementById('market').hidden=true;
+ if(onHome){
+  updateBottomTabs('bottomHome');
+  showStudentHome();
+  if(hash==='#register')Promise.resolve().then(()=>solioSessionReady).then(()=>{if(location.hash==='#register')openModal('register')});
+  return;
+ }
  if(pathSchool&&(!hash||hash.startsWith('#listing-'))){
+  document.getElementById('market').hidden=false;
   showSchoolPage(pathSchool);
   if(hash.startsWith('#listing-'))openListingLink();
   return;
@@ -1000,11 +1049,11 @@ function restoreSolioPage(){
   ensureSolioListings();
   renderSchoolHub();
  }else if(!/^#(?:campus|deals|societies)(?:\/|$)/.test(hash)){
-  updateBottomTabs('bottomHome');
+  document.getElementById('market').hidden=false;
+  updateBottomTabs('bottomMarket');
   if(!savedOnly)school=selectedHomeSchool();
   ensureSolioListings();
   if(hash.startsWith('#listing-'))openListingLink();
-  if(hash==='#register')Promise.resolve().then(()=>solioSessionReady).then(()=>{if(location.hash==='#register')openModal('register')});
  }
 }
 window.addEventListener('popstate',()=>{
@@ -1067,22 +1116,20 @@ function closeAdminPanel(){const p=document.getElementById("adminPanel");if(p)p.
 function openAdminPanel(){if(!isCampusAdmin()){toast("Админ эрх шаардлагатай");return}window.SolioAdmin?.open()}
 
 document.getElementById("modal").addEventListener("click",e=>{if(e.target.id==="modal")closeModal()});
-appwriteAuth.onAuthStateChange((_event,s)=>{if(session?.user?.id!==s?.user?.id){profileSchool='';marketSchoolOverride=null;extraListings.clear()}session=s;pendingProfileSchool=loadProfileSchool(s?.user?.id);try{updateNav();syncAdminNav();render();if(document.body.classList.contains('solioCommunityPage'))renderCommunityFeed();startSearchAlerts()}catch(err){console.error('Solio auth UI:',err)}});
+appwriteAuth.onAuthStateChange((_event,s)=>{if(session?.user?.id!==s?.user?.id){profileSchool='';marketSchoolOverride=null;extraListings.clear()}session=s;setStudentHomeSession(s);pendingProfileSchool=loadProfileSchool(s?.user?.id);try{updateNav();syncAdminNav();render();if(document.body.classList.contains('solioCommunityPage'))renderCommunityFeed();startSearchAlerts()}catch(err){console.error('Solio auth UI:',err)}});
 setupSocial();
-const startRoute=location.pathname+location.search+location.hash;
-const homeEntry=!location.hash&&!SolioSchools.schoolFromPath(location.pathname);
+setupStudentHome();
 let authChanged=false;
 appwriteAuth.onAuthStateChange(()=>{authChanged=true});
 const solioSessionReady=appwriteAuth.getSession().then(async({data,error})=>{
   if(authChanged)return;
   if(error)console.warn('Solio session:',error.message);
   session=data?.session||null;
+  setStudentHomeSession(session);
   if(session)await loadProfileSchool(session.user.id);
   try{updateNav();syncAdminNav();if(session)render();if(document.body.classList.contains('solioCommunityPage'))renderCommunityFeed();startSearchAlerts()}catch(err){console.error('Solio navigation:',err)}
-}).catch(err=>console.error('Solio session startup:',err)).finally(()=>{
-  if(homeEntry&&startRoute===location.pathname+location.search+location.hash)restoreSolioPage();
-});
-if(!homeEntry)restoreSolioPage();
+}).catch(err=>console.error('Solio session startup:',err)).finally(()=>finishStudentHomeSession());
+restoreSolioPage();
 
 // PWA registration and optional install prompt; never blocks the marketplace.
 let solioInstallEvent=null;
