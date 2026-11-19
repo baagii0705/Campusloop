@@ -1,0 +1,98 @@
+#studentHome { padding: 28px 0 44px; }
+.studentHomeTitle, .studentHomeFeeds header, #studentLessonForm header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.studentHomeTitle h1 {
+  margin: 0;
+  font: 750 clamp(26px, 4vw, 40px)/1.15 var(--board-sans);
+  letter-spacing: -.045em;
+}
+.studentSchedule {
+  margin-top: 16px;
+  padding: clamp(12px, 3vw, 24px);
+  border: 1px solid var(--board-rule);
+  border-radius: 12px;
+  background: #fffdf8;
+}
+.studentScheduleDays { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; max-width: 520px; }
+.studentScheduleDays button, .studentScheduleLessons button, .studentHomeStatus button, #studentLessonForm button:not(.boardPost) {
+  min-height: 44px;
+  min-width: 0;
+  padding: 0 8px;
+  border: 1px solid var(--board-rule);
+  border-radius: 7px;
+  background: transparent;
+  color: var(--board-ink);
+  font: 650 14px var(--board-sans);
+}
+.studentScheduleDays button[aria-current=date] { border-color: #ad4325; }
+.studentScheduleDays button[aria-pressed=true] { border-color: #ad4325; background: #ad4325; color: #fff; }
+.studentScheduleDay { margin: 19px 0 6px; font: 700 17px var(--board-sans); }
+.studentHomeStatus { margin: 7px 0 0; color: var(--board-muted); font-size: 14px; line-height: 1.5; }
+.studentHomeStatus:empty, .studentScheduleLessons:empty { display: none; }
+.studentScheduleLessons { margin: 6px 0 0; padding: 0; list-style: none; }
+.studentScheduleLessons li {
+  display: grid;
+  grid-template-columns: minmax(82px, auto) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 0;
+  border-top: 1px solid var(--board-rule);
+  overflow-wrap: anywhere;
+}
+.studentScheduleLessons small, .studentHomeFeedLink small { display: block; margin-top: 4px; color: var(--board-muted); font-size: 13px; }
+.studentLessonTime { color: #923d24; font-size: 13px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.studentHomeFeeds { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; margin-top: 28px; }
+.studentHomeFeeds > section { min-width: 0; border-top: 1px solid var(--board-rule); }
+.studentHomeFeeds header { min-height: 52px; }
+.studentHomeFeeds h2, #studentLessonForm h2 { margin: 0; font: 750 20px/1.2 var(--board-sans); letter-spacing: -.025em; }
+.studentHomeFeeds header a { display: grid; place-items: center; min-height: 44px; color: #963c24; font-size: 13px; white-space: nowrap; }
+.studentHomeFeedLink {
+  display: block;
+  padding: 12px;
+  border: 1px solid var(--board-rule);
+  border-radius: 8px;
+  background: #fffdf8;
+  color: var(--board-ink);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.studentHomeFeedLink + .studentHomeFeedLink { margin-top: 7px; }
+.studentHomeFeedLink:hover { border-color: #ad4325; }
+#studentLessonDialog {
+  box-sizing: border-box;
+  width: min(440px, calc(100% - 24px));
+  max-height: calc(100% - 24px);
+  padding: 20px;
+  border: 1px solid var(--board-rule);
+  border-radius: 14px;
+  background: var(--board-paper);
+  color: var(--board-ink);
+}
+#studentLessonDialog::backdrop { background: #23221e73; }
+#studentLessonForm { display: grid; gap: 13px; }
+#studentLessonForm label { display: grid; gap: 5px; min-width: 0; font-size: 14px; }
+#studentLessonForm :is(input, select) {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 44px;
+  padding: 8px;
+  border: 1px solid var(--board-rule);
+  border-radius: 7px;
+  background: #fffdf8;
+  color: var(--board-ink);
+  font: inherit;
+  font-size: 16px;
+}
+.studentLessonHours { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+#studentLessonForm footer { display: flex; justify-content: flex-end; gap: 9px; }
+@media (max-width: 620px) {
+  #studentHome { padding-top: 20px; }
+  .studentHomeTitle h1 { font-size: clamp(21px, 6vw, 26px); }
+  .studentHomeTitle .boardPost { padding-inline: 8px; font-size: 12px; }
+  .studentHomeTitle .boardPost svg { width: 14px; height: 14px; }
+  .studentHomeFeeds { grid-template-columns: 1fr; gap: 17px; margin-top: 22px; }
+}

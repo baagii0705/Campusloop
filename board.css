@@ -988,7 +988,7 @@ body.solioCommunityPage #socialHub {
 .boardCount #results { color: #6e6658; font: 500 12px var(--board-sans); }
 @media (max-width: 768px) {
   .marketHeading { margin-bottom: 11px; }
-  .marketHeading .boardPost { display: none; }
+  .marketHeading .boardPost { padding-inline: 9px; font-size: 13px; }
   .marketFilters { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; gap: 6px; }
   .marketFilters > label select { padding-inline: 4px; }
   .marketFilters .boardFilter summary { padding-inline: 7px; font-size: 13px; }
