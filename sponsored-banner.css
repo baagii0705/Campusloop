@@ -6,7 +6,7 @@
 #solioSponsorBar .sponsorCopy{min-width:0;display:grid;gap:3px}
 #solioSponsorBar .sponsorTag{font-size:10px;color:#bb6342;font-weight:700}
 #solioSponsorBar .sponsorName{font-size:13px;font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#solioSponsorBar.is-placeholder{justify-content:center;background:#fbfafa;border:1px dashed #d89e89;min-height:64px}
+#solioSponsorBar.is-placeholder{justify-content:center;background:#f4f7fa;border:1px dashed #d89e89;min-height:64px}
 #solioSponsorBar.is-placeholder .sponsorLink{justify-content:center;text-align:center}
 #solioSponsorBar.is-placeholder .sponsorCopy{justify-items:center;gap:2px}
 #solioSponsorBar.is-placeholder .sponsorName{font-size:15px;font-weight:750;color:#aa5738}
@@ -24,7 +24,7 @@ body.solio-sponsor-visible{padding-bottom:var(--solio-sponsor-extra,78px)}
 body.solioSponsorModalOpen{overflow:hidden}
 .solioSponsorDialog{position:relative;background:#fff;color:#392822;border-radius:22px;box-shadow:0 24px 95px #351b1270;width:min(100%,580px);max-height:calc(100dvh - 36px);overflow:auto;padding:25px}
 .solioSponsorDismiss{position:absolute;right:13px;top:11px;background:#f4efed;border:0;border-radius:50%;width:36px;height:36px;font-size:24px;color:#604d46;cursor:pointer}
-.solioSponsorEyebrow{font-size:11px;font-weight:800;color:#c67455;letter-spacing:1px;margin-bottom:9px}
+.solioSponsorEyebrow{font-size:11px;font-weight:800;color:#1c5683;letter-spacing:1px;margin-bottom:9px}
 .solioSponsorDialog h2{font-size:23px;line-height:1.25;margin:0 36px 9px 0;color:#4a2618}
 .solioSponsorDialog p{font-size:13px;line-height:1.5;color:#725e57}
 .solioSponsorFields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
@@ -107,7 +107,7 @@ body.solioSponsorModalOpen{overflow:hidden}
 .solioSponsorPriceOption span{font-size:11px}
 .solioSponsorPriceOption.selected{background:#f5f1ef;border-color:#bd6a4b;box-shadow:0 0 0 1px #bd6a4b}
 .solioSponsorChoiceControls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
-.solioSponsorPriceTotal{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#efe8e6;border-radius:11px;padding:12px 13px;color:#763c27}
+.solioSponsorPriceTotal{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#d2dde5;border-radius:11px;padding:12px 13px;color:#763c27}
 .solioSponsorPriceTotal span{font-size:12px;font-weight:650}
 .solioSponsorPriceTotal strong{font-size:21px;white-space:nowrap}
 .solioSponsorPricePicker>small{display:block;color:#7b6b65;font-size:11px;margin-top:11px;line-height:1.45}
@@ -171,7 +171,7 @@ body.solioSponsorModalOpen{overflow:hidden}
 .solioDealWizard{display:grid;gap:14px}
 .solioDealProgress{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
 .solioDealProgress li{font-size:11px;font-weight:700;padding:10px 6px;text-align:center;background:#f4f0e8;border:1px solid #d4ccbd;color:#6d675e;border-radius:6px}
-.solioDealProgress li.current{background:#25231f;color:#fff}
+.solioDealProgress li.current{background:#172e42;color:#fff}
 .solioDealProgress li.completed{background:#e5efe5;color:#35643d;border-color:#aac2ab}
 .solioDealStep{display:grid;gap:15px}
 .solioDealStep[hidden],.solioDealWizardActions button[hidden]{display:none!important}
@@ -180,7 +180,7 @@ body.solioSponsorModalOpen{overflow:hidden}
 .solioDealWizardActions{display:flex;gap:10px}
 .solioDealWizardActions button{min-height:44px}
 .solioDealWizardActions button[type="submit"],.solioDealWizardActions button:nth-child(2){flex:1}
-.solioDealWizardActions button:first-child{background:#fff;color:#25231f}
+.solioDealWizardActions button:first-child{background:#fff;color:#172e42}
 .solioDealSummary{margin:0;display:grid;grid-template-columns:110px minmax(0,1fr);border:1px solid #d3cbbc;border-radius:8px;overflow:hidden}
 .solioDealSummary dt,.solioDealSummary dd{margin:0;padding:11px;border-bottom:1px solid #e9e3d8;overflow-wrap:anywhere;font-size:12px}
 .solioDealSummary dt{background:#f5f0e7;color:#76695b}

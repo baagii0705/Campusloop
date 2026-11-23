@@ -114,7 +114,7 @@ h1 span{color:var(--lime)}
 .detailTop{font-size:11px}
 .detailRight h2{font-size:25px}}
 .detailThumbs{display:flex;gap:9px;overflow-x:auto;margin:12px 0}
-.detailThumbs button{border:2px solid #e4e9e1;background:#fff;border-radius:12px;padding:3px;cursor:pointer;flex:none}
+.detailThumbs button{border:2px solid #e4e9e1;background:#fff;border-radius: 9px;padding:3px;cursor:pointer;flex:none}
 .detailThumbs img{width:72px;height:65px;object-fit:cover;border-radius:8px}
 html{scroll-behavior:smooth}
 .primary{color:#fff!important;box-shadow:none!important}
@@ -196,33 +196,33 @@ html{scroll-padding-top:24px}
 :root{--cl-forest:#25282c;--cl-lime:#f1c66d;--cl-ink:#202227}
 
 .primary{background:#2563eb!important}
-:root{--green:#c67455;--lime:#FFC8A9;--ink:#3c2a23;--muted:#867670;--bg:#fbfafa;--sev-ink:#3c2a23;--sev-accent:#c67455;--sev-paper:#fbfafa;--sev-apricot:#FFC8A9}
-body{color:#3c2a23!important}
+:root{--green:#1c5683;--lime:#bcddec;--ink:#172e42;--muted:#536579;--bg:#f4f7fa;--sev-ink:#172e42;--sev-accent:#1c5683;--sev-paper:#f4f7fa;--sev-apricot:#bcddec}
+body{color:#172e42!important}
 
-.primary{background:#c67455!important;color:#fff!important;border-color:#c67455!important}
-.footer b{color:#c67455!important}
-input:focus,select:focus,textarea:focus{outline-color:#c67455!important}
-:root{--solio-purple:#c67455;--solio-bg:#fbfafa;--solio-peach:#FFC8A9}
-body{background:#fbfafa!important}
+.primary{background:#1c5683!important;color:#fff!important;border-color:#1c5683!important}
+.footer b{color:#1c5683!important}
+input:focus,select:focus,textarea:focus{outline-color:#1c5683!important}
+:root{--solio-purple:#1c5683;--solio-bg:#f4f7fa;--solio-peach:#bcddec}
+body{background:#f4f7fa!important}
 .wrap{max-width:1240px!important}
 
 
 .schoolHub{padding:25px 0 19px!important;scroll-margin-top:85px}
 .schoolHubHead{display:flex;align-items:end;justify-content:space-between;gap:15px;margin-bottom:16px}
-.schoolHubHead h2{font-size:clamp(22px,2.4vw,29px);letter-spacing:-.8px;color:#3c2a23;margin:5px 0}
-.schoolHubHead p{font-size:13px;color:#867670;margin:0}
-.schoolHubAll{border:0;background:transparent;color:#c67455;font-weight:650;white-space:nowrap;cursor:pointer;padding:9px}
+.schoolHubHead h2{font-size:clamp(22px,2.4vw,29px);letter-spacing:-.8px;color:#172e42;margin:5px 0}
+.schoolHubHead p{font-size:13px;color:#536579;margin:0}
+.schoolHubAll{border:0;background:transparent;color:#1c5683;font-weight:650;white-space:nowrap;cursor:pointer;padding:9px}
 .schoolHubGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}
-.schoolHubCard{min-width:0;display:flex;align-items:center;gap:11px;text-align:left;padding:15px 13px;background:#fff;border:1px solid #efe8e6;border-radius:15px;cursor:pointer;transition:transform .16s,border-color .16s,box-shadow .16s}
+.schoolHubCard{min-width:0;display:flex;align-items:center;gap:11px;text-align:left;padding:15px 13px;background:#fff;border:1px solid #d2dde5;border-radius:15px;cursor:pointer;transition:transform .16s,border-color .16s,box-shadow .16s}
 .schoolHubCard:hover{transform:translateY(-2px);border-color:#e1b6a6;box-shadow:0 5px 18px #3c2a230C}
-.schoolHubCard.selected{border-color:#c67455;background:#f5f1ef}
-.schoolHubMonogram{width:41px;height:41px;flex:0 0 41px;display:grid;place-items:center;color:#c67455;font-size:13px;font-weight:800;border-radius:12px}
-.schoolHubName{color:#3c2a23;font-size:13px;font-weight:650;line-height:1.3;flex:1;min-width:0}
+.schoolHubCard.selected{border-color:#1c5683;background:#f5f1ef}
+.schoolHubMonogram{width:41px;height:41px;flex:0 0 41px;display:grid;place-items:center;color:#1c5683;font-size:13px;font-weight:800;border-radius:12px}
+.schoolHubName{color:#172e42;font-size:13px;font-weight:650;line-height:1.3;flex:1;min-width:0}
 .schoolHubCount{font-size:11px;color:#94827b;white-space:nowrap}
-.schoolHubCount span{color:#c67455}
-.schoolHubCurrent{margin-top:13px;padding:11px 14px;background:#f3eeec;border-radius:11px;color:#c67455;font-size:13px;font-weight:650;display:flex;align-items:center;justify-content:space-between}
+.schoolHubCount span{color:#1c5683}
+.schoolHubCurrent{margin-top:13px;padding:11px 14px;background:#f3eeec;border-radius:11px;color:#1c5683;font-size:13px;font-weight:650;display:flex;align-items:center;justify-content:space-between}
 .schoolHubCurrent[hidden]{display:none!important}
-.schoolHubCurrent button{background:transparent;border:0;color:#c67455;cursor:pointer;font-size:12px}
+.schoolHubCurrent button{background:transparent;border:0;color:#1c5683;cursor:pointer;font-size:12px}
 #market{scroll-margin-top:80px}
 @media (max-width:900px){.schoolHubGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
 .schoolHubCard{padding:12px}}
@@ -234,29 +234,29 @@ body{background:#fbfafa!important}
 .schoolHubMonogram{grid-row:1/3;width:36px;height:36px;flex-basis:36px}
 .schoolHubName{font-size:12px}
 .schoolHubCount{font-size:11px}}
-.socialHub{margin:20px 0 35px;padding:25px;background:#fff;border:1px solid #efe8e6;border-radius:20px;scroll-margin-top:90px}
-.socialHead>span{font-size:10px;letter-spacing:2px;color:#c67455;font-weight:750}
-.socialHead h2{font-size:27px;color:#3c2a23;margin:7px 0}
-.socialHead p,.socialBar p{font-size:13px;color:#867670;margin:0}
-.socialTabs{display:flex;gap:8px;margin:23px 0 18px;border-bottom:1px solid #efe8e6;padding-bottom:12px}
-.socialTabs button{border:1px solid #efe8e6;background:#fbfafa;color:#70615b;padding:11px 17px;border-radius:11px;cursor:pointer}
-.socialTabs button.active{background:#c67455;color:white;border-color:#c67455}
+.socialHub{margin:20px 0 35px;padding:25px;background:#fff;border:1px solid #d2dde5;border-radius:20px;scroll-margin-top:90px}
+.socialHead>span{font-size:10px;letter-spacing:2px;color:#1c5683;font-weight:750}
+.socialHead h2{font-size:27px;color:#172e42;margin:7px 0}
+.socialHead p,.socialBar p{font-size:13px;color:#536579;margin:0}
+.socialTabs{display:flex;gap:8px;margin:23px 0 18px;border-bottom:1px solid #d2dde5;padding-bottom:12px}
+.socialTabs button{border:1px solid #d2dde5;background:#f4f7fa;color:#70615b;padding:11px 17px;border-radius: 9px;cursor:pointer}
+.socialTabs button.active{background:#1c5683;color:white;border-color:#1c5683}
 .socialPanel[hidden],.socialForm[hidden]{display:none!important}
 .socialBar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:15px}
-.socialBar h3{margin:0 0 4px;font-size:19px;color:#3c2a23}
-.socialBar>button,.socialForm>button{background:#c67455;color:white;border:0;border-radius:11px;padding:12px 16px;cursor:pointer;white-space:nowrap}
+.socialBar h3{margin:0 0 4px;font-size:19px;color:#172e42}
+.socialBar>button,.socialForm>button{background:#1c5683;color:white;border:0;border-radius: 9px;padding:12px 16px;cursor:pointer;white-space:nowrap}
 .socialItems{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 .socialItem{padding:16px;border:1px solid #f2ecea;background:#fdfdfd;border-radius:13px;min-width:0}
-.socialItem h4{font-size:16px;color:#3c2a23;margin:8px 0}
+.socialItem h4{font-size:16px;color:#172e42;margin:8px 0}
 .socialItem p{font-size:13px;color:#6b5c56;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere;margin:8px 0}
-.socialItem strong{display:block;color:#c67455;font-size:14px}
+.socialItem strong{display:block;color:#1c5683;font-size:14px}
 .socialMeta{font-size:11px;color:#8f7c75}
 .socialContact{font-size:12px;color:#79655d;margin-top:9px;overflow-wrap:anywhere}
 .socialDelete{border:0;background:transparent;color:#A14B6E;font-size:12px;padding:8px 0;cursor:pointer}
 .socialEmpty{font-size:13px;color:#8f7c75}
-.socialForm{background:#fbfafa;border:1px solid #efe8e6;border-radius:13px;padding:16px;margin-bottom:17px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.socialForm{background:#f4f7fa;border:1px solid #d2dde5;border-radius:13px;padding:16px;margin-bottom:17px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .socialForm label{display:flex;flex-direction:column;gap:6px;font-size:12px;color:#5f4d46}
-.socialForm input,.socialForm select,.socialForm textarea,.communityFilter select{width:100%;background:#fff;border:1px solid #e5dad6;border-radius:9px;padding:11px;color:#3c2a23;font:inherit;font-size:13px}
+.socialForm input,.socialForm select,.socialForm textarea,.communityFilter select{width:100%;background:#fff;border:1px solid #e5dad6;border-radius:9px;padding:11px;color:#172e42;font:inherit;font-size:13px}
 .socialForm label:has(textarea){grid-column:1/-1}
 .socialForm>button{justify-self:start}
 .socialStatus{font-size:12px;align-self:center}
@@ -271,44 +271,44 @@ body{background:#fbfafa!important}
 .socialItems,.socialForm{grid-template-columns:1fr}
 .socialForm label:has(textarea){grid-column:1}
 .socialItem{padding:13px}}
-.solioProfile{color:#3c2a23;padding:10px 0}
+.solioProfile{color:#172e42;padding:10px 0}
 .solioProfileHero{display:flex;align-items:center;gap:17px;padding:14px 0 18px;border-bottom:1px solid #f2ecea}
-.solioAvatar{display:grid;place-items:center;flex:0 0 75px;width:75px;height:75px;border-radius:22px;background:#f3eeec;color:#c67455;font-size:32px;font-weight:800}
-.solioProfileKicker{color:#c67455;font-size:10px;letter-spacing:1.8px;font-weight:750}
+.solioAvatar{display:grid;place-items:center;flex:0 0 75px;width:75px;height:75px;border-radius:22px;background:#f3eeec;color:#1c5683;font-size:32px;font-weight:800}
+.solioProfileKicker{color:#1c5683;font-size:10px;letter-spacing:1.8px;font-weight:750}
 .solioProfileHero h2{font-size:23px;margin:6px 0 3px;overflow-wrap:anywhere}
-.solioProfileHero p,.solioProfileBio{color:#867670;font-size:13px;line-height:1.6}
+.solioProfileHero p,.solioProfileBio{color:#536579;font-size:13px;line-height:1.6}
 .solioProfileBio{margin:15px 0;white-space:pre-wrap;overflow-wrap:anywhere}
 .solioProfileStats{display:flex;gap:12px;margin:16px 0}
-.solioProfileStats>div{flex:1;background:#fbfafa;border:1px solid #efe8e6;border-radius:13px;padding:13px}
-.solioProfileStats strong{display:block;color:#c67455;font-size:21px}
-.solioProfileStats span{color:#867670;font-size:11px}
-.solioProfileEdit,.solioProfileForm button[type=submit]{background:#c67455;color:#fff;border:0;border-radius:11px;padding:12px 16px;cursor:pointer;font-weight:650}
-.solioProfileLogout{margin-left:8px;border:1px solid #efe8e6;background:#fff;border-radius:11px;padding:11px 14px;color:#867670;cursor:pointer}
+.solioProfileStats>div{flex:1;background:#f4f7fa;border:1px solid #d2dde5;border-radius:13px;padding:13px}
+.solioProfileStats strong{display:block;color:#1c5683;font-size:21px}
+.solioProfileStats span{color:#536579;font-size:11px}
+.solioProfileEdit,.solioProfileForm button[type=submit]{background:#1c5683;color:#fff;border:0;border-radius: 9px;padding:12px 16px;cursor:pointer;font-weight:650}
+.solioProfileLogout{margin-left:8px;border:1px solid #d2dde5;background:#fff;border-radius:11px;padding:11px 14px;color:#536579;cursor:pointer}
 .solioProfileListTitle{font-size:17px;margin:22px 0 12px}
 .solioProfileListings{display:grid;gap:8px;max-height:330px;overflow:auto}
-.solioProfileListing{display:flex;align-items:center;gap:11px;text-align:left;background:#fff;border:1px solid #f2ecea;border-radius:11px;padding:8px;cursor:pointer;color:#3c2a23;min-width:0}
+.solioProfileListing{display:flex;align-items:center;gap:11px;text-align:left;background:#fff;border:1px solid #f2ecea;border-radius:11px;padding:8px;cursor:pointer;color:#172e42;min-width:0}
 .solioProfileListingPhoto{width:54px;height:54px;flex:0 0 54px;border-radius:8px;background:#f5f1ef;display:grid;place-items:center;overflow:hidden}
 .solioProfileListingPhoto img{width:100%;height:100%;object-fit:cover}
 .solioProfileListing>span:nth-child(2){flex:1;min-width:0}
 .solioProfileListing b{display:block;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .solioProfileListing small{display:block;color:#8f7c75;margin-top:4px}
-.solioProfileListing>strong{color:#c67455;font-size:12px;white-space:nowrap}
+.solioProfileListing>strong{color:#1c5683;font-size:12px;white-space:nowrap}
 .solioProfileForm{display:grid;gap:15px;margin-top:16px}
 .solioProfileForm label{display:grid;gap:6px;color:#70615b;font-size:12px}
-.solioProfileForm input,.solioProfileForm select,.solioProfileForm textarea{width:100%;padding:12px;border:1px solid #e5dad6;border-radius:10px;background:#fff;color:#3c2a23;font:inherit;font-size:13px}
+.solioProfileForm input,.solioProfileForm select,.solioProfileForm textarea{width:100%;padding:12px;border:1px solid #e5dad6;border-radius:10px;background:#fff;color:#172e42;font:inherit;font-size:13px}
 .solioProfileActions{display:flex;gap:10px}
-.solioProfileActions button[type=button]{background:#f5f1ef;color:#c67455;border:0;border-radius:11px;padding:12px 16px;cursor:pointer}
-.solioSellerLink{width:100%;text-align:left;border:1px solid #ece4e1;background:#fbfafa;color:#c67455;border-radius:11px;padding:12px;margin:10px 0;cursor:pointer;font-weight:650}
+.solioProfileActions button[type=button]{background:#f5f1ef;color:#1c5683;border:0;border-radius: 9px;padding:12px 16px;cursor:pointer}
+.solioSellerLink{width:100%;text-align:left;border:1px solid #ece4e1;background:#f4f7fa;color:#1c5683;border-radius:11px;padding:12px;margin:10px 0;cursor:pointer;font-weight:650}
 @media (max-width:550px){.solioProfileHero h2{font-size:20px}
 .solioAvatar{width:62px;height:62px;flex-basis:62px}
 .solioProfileListing>strong{font-size:11px}}
-.solioInstallHint{position:fixed;bottom:86px;right:16px;z-index:30;background:#fff;color:#3c2a23;border:1px solid #eee7e5;box-shadow:0 10px 35px #3c2a2325;border-radius:16px;padding:14px;max-width:290px;font-size:13px}
-.solioInstallHint button{background:#c67455;color:white;border:0;border-radius:9px;padding:8px 12px;margin-top:9px}
-.solioInstallHint .dismissInstall{background:#f5f1ef;color:#c67455;margin-left:8px}
+.solioInstallHint{position:fixed;bottom:86px;right:16px;z-index:30;background:#fff;color:#172e42;border:1px solid #eee7e5;box-shadow:0 10px 35px #3c2a2325;border-radius:16px;padding:14px;max-width:290px;font-size:13px}
+.solioInstallHint button{background:#1c5683;color:white;border:0;border-radius: 9px;padding:8px 12px;margin-top:9px}
+.solioInstallHint .dismissInstall{background:#f5f1ef;color:#1c5683;margin-left:8px}
 @media (min-width:701px){.solioInstallHint{bottom:20px}}
-.solioNotifItem{display:flex;flex-direction:column;gap:5px;padding:12px;margin:8px 0;width:100%;background:#fbfafa;border:1px solid #ede6e4;border-radius:10px;text-align:left;color:#3c2a23}
-.solioNotifItem span{font-size:12px;color:#c67455}
-.solioMeetingMap{display:block;padding:12px 15px;margin:10px 0;border-radius:12px;background:#fbfafa;color:#c67455;font-weight:750;text-decoration:none;border:1px solid #ede6e4}
+.solioNotifItem{display:flex;flex-direction:column;gap:5px;padding:12px;margin:8px 0;width:100%;background:#f4f7fa;border:1px solid #ede6e4;border-radius:10px;text-align:left;color:#172e42}
+.solioNotifItem span{font-size:12px;color:#1c5683}
+.solioMeetingMap{display:block;padding:12px 15px;margin:10px 0;border-radius:12px;background:#f4f7fa;color:#1c5683;font-weight:750;text-decoration:none;border:1px solid #ede6e4}
 .solioMeetingMap:hover{background:#f4efed}
 :where(button,a,input,select,textarea,[role="button"]):focus-visible{outline:3px solid #c9795c!important;outline-offset:3px!important}
 :where(button,a,[role="button"]){-webkit-tap-highlight-color:transparent;touch-action:manipulation}
@@ -319,14 +319,14 @@ body{background:#fbfafa!important}
 body{overflow-x:hidden}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}
 *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
-:root{--solio-lavender:#c67455;--solio-lavender-soft:#f6f2f1;--solio-ink:#382822;--solio-line:#efe8e5}
+:root{--solio-lavender:#1c5683;--solio-lavender-soft:#e8f1f8;--solio-ink:#172e42;--solio-line:#efe8e5}
 body{color:var(--solio-ink)}
 
 @media (max-width:760px){body{padding-bottom:calc(90px + env(safe-area-inset-bottom))!important}
 .toast{bottom:calc(97px + env(safe-area-inset-bottom))!important}}
 .schoolHubSearchLabel{display:block;font-size:12px;font-weight:750;color:#846052;margin:12px 0 7px}
-.schoolHubSearch{display:block;width:100%;box-sizing:border-box;padding:13px 15px;margin:0 0 13px;border:1px solid #e7deda;border-radius:13px;background:#fff;color:#3c2a23;font:inherit;font-size:14px}
-.schoolHubSearch:focus{outline:2px solid #c67455;outline-offset:2px}
+.schoolHubSearch{display:block;width:100%;box-sizing:border-box;padding:13px 15px;margin:0 0 13px;border:1px solid #e7deda;border-radius:13px;background:#fff;color:#172e42;font:inherit;font-size:14px}
+.schoolHubSearch:focus{outline:2px solid #1c5683;outline-offset:2px}
 .schoolHubNoResults{grid-column:1/-1;color:#85736d;font-size:13px;padding:14px}
 .schoolHubGrid{max-height:520px;overflow-y:auto;overscroll-behavior:contain;align-content:start}
 @media (max-width:600px){.schoolHubGrid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;overflow-x:hidden!important;overflow-y:auto!important;max-height:58vh!important;gap:9px!important}
@@ -352,7 +352,7 @@ body.solioSearchMode #solioSearchPage{display:block!important}
 .solioSearchPage>input{display:block;width:100%;box-sizing:border-box;border:1px solid #e4d8d4;border-radius:16px;padding:16px;margin:8px 0 26px;font:inherit;font-size:16px}
 .solioSearchSectionTitle{font-size:17px;font-weight:800;margin:22px 0 12px;color:#462b21}
 .solioSearchSchools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
-.solioSearchSchools button,.solioSearchListings button{display:flex;align-items:center;gap:12px;text-align:left;background:#fff;border:1px solid #ede5e2;border-radius:13px;padding:11px;color:#462b21;font:inherit;cursor:pointer}
+.solioSearchSchools button,.solioSearchListings button{display:flex;align-items:center;gap:12px;text-align:left;background:#fff;border:1px solid #ede5e2;border-radius: 9px;padding:11px;color:#462b21;font:inherit;cursor:pointer}
 .solioSearchSchools svg{width:39px;height:39px;flex:none}
 .solioSearchSchools span{font-size:12px;font-weight:700}
 .solioSearchListings{display:grid;gap:9px}
@@ -361,7 +361,7 @@ body.solioSearchMode #solioSearchPage{display:block!important}
 .solioSearchPage p{font-size:13px;color:#8f7b74}
 @media (max-width:600px){.solioSearchPage{padding-top:22px}
 .solioSearchSchools{grid-template-columns:1fr 1fr}}
-.solioCommunityBack{display:none;background:transparent;border:0;color:#c67455;font-size:13px;font-weight:750;padding:0 0 18px;cursor:pointer}
+.solioCommunityBack{display:none;background:transparent;border:0;color:#1c5683;font-size:13px;font-weight:750;padding:0 0 18px;cursor:pointer}
 body.solioCommunityPage main.wrap>*:not(#socialHub){display:none!important}
 body.solioCommunityPage #socialHub{min-height:calc(100dvh - 170px);padding-top:25px!important;padding-bottom:110px!important;margin:0!important}
 body.solioCommunityPage .solioCommunityBack{display:block}
@@ -384,9 +384,9 @@ body:not(.solioSearchMode) #solioSearchPage{display:none!important}
 .solioStatusReserved{background:#fff0d2;color:#87521c}
 .solioStatusFree{background:#e6f8ec;color:#65321f}
 .solioCardManage{display:flex;gap:8px;margin-top:5px}
-.solioCardManage>button{flex:1;min-height:34px;border:1px solid #ede5e2;background:#fbfafa;color:#a25f46;border-radius:9px;font-size:11px;font-weight:700}
+.solioCardManage>button{flex:1;min-height:34px;border:1px solid #ede5e2;background:#f4f7fa;color:#a25f46;border-radius: 9px;font-size:11px;font-weight:700}
 .solioSearchPage .solioSearchListings{display:grid!important;gap:9px!important}
-.solioSearchPage .solioSearchListings button[data-listing-search]{display:flex!important;flex-direction:row!important;align-items:center!important;gap:12px!important;padding:10px!important;min-width:0!important;min-height:82px!important;border:1px solid #ede6e4!important;border-radius:15px!important;text-align:left!important;background:#fff!important}
+.solioSearchPage .solioSearchListings button[data-listing-search]{display:flex!important;flex-direction:row!important;align-items:center!important;gap:12px!important;padding:10px!important;min-width:0!important;min-height:82px!important;border:1px solid #ede6e4!important;border-radius: 9px!important;text-align:left!important;background:#fff!important}
 .solioSearchResultImage{width:60px;height:60px;flex:0 0 60px;background:#f6f2f0;border-radius:10px;display:grid;place-items:center;overflow:hidden}
 .solioSearchResultImage img{width:100%;height:100%;object-fit:cover}
 .solioSearchResultCopy{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:3px;min-width:0;flex:1}
@@ -394,10 +394,10 @@ body:not(.solioSearchMode) #solioSearchPage{display:none!important}
 .solioSearchResultCopy small{color:#8f7b73;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
 .solioSearchResultCopy b{font-size:13px;color:#c06746}
 .solioSearchResultArrow{color:#c67253;font-size:18px}
-.solioSearchMore{width:100%;min-height:44px;margin:14px 0 0;border:1px solid #ece4e1;border-radius:13px;background:#fbfafa;color:#9c573e;font-weight:750}
+.solioSearchMore{width:100%;min-height:44px;margin:14px 0 0;border:1px solid #ece4e1;border-radius:13px;background:#f4f7fa;color:#9c573e;font-weight:750}
 .solioSearchMore[hidden]{display:none!important}
 .solioLoadingListings,.solioListingError{grid-column:1/-1;text-align:center;padding:38px 16px;border:1px dashed #ece5e2;border-radius:17px;background:#fcfbfb;color:#87665a;font-size:14px}
-.solioListingError button{min-height:43px;margin-top:10px;border:0;border-radius:12px;background:#c67455;color:#fff;padding:10px 16px;font-weight:750}
+.solioListingError button{min-height:43px;margin-top:10px;border:0;border-radius: 9px;background:#1c5683;color:#fff;padding:10px 16px;font-weight:750}
 #loadMoreListings:disabled,#solioSearchMore:disabled{opacity:.5;cursor:wait}
 body.solioWantedPage main.wrap>*:not(#socialHub){display:none!important}
 body.solioWantedPage #socialHub{display:block!important;min-height:calc(100dvh - 170px);padding:25px 16px 110px!important;margin:0!important}
@@ -411,9 +411,9 @@ body.solioCommunityPage .solioWantedHeading{display:none!important}
 body.solioCommunityPage .solioCommunityHeading{display:block!important}
 .solioWantedHeading{display:none}
 body.solioWantedPage .solioWantedHeading{display:block!important}
-#socialHub .solioWantedHeading>span,#socialHub .solioCommunityHeading>span{font-size:10px;letter-spacing:2px;color:#c67455;font-weight:750}
-#socialHub .solioWantedHeading>h2,#socialHub .solioCommunityHeading>h2{font-size:clamp(22px,4vw,27px);color:#3c2a23;margin:7px 0}
-#socialHub .solioWantedHeading>p,#socialHub .solioCommunityHeading>p{font-size:13px;color:#867670;margin:0}
+#socialHub .solioWantedHeading>span,#socialHub .solioCommunityHeading>span{font-size:10px;letter-spacing:2px;color:#1c5683;font-weight:750}
+#socialHub .solioWantedHeading>h2,#socialHub .solioCommunityHeading>h2{font-size:clamp(22px,4vw,27px);color:#172e42;margin:7px 0}
+#socialHub .solioWantedHeading>p,#socialHub .solioCommunityHeading>p{font-size:13px;color:#536579;margin:0}
 body.solioWantedPage #socialHub .socialHead{margin-bottom:18px}
 body.solioWantedPage #wantedPanel .socialBar{gap:12px}
 body.solioWantedPage #wantedPanel .socialBar>button{min-height:44px;white-space:nowrap}
@@ -422,7 +422,7 @@ body.solioWantedPage #wantedPanel .socialBar>button{min-height:44px;white-space:
 #modal.show{display:flex!important}
 #modal>.dialog{position:relative!important;box-sizing:border-box!important;max-width:calc(100vw - 20px)!important;max-height:calc(100dvh - 24px)!important;overflow-y:auto!important;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
 #modal>.dialog>.close{position:sticky!important;top:0!important;z-index:20!important;display:flex!important;align-items:center!important;justify-content:center!important;float:none!important;margin:0 0 10px auto!important;flex-shrink:0;width:46px!important;height:46px!important;min-width:46px!important;min-height:46px!important;padding:0!important;border:1px solid #ece4e1!important;border-radius:50%!important;background:#ffffff!important;color:#763f2a!important;box-shadow:0 2px 12px rgba(40,24,65,.18)!important;font-size:24px!important;font-weight:650!important;line-height:1!important;touch-action:manipulation;cursor:pointer}
-#modal>.dialog>.close:focus-visible{outline:3px solid #c67455!important;outline-offset:3px!important}
+#modal>.dialog>.close:focus-visible{outline:3px solid #1c5683!important;outline-offset:3px!important}
 @media (max-width:760px){#modal{padding:12px 10px!important;align-items:center!important;justify-content:center!important}
 #modal>.dialog{width:100%!important;max-height:calc(100dvh - 24px)!important;padding:14px 16px 22px!important;border-radius:18px!important}
 #modal>.dialog>.close{top:0!important;margin-bottom:8px!important}}
@@ -445,7 +445,7 @@ body.solioWantedPage #wantedPanel .socialBar>button{min-height:44px;white-space:
 #modal .authExperience #authPass{padding-right:80px!important}
 #modal .authExperience .showPass{position:absolute;top:7px!important;right:7px!important;height:35px!important;min-height:35px!important;padding:0 11px!important;border:0!important;border-radius:9px!important;background:#f8f4f3!important;color:#af6347!important;font-size:12px!important;font-weight:800!important}
 #modal .authPasswordHint{font-size:11px;color:#948078;margin:5px 0 1px}
-#modal .authExperience .authWide{width:100%!important;min-height:51px!important;margin-top:15px!important;border:0!important;border-radius:13px!important;background:#c67455!important;color:#fff!important;font-size:15px!important;font-weight:800!important;box-shadow:0 6px 17px rgba(107,65,171,.18)!important}
+#modal .authExperience .authWide{width:100%!important;min-height:51px!important;margin-top:15px!important;border:0!important;border-radius:13px!important;background:#1c5683!important;color:#fff!important;font-size:15px!important;font-weight:800!important;box-shadow:0 6px 17px rgba(107,65,171,.18)!important}
 #modal .authExperience .authWide:disabled{opacity:.65!important;cursor:wait}
 #modal .authExperience .authLink{display:block!important;margin:15px auto 0!important;color:#aa5f43!important;font-size:12px!important;font-weight:750!important;padding:7px!important;min-height:36px!important}
 #modal .authExperience .authMessage:not(:empty){padding:11px 12px;margin-top:13px;background:#fef5f1;border:1px solid #f5d9cd;border-radius:10px;color:#9c4d36;font-size:12px;line-height:1.5}
@@ -465,14 +465,14 @@ body.solioWantedPage #wantedPanel .socialBar>button{min-height:44px;white-space:
 #modal .quickPostRow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:13px}
 #modal .quickPostPrice{display:flex;gap:7px;align-items:stretch}
 #modal .quickPostPrice>input{min-width:0;flex:1}
-#modal .quickPostPrice>button{flex:0 0 auto;padding:0 12px!important;border:1.5px solid #e8deda!important;border-radius:11px!important;background:#faf8f7!important;color:#ac6a51!important;font-weight:800!important;font-size:12px!important;min-height:45px}
+#modal .quickPostPrice>button{flex:0 0 auto;padding:0 12px!important;border:1.5px solid #e8deda!important;border-radius: 9px!important;background:#faf8f7!important;color:#ac6a51!important;font-weight:800!important;font-size:12px!important;min-height:45px}
 #modal .quickPostPrice>button[aria-pressed="true"]{background:#f1eae8!important;border-color:#d69983!important;color:#a05438!important}
 #modal .quickPostUpload{position:relative;margin:0 0 3px!important;border:1.5px dashed #dcb4a5!important;border-radius:16px!important;background:#fcfbfa!important;padding:14px!important;overflow:hidden!important;text-align:left!important}
 #modal .quickPostUploadLabel{display:flex;gap:12px;align-items:center;cursor:pointer;min-height:50px}
 #modal .quickPostUploadLabel>span:nth-child(2){display:flex;flex:1;min-width:0;flex-direction:column;gap:5px}
 #modal .quickPostUploadLabel strong{font-size:14px!important;font-weight:780!important;color:#693f30!important}
 #modal .quickPostUploadLabel small{font-size:11px;color:#9e847b}
-#modal .quickPostUploadArrow{font-size:25px;font-weight:500;color:#c67455}
+#modal .quickPostUploadArrow{font-size:25px;font-weight:500;color:#1c5683}
 #modal .quickPostUpload input[type=file]{position:absolute;left:0;top:0;width:1px!important;height:1px!important;opacity:0!important;overflow:hidden;padding:0!important;margin:0!important}
 #modal .quickPostUpload:focus-within{outline:3px solid #e6dcd8;outline-offset:2px}
 #modal .quickPostUpload .imagePreviewGrid{grid-template-columns:repeat(5,minmax(0,1fr));margin:11px 0 0;gap:7px}
@@ -490,7 +490,7 @@ body.solioWantedPage #wantedPanel .socialBar>button{min-height:44px;white-space:
 #modal .quickPostFooter #postStatus:empty{display:none}
 #modal .quickPostFooter #postStatus{font-size:12px;color:#a36751;line-height:1.5;margin:0 0 9px}
 #modal .quickPostFooter #postStatus.is-error{color:#a94738}
-#modal .quickPostSubmit{width:100%;min-height:51px!important;padding:12px 14px!important;border:0!important;border-radius:13px!important;background:#c67455!important;color:white!important;font-size:15px!important;font-weight:800!important;box-shadow:0 4px 15px rgba(91,51,155,.15)!important}
+#modal .quickPostSubmit{width:100%;min-height:51px!important;padding:12px 14px!important;border:0!important;border-radius:13px!important;background:#1c5683!important;color:white!important;font-size:15px!important;font-weight:800!important;box-shadow:0 4px 15px rgba(91,51,155,.15)!important}
 #modal .quickPostSubmit:disabled{opacity:.6!important;cursor:wait}
 #modal .quickPostFooter>small{display:block;color:#aa9b95;font-size:10px;margin:8px 0 0}
 @media (max-width:760px){#modal>.dialog.authDialog,#modal>.dialog.quickPostDialog{padding:15px 16px 18px!important;border-radius:18px!important}
@@ -511,7 +511,7 @@ body.solioWantedPage #wantedPanel .socialBar>button{min-height:44px;white-space:
 .communityBody{white-space:pre-wrap;overflow-wrap:anywhere;font-size:15px;line-height:1.65;margin:18px 0}
 .communityCounts{display:flex;justify-content:space-between;color:#777;font-size:12px;border-bottom:1px solid #eee;padding-bottom:10px}
 .communityActions{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
-.communityActions button,.communityComments button{border:0;background:#f8f4f3;color:#794c3b;border-radius:10px;padding:9px 12px;font-weight:650}
+.communityActions button,.communityComments button{border:0;background:#f8f4f3;color:#794c3b;border-radius: 9px;padding:9px 12px;font-weight:650}
 .communityActions button[aria-pressed=true]{color:#bc315d;background:#fff0f4}
 .communityComments{margin-top:12px;border-top:1px solid #eee;padding-top:12px}
 .communityComments[hidden]{display:none}
@@ -533,12 +533,12 @@ body.solioWantedPage #wantedPanel .socialBar>button{min-height:44px;white-space:
 
 /* sol1o / campus field notes. One identity for the marketplace and its community. */
 :root{
-  --board-paper: #faf8f3;
-  --board-ink: #252520;
-  --board-muted: #77766e;
-  --board-rule: #e2dfd5;
-  --board-accent: #ef6637;
-  --board-soft: #fff0e6;
+  --board-paper: #f4f7fa;
+  --board-ink: #172e42;
+  --board-muted: #536579;
+  --board-rule: #d2dde5;
+  --board-accent: #1c5683;
+  --board-soft: #e8f1f8;
   --board-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
   --board-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
   --green: var(--board-accent);
@@ -571,7 +571,7 @@ button,a{ -webkit-tap-highlight-color: transparent; }
 .boardWordmark .s1LogoOne,.boardWordmark .s1LogoDot{ color: var(--board-accent); }
 .boardLinks,.boardAccount{ display: flex; align-items: center; gap: 7px; }
 .boardLinks{ flex: 1; gap: 9px; }
-.boardLinks button,.boardAccount button{ min-height: 42px; padding: 0 10px; border: 0; background: transparent; color: #68685f; font-size: 13px; font-weight: 550; line-height: 1.3; white-space: nowrap; }
+.boardLinks button,.boardAccount button{ min-height: 42px; padding: 0 10px; border: 0; background: transparent; color: #536579; font-size: 13px; font-weight: 550; line-height: 1.3; white-space: nowrap; }
 .boardLinks button{ position: relative; }
 .boardLinks button:hover,.boardAccount button:hover{ color: var(--board-accent); }
 .boardLinks button.is-active{ color: var(--board-ink); font-weight: 700; }
@@ -579,13 +579,13 @@ button,a{ -webkit-tap-highlight-color: transparent; }
 .boardAccount{ gap: 9px; }
 .boardAccount .boardSaved{ display: flex; align-items: center; gap: 7px; font-variant-numeric: tabular-nums; }
 .boardSaved span{ min-width: 12px; }
-.boardAccount #boardAccountButton{ border: 1px solid var(--board-ink); border-radius: 8px; color: var(--board-ink); padding-inline: 19px; }
+.boardAccount #boardAccountButton{ border: 1px solid var(--board-ink); border-radius: 9px; color: var(--board-ink); padding-inline: 19px; }
 .boardAccount #boardAccountButton:hover{ background: var(--board-ink); color: white; }
 .mobileBottomNav{ display: none; }
 
 /* The usable catalog stays close to the campus introduction. */
 #market.boardMarket{ margin: 0; padding: 26px 0 38px; scroll-margin-top: 82px; }
-.boardFind{ display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 0; margin: 0; padding: 5px; border: 1px solid #ddd9cf; border-radius: 10px; background: #fffefa; }
+.boardFind{ display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 0; margin: 0; padding: 5px; border: 1px solid #ddd9cf; border-radius: 10px; background: #ffffff; }
 .boardSearch{ display: flex; align-items: center; gap: 10px; min-width: 0; min-height: 44px; padding: 0 13px; border: 0; background: transparent; color: #888276; }
 .boardSearch{ border-radius: 6px; }
 .boardSearch:focus-within{ box-shadow: 0 0 0 2px #ef66377a; }
@@ -606,7 +606,7 @@ button,a{ -webkit-tap-highlight-color: transparent; }
 .boardFilter summary .boardIcon{ width: 17px; height: 17px; }
 .boardFilter[open] summary{ color: var(--board-accent); border-color: #e6bc9f; }
 #boardReset{ border: 0; padding-inline: 2px; color: var(--board-accent); text-decoration: underline; text-underline-offset: 3px; }
-.boardFilterPanel{ position: absolute; top: calc(100% + 7px); right: 0; z-index: 12; display: grid; gap: 15px; width: min(255px,calc(100vw - 32px)); padding: 18px; border: 1px solid var(--board-rule); border-radius: 9px; background: #fffefa; box-shadow: 0 10px 25px #44391914; }
+.boardFilterPanel{ position: absolute; top: calc(100% + 7px); right: 0; z-index: 12; display: grid; gap: 15px; width: min(255px,calc(100vw - 32px)); padding: 18px; border: 1px solid var(--board-rule); border-radius: 9px; background: #ffffff; box-shadow: 0 10px 25px #44391914; }
 .boardFilterPanel label{ display: grid; gap: 7px; color: var(--board-muted); font-size: 12px; }
 .boardFilterPanel select,#myListings{ width: 100%; min-height: 44px; padding: 0 10px; border: 1px solid var(--board-rule); border-radius: 6px; background: #fff; color: var(--board-ink); font-size: 14px; }
 #myListings[aria-pressed=true]{ border-color: var(--board-accent); color: var(--board-accent); background: var(--board-soft); }
@@ -649,13 +649,13 @@ button,a{ -webkit-tap-highlight-color: transparent; }
 /* The secondary screens retain the same typography, forms and quiet borders. */
 :is(#schoolHub,#socialHub,.solioSearchPage) :is(.schoolHubHead h2,.solioCommunityHeading h2,.solioWantedHeading h2,.solioSearchHead h1){ margin: 0 0 12px; color: var(--board-ink) !important; font: 750 clamp(25px,3vw,34px)/1.2 var(--board-sans) !important; letter-spacing: -.04em; }
 body.solioSchoolsPage #schoolHub,body.solioCommunityPage #socialHub,body.solioWantedPage #socialHub,.solioSearchPage{ padding-top: 32px !important; }
-#schoolHub .schoolHubCard,.solioSearchPage .solioSearchSchools button,#socialHub .communityCard,#socialHub .socialItem{ background: #fffdf8 !important; border: 1px solid var(--board-rule) !important; border-radius: 10px !important; box-shadow: none !important; }
-#schoolHub .schoolHubCard:hover,#schoolHub .schoolHubCard.selected{ border-color: var(--board-accent) !important; background: #fff5e9 !important; }
+#schoolHub .schoolHubCard,.solioSearchPage .solioSearchSchools button,#socialHub .communityCard,#socialHub .socialItem{ background: #ffffff !important; border: 1px solid var(--board-rule) !important; border-radius: 9px !important; box-shadow: none !important; }
+#schoolHub .schoolHubCard:hover,#schoolHub .schoolHubCard.selected{ border-color: var(--board-accent) !important; background: #e8f1f8 !important; }
 #socialHub::before,#socialHub::after{ content: none !important; }
 #socialHub .socialBar p{ margin: 0; color: var(--board-muted); }
 .solioSearchPage .solioSearchResultImage{ position: relative; border-radius: 7px; background: #eee8da; color: var(--board-muted); }
 .solioSearchPage .boardSearchPhoto{ position: absolute; inset: 0; }
-.solioSearchPage .solioSearchListings button[data-listing-search]{ border-radius: 8px !important; background: #fffdf8 !important; border-color: var(--board-rule) !important; }
+.solioSearchPage .solioSearchListings button[data-listing-search]{ border-radius: 9px !important; background: #ffffff !important; border-color: var(--board-rule) !important; }
 body:has(#modal.show){ overflow: hidden; }
 #modal > .dialog{ border: 1px solid var(--board-rule) !important; border-radius: 14px !important; }
 #modal .authHeader #authTitle,#modal .quickPostHead h2{ color: var(--board-ink) !important; font-family: var(--board-sans) !important; letter-spacing: -.04em; }
@@ -778,12 +778,12 @@ body:has(#modal.show){ overflow: hidden; }
 .easySheet h2{font-size:clamp(25px,4vw,34px);line-height:1.2;letter-spacing:-.035em;margin:12px 0}
 .easyIntro{color:#686257;font-size:14px;line-height:1.6;margin:0 0 20px;overflow-wrap:anywhere}
 .easyMenuSearch{display:block;font-size:12px;font-weight:650}
-.easyMenuSearch input{display:block;width:100%;box-sizing:border-box;margin-top:7px;min-height:46px;padding:10px 13px;border:1px solid var(--board-rule);border-radius:8px;background:#fffdf8;font:inherit;font-size:16px;color:var(--board-ink)}
+.easyMenuSearch input{display:block;width:100%;box-sizing:border-box;margin-top:7px;min-height:46px;padding:10px 13px;border:1px solid var(--board-rule);border-radius:8px;background:#ffffff;font:inherit;font-size:16px;color:var(--board-ink)}
 .easyMenuGroup{margin:22px 0}
 .easyMenuGroup h3{font-size:11px;letter-spacing:.06em;color:#736b5d;margin:0 0 10px}
 .easyChoices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-#modal .easyChoice{display:flex;align-items:center;gap:12px;padding:15px 12px;min-height:82px;border:1px solid var(--board-rule);border-radius:8px;background:#fffdf8;color:var(--board-ink);text-align:left;min-width:0}
-#modal .easyChoice:hover{border-color:var(--board-accent);background:#fff5e8}
+#modal .easyChoice{display:flex;align-items:center;gap:12px;padding:15px 12px;min-height:82px;border:1px solid var(--board-rule);border-radius:8px;background:#ffffff;color:var(--board-ink);text-align:left;min-width:0}
+#modal .easyChoice:hover{border-color:var(--board-accent);background:#e8f1f8}
 .easyChoice>.boardIcon{flex:0 0 23px;color:var(--board-accent)}
 .easyChoice>span:nth-child(2){min-width:0;flex:1}
 .easyChoice strong{display:block;font-size:14px;font-weight:700;line-height:1.35}
@@ -794,14 +794,14 @@ body:has(#modal.show){ overflow: hidden; }
 .easyHelp summary{cursor:pointer;min-height:44px;display:list-item;align-content:center;font-weight:700}
 .easyHelp p{margin:10px 0;color:#686257}
 .easySearchRoutes{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-.easySearchRoutes button,.easyTextButton{min-height:44px;padding:10px 14px;background:#fffdf8;border:1px solid var(--board-rule);border-radius:7px;color:var(--board-ink);font-size:13px;font-weight:600}
+.easySearchRoutes button,.easyTextButton{min-height:44px;padding:10px 14px;background:#ffffff;border:1px solid var(--board-rule);border-radius: 9px;color:var(--board-ink);font-size:13px;font-weight:600}
 .easyTextButton{margin-top:8px}
 .easyHint,.solioSearchHead>p{font-size:13px;color:#736b5d;line-height:1.6}
 .easyActionForm{display:grid;gap:18px}
 .easyActionForm label{display:grid;gap:8px;font-size:14px;font-weight:600}
-.easyActionForm input,.easyActionForm select,.easyActionForm textarea{box-sizing:border-box;width:100%;min-height:48px;border:1px solid var(--board-rule);border-radius:8px;padding:11px;font:inherit;font-size:16px;background:#fffdf8;color:var(--board-ink)}
+.easyActionForm input,.easyActionForm select,.easyActionForm textarea{box-sizing:border-box;width:100%;min-height:48px;border:1px solid var(--board-rule);border-radius:8px;padding:11px;font:inherit;font-size:16px;background:#ffffff;color:var(--board-ink)}
 .easyFormActions{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between}
-.easyFormActions button{min-height:46px;border:1px solid var(--board-rule);border-radius:8px;padding:10px 15px;font-size:14px;background:#fffdf8}
+.easyFormActions button{min-height:46px;border:1px solid var(--board-rule);border-radius: 9px;padding:10px 15px;font-size:14px;background:#ffffff}
 .easyFormActions .easyPrimary{background:var(--board-accent);color:#fff;border-color:var(--board-accent);font-weight:700}
 #easyActionStatus{font-size:13px;line-height:1.5;color:#a44224;margin:0}
 #easyActionStatus:empty{display:none}
@@ -911,7 +911,7 @@ body.solioCommunityPage #socialHub {
 .campusDiscussionLinks a + a { border-top: 1px solid var(--board-rule); }
 .campusDiscussionLinks a:focus-visible { outline-offset: -4px !important; }
 .campusDiscussionLinks a:hover { background: #fce9df; }
-.campusDiscussionLinks .boardIcon { width: 17px; height: 17px; color: #954125; }
+.campusDiscussionLinks .boardIcon { width: 17px; height: 17px; color: #1c5683; }
 #communityPanel .communityFilter {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(145px, 1.4fr) minmax(105px, .65fr);
@@ -926,7 +926,7 @@ body.solioCommunityPage #socialHub {
   padding: 8px 9px;
   border: 1px solid var(--board-rule);
   border-radius: 6px;
-  background: #fffdf8;
+  background: #ffffff;
   color: var(--board-ink);
 }
 #communityItems { display: grid; grid-template-columns: 1fr; gap: 10px; }
@@ -937,18 +937,18 @@ body.solioCommunityPage #socialHub {
 }
 #communityItems .communityAuthor { gap: 8px; }
 #communityItems .communityAuthor strong { min-width: 0; color: var(--board-ink); font-size: .86rem; overflow-wrap: anywhere; }
-#communityItems .communityAvatar { width: 28px; height: 28px; border-radius: 5px; color: #954125; background: #fbeae0; flex: none; }
+#communityItems .communityAvatar { width: 28px; height: 28px; border-radius: 5px; color: #1c5683; background: #e8f1f8; flex: none; }
 #communityItems .communityAvatar .boardIcon { width: 16px; height: 16px; }
 #communityItems .socialMeta { margin-left: auto; flex: none; color: #605e55; font-size: .74rem; }
 #communityItems .communityBody { margin: 13px 0; font-size: .97rem; color: var(--board-ink); }
 #communityItems .communityActions { border-top: 1px solid var(--board-rule); padding-top: 4px; gap: 4px; }
-#communityItems .communityActions button { display: inline-flex; align-items: center; justify-content: flex-start; gap: 5px; min-height: 40px; flex: initial; padding: 5px 8px; background: transparent; border-radius: 5px; color: #605042; font-size: .79rem; white-space: nowrap; }
+#communityItems .communityActions button { display: inline-flex; align-items: center; justify-content: flex-start; gap: 5px; min-height: 40px; flex: initial; padding: 5px 8px; background: transparent; border-radius: 9px; color: #605042; font-size: .79rem; white-space: nowrap; }
 #communityItems .communityActions button:hover,
-#communityItems .communityActions button[aria-pressed="true"] { background: #fbeae0; color: #87351b; }
+#communityItems .communityActions button[aria-pressed="true"] { background: #e8f1f8; color: #153d5e; }
 #communityItems .communityActions .boardIcon { width: 16px; height: 16px; }
 .campusFeedStatus, #communityItems > p { padding: 14px; border: 1px dashed var(--board-rule); border-radius: 6px; color: #605e55; font-size: .87rem; }
 .campusFeedStatus p { margin: 0 0 8px; }
-.campusFeedStatus button { min-height: 40px; padding: 5px 9px; border: 1px solid var(--board-rule); border-radius: 5px; background: #fffdf8; color: var(--board-ink); }
+.campusFeedStatus button { min-height: 40px; padding: 5px 9px; border: 1px solid var(--board-rule); border-radius: 9px; background: #ffffff; color: var(--board-ink); }
 @media (min-width: 901px) {
   .boardNav { column-gap: clamp(17px, 3vw, 46px); }
 }
@@ -970,8 +970,8 @@ body.solioCommunityPage #socialHub {
 
 .marketHeading { display: flex; justify-content: space-between; align-items: center; gap: 14px; margin-bottom: 15px; }
 .marketHeading h1 { margin: 0; color: var(--board-ink); font: 800 clamp(28px, 3.8vw, 44px)/1.15 var(--board-sans); letter-spacing: -.045em; }
-.boardPost { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 13px; border: 0; border-radius: 7px; background: #ad4325; color: white; font-size: 14px; font-weight: 700; white-space: nowrap; }
-.boardPost:hover { background: #903619; }
+.boardPost { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 13px; border: 0; border-radius: 9px; background: #1c5683; color: white; font-size: 14px; font-weight: 700; white-space: nowrap; }
+.boardPost:hover { background: #153d5e; }
 .boardPost .boardIcon { width: 17px; height: 17px; }
 .marketFilters { display: grid; grid-template-columns: minmax(0, 200px) minmax(0, 200px) auto; justify-content: start; gap: 8px; margin-top: 9px; }
 .marketFilters label { min-width: 0; }
@@ -979,7 +979,7 @@ body.solioCommunityPage #socialHub {
   min-height: 44px;
   border: 1px solid var(--board-rule);
   border-radius: 7px;
-  background: #fffefa;
+  background: #ffffff;
   color: #474238;
   font-size: 14px;
 }
@@ -993,8 +993,8 @@ body.solioCommunityPage #socialHub {
   .marketFilters > label select { padding-inline: 4px; }
   .marketFilters .boardFilter summary { padding-inline: 7px; font-size: 13px; }
   .marketFilters .boardFilter summary .boardIcon { display: none; }
-  .mobileBottomNav > button.bottomPost > .bottomIcon { background: #ad4325; }
-  .mobileBottomNav .bottomPost .bottomLabel { color: #ad4325; }
+  .mobileBottomNav > button.bottomPost > .bottomIcon { background: #1c5683; }
+  .mobileBottomNav .bottomPost .bottomLabel { color: #1c5683; }
 }
 
 .schoolScope { display: flex; gap: 6px; margin: 0 0 12px; }
@@ -1002,16 +1002,16 @@ body.solioCommunityPage #socialHub {
   min-height: 44px;
   padding: 0 11px;
   border: 1px solid var(--board-rule);
-  border-radius: 7px;
-  background: #fffefa;
+  border-radius: 9px;
+  background: #ffffff;
   color: var(--board-ink);
   font-size: 14px;
   font-weight: 650;
 }
 .schoolScope button[aria-pressed="true"], .schoolScope button[data-selected="true"],
 .schoolPageTabs a[aria-current="page"], .schoolPrimary, .emptyAlertButton {
-  background: #ad4325;
-  border-color: #ad4325;
+  background: #1c5683;
+  border-color: #1c5683;
   color: #fff;
 }
 .schoolPageTabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
@@ -1023,7 +1023,7 @@ body.solioCommunityPage #socialHub {
 .viewingSchool { align-self: center; color: #7c361d; font-size: 13px; font-weight: 700; padding: 3px 6px; }
 #schoolSocietyItems { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr)); gap: 10px; }
 #schoolSocietyStatus:empty { display: none; }
-.schoolSocietyCard { padding: 15px; border: 1px solid var(--board-rule); border-radius: 8px; background: #fffefa; }
+.schoolSocietyCard { padding: 15px; border: 1px solid var(--board-rule); border-radius: 8px; background: #ffffff; }
 .schoolSocietyCard h3 { margin: 6px 0; }
 .schoolSocietyCard a { text-decoration: underline; text-underline-offset: 3px; }
 .schoolSocietyCard span, .schoolSocietyCard time { color: #6d4a37; font-size: 13px; }
@@ -1034,20 +1034,20 @@ body.solioCommunityPage #socialHub {
 .schoolPicker header { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 9px; }
 .schoolPicker h2 { margin: 0; font-size: 18px; }
 .schoolPicker header button { min-width: 44px; min-height: 44px; border: 0; background: transparent; font-size: 24px; }
-.schoolPicker input, .savedSearchDialog input, .savedSearchDialog select { width: 100%; min-height: 44px; border: 1px solid var(--board-rule); border-radius: 6px; background: #fffefa; padding: 7px 9px; font-size: 16px; }
+.schoolPicker input, .savedSearchDialog input, .savedSearchDialog select { width: 100%; min-height: 44px; border: 1px solid var(--board-rule); border-radius: 6px; background: #ffffff; padding: 7px 9px; font-size: 16px; }
 #schoolPickerItems { margin-top: 8px; }
 #schoolPickerItems button { display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; min-height: 44px; border: 0; border-bottom: 1px solid var(--board-rule); background: transparent; color: var(--board-ink); text-align: left; padding: 8px; }
-#schoolPickerItems button[aria-current="true"], #schoolPickerItems button:hover { background: #fae7dc; color: #87351b; }
+#schoolPickerItems button[aria-current="true"], #schoolPickerItems button:hover { background: #fae7dc; color: #153d5e; }
 #schoolPickerItems small { flex: none; }
-.emptyAlertButton,.schoolPrimary,.savedSearchWanted { display: inline-block; min-height: 44px; border: 1px solid #ad4325; border-radius: 7px; padding: 8px 13px; font-weight: 650; }
+.emptyAlertButton,.schoolPrimary,.savedSearchWanted { display: inline-block; min-height: 44px; border: 1px solid #1c5683; border-radius: 9px; padding: 8px 13px; font-weight: 650; }
 .emptyAlertButton { display: block; margin: 12px auto 0; }
-.savedSearchWanted { margin: 0 0 12px; background: #fffefa; color: #87351b; }
+.savedSearchWanted { margin: 0 0 12px; background: #ffffff; color: #153d5e; }
 .savedSearchDialog form { display: grid; gap: 11px; }
 .savedSearchDialog label { display: grid; gap: 6px; }
 #savedSearchItems article { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 0; border-bottom: 1px solid var(--board-rule); }
 #savedSearchItems small { display: block; color: #685d52; }
 #savedSearchItems button { min-height: 40px; padding-inline: 10px; }
-#listingAlertDot { width: 8px; height: 8px; border-radius: 50%; background: #ad4325; position: absolute; top: 8px; left: calc(50% + 10px); }
+#listingAlertDot { width: 8px; height: 8px; border-radius: 50%; background: #1c5683; position: absolute; top: 8px; left: calc(50% + 10px); }
 #bottomAccount { position: relative; }
 @media (max-width: 768px) {
   .schoolScope button, .schoolControl { padding-inline: 7px; font-size: 12px; }
@@ -1062,4 +1062,16 @@ body.solioCommunityPage #socialHub {
 @media (max-width: 560px) {
   #schoolPageHeading .marketHeading { flex-direction: column; align-items: flex-start; gap: 10px; }
   .schoolPageActions { justify-content: start; }
+}
+
+/* Shared interaction states across the campus and marketplace screens. */
+button:disabled { cursor: not-allowed; opacity: .6; }
+button:not(:disabled):active { filter: brightness(.94); }
+.boardLinks button, .boardAccount button { border-radius: 9px; }
+.boardAccount #boardAccountButton { color: var(--board-accent); border-color: #a4bacd; background: white; }
+.boardAccount #boardAccountButton:hover { background: var(--board-soft); }
+.boardAccount button[onclick="SolioUX.create()"], .boardSearchSubmit { background: var(--board-accent); color: white; }
+@media (hover: hover) {
+  .boardLinks button:hover, .boardAccount button:hover { background: var(--board-soft); }
+  .boardSearchSubmit:hover, .boardAccount button[onclick="SolioUX.create()"]:hover { background: #153d5e; color: white; }
 }

@@ -24,7 +24,7 @@ ${unavailable ? '<meta name="robots" content="noindex">' : `
 <meta property="og:url" content="${escape(url)}"><meta property="og:image" content="${SITE_ORIGIN}${assets}/social.png">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Sol1o · Оюутны хөнгөлөлт"><meta name="twitter:card" content="summary_large_image">`}
-<meta name="theme-color" content="#faf8f3"><link rel="icon" href="/solio-icon.svg">
+<meta name="theme-color" content="#f4f7fa"><link rel="icon" href="/solio-icon.svg">
 <link rel="stylesheet" href="${assets}/offers.css">${share ? `<script defer src="${assets}/share.js"></script>` : ''}</head>
 <body><header class="mast"><a class="brand" href="/" aria-label="Sol1o нүүр хуудас">sol<span>1</span>o<span>.</span></a>
 <nav aria-label="Үндсэн цэс"><a href="/#deals">Хөнгөлөлтүүд</a><a href="/">Зарууд</a></nav></header>

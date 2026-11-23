@@ -15,7 +15,7 @@
   min-width: 0;
   padding: 0 8px;
   border: 1px solid var(--board-rule);
-  border-radius: 7px;
+  border-radius: 9px;
   background: transparent;
   color: var(--board-ink);
   font: 650 14px var(--board-sans);
@@ -27,19 +27,19 @@
 .studentHomeFeeds > section { min-width: 0; border-top: 1px solid var(--board-rule); }
 .studentHomeFeeds header { min-height: 52px; }
 .studentHomeFeeds h2, :is(#studentLessonForm, #studentCalendarForm) h2 { margin: 0; font: 750 20px/1.2 var(--board-sans); letter-spacing: -.025em; }
-.studentHomeFeeds header a { display: grid; place-items: center; min-height: 44px; color: #963c24; font-size: 13px; white-space: nowrap; }
+.studentHomeFeeds header a { display: grid; place-items: center; min-height: 44px; color: #1c5683; font-size: 13px; white-space: nowrap; }
 .studentHomeFeedLink {
   display: block;
   padding: 12px;
   border: 1px solid var(--board-rule);
   border-radius: 8px;
-  background: #fffdf8;
+  background: #ffffff;
   color: var(--board-ink);
   text-decoration: none;
   overflow-wrap: anywhere;
 }
 .studentHomeFeedLink + .studentHomeFeedLink { margin-top: 7px; }
-.studentHomeFeedLink:hover { border-color: #ad4325; }
+.studentHomeFeedLink:hover { border-color: #1c5683; }
 :is(#studentLessonDialog, #studentCalendarDialog) {
   box-sizing: border-box;
   width: min(440px, calc(100% - 24px));
@@ -60,7 +60,7 @@
   padding: 8px;
   border: 1px solid var(--board-rule);
   border-radius: 7px;
-  background: #fffdf8;
+  background: #ffffff;
   color: var(--board-ink);
   font: inherit;
   font-size: 16px;
@@ -76,7 +76,7 @@
 }
 
 .campusSchoolScope, .marketDestinations { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
-.campusSchoolScope button, .marketDestinations a { display: inline-flex; align-items: center; min-height: 40px; padding: 0 12px; border: 1px solid var(--board-rule); border-radius: 7px; color: var(--board-ink); background: #fffdf8; }
+.campusSchoolScope button, .marketDestinations a { display: inline-flex; align-items: center; min-height: 40px; padding: 0 12px; border: 1px solid var(--board-rule); border-radius: 9px; color: var(--board-ink); background: #ffffff; }
 .campusSchoolScope button[hidden] { display: none; }
 .campusSchoolScope button[aria-pressed="true"], .marketDestinations a[aria-current="page"] { border-color: var(--board-accent); color: var(--board-accent); font-weight: 700; }
 .marketDestinations { margin-top: 10px; }
@@ -85,7 +85,7 @@
 
 }
 
-.studentCalendarButton { margin-top: 10px; min-height: 44px; border: 1px solid var(--board-rule); border-radius: 8px; padding: 0 10px; background: #fffdf8; color: var(--board-ink); font: inherit; font-size: 13px; cursor: pointer; }
+.studentCalendarButton { margin-top: 10px; min-height: 44px; border: 1px solid var(--board-rule); border-radius: 9px; padding: 0 10px; background: #ffffff; color: var(--board-ink); font: inherit; font-size: 13px; cursor: pointer; }
 
 .studentScheduleActions { display: flex; flex-wrap: wrap; gap: 8px; }
 .studentScheduleActions .studentCalendarButton { margin: 0; }

@@ -1,13 +1,13 @@
 :root {
   color-scheme: light;
-  --paper: #f5f3ed;
-  --surface: #fcfbf8;
-  --ink: #21251e;
-  --muted: #565d50;
-  --green: #233b30;
-  --green-light: #e7ede4;
-  --line: #d8d9cf;
-  --lime: #dceba0;
+  --paper: #f4f7fa;
+  --surface: #ffffff;
+  --ink: #172e42;
+  --muted: #536579;
+  --green: #153d5e;
+  --green-light: #e8f1f8;
+  --line: #d2dde5;
+  --lime: #bcddec;
   font-family: "Instrument Sans", "Inter", system-ui, sans-serif;
   color: var(--ink);
   background: var(--paper);
@@ -19,7 +19,7 @@ a { color: inherit; text-underline-offset: .22em; }
 button, input, select { font: inherit; }
 button { cursor: pointer; }
 button:disabled { cursor: default; opacity: .6; }
-:focus-visible { outline: 3px solid #69873a; outline-offset: 3px; }
+:focus-visible { outline: 3px solid #1d658e; outline-offset: 3px; }
 h1, h2, h3, p { margin: 0; }
 .wrap { width: min(1160px, calc(100% - 72px)); margin-inline: auto; }
 .sr-only, .skip:not(:focus) { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
@@ -41,7 +41,7 @@ h1, h2, h3, p { margin: 0; }
 .interest { padding: clamp(16px, 3vw, 28px); border-radius: 18px; color: #f8f7f0; background: var(--green); }
 .interest h2 { margin-bottom: 12px; font-size: clamp(1.05rem, 2vw, 1.28rem); }
 .path-options { display: grid; gap: 5px; }
-.path-button { min-height: 42px; display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 6px 9px; border: 1px solid transparent; border-radius: 8px; background: #ffffff0e; color: inherit; text-align: left; font-size: .87rem; font-weight: 590; }
+.path-button { min-height: 42px; display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 6px 9px; border: 1px solid transparent; border-radius: 9px; background: #ffffff0e; color: inherit; text-align: left; font-size: .87rem; font-weight: 590; }
 .path-button:hover { border-color: #a4be91; }
 .path-button:focus-visible { outline-color: var(--lime); }
 .path-button[aria-pressed="true"] { background: var(--lime); color: #243020; }
@@ -73,7 +73,7 @@ h1, h2, h3, p { margin: 0; }
 .school-tag[data-school="ufe"] { color: #744626; background: #f4e8dd; }
 .meta { color: var(--muted); font-size: .77rem; text-align: right; }
 .card-actions { margin-top: auto; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; padding-top: 8px; }
-.primary, .secondary, .text-button, .icon-button, .close { min-height: 39px; padding: 6px 11px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface); color: var(--ink); font-size: .82rem; font-weight: 670; }
+.primary, .secondary, .text-button, .icon-button, .close { min-height: 39px; padding: 6px 11px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); color: var(--ink); font-size: .82rem; font-weight: 670; }
 .primary { background: var(--lime); border-color: var(--lime); color: #25301f; }
 .primary:hover { background: #e8f2bb; }
 .secondary:hover, .icon-button:hover, .close:hover { background: var(--green-light); }
@@ -87,7 +87,7 @@ h1, h2, h3, p { margin: 0; }
 .selection strong { font-size: .87rem; }
 .selection .primary { white-space: nowrap; }
 .selected-programs { display: flex; flex-wrap: wrap; gap: 4px 7px; margin-top: 4px; }
-.selected-programs button { color: inherit; background: #ffffff17; border: 1px solid #ffffff45; border-radius: 5px; padding: 4px 6px; min-height: 28px; font-size: .76rem; text-align: left; }
+.selected-programs button { color: inherit; background: #ffffff17; border: 1px solid #ffffff45; border-radius: 9px; padding: 4px 6px; min-height: 28px; font-size: .76rem; text-align: left; }
 .selected-programs button:focus-visible, .selection .primary:focus-visible { outline-color: var(--lime); }
 .footer { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; padding-block: 16px 26px; border-top: 1px solid var(--line); color: var(--muted); font-size: .8rem; line-height: 1.4; }
 .footer a { white-space: nowrap; }
