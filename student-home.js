@@ -69,6 +69,9 @@ function showStudentHome() {
 
 function renderStudentSchedule() {
   const today = studentToday();
+  const todayCount = studentLessons.filter(lesson => lesson.day === today).length;
+  studentHomeElement('studentTodaySummary').textContent =
+    studentHomeUser ? todayCount + ' хичээл' : studentDays[today];
   [...studentHomeElement('studentScheduleDays').children].forEach((button, index) => {
     button.setAttribute('aria-pressed', String(studentSelectedDay === index));
     if (index === today) button.setAttribute('aria-current', 'date');

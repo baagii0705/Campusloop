@@ -17,13 +17,13 @@ test('Solio JavaScript can be parsed', () => {
   assert.doesNotThrow(() => new Script(inlineScript, { filename: 'index.html' }));
 });
 
-test('Mobile has five readable entry points and a shared feature menu', () => {
+test('Mobile has five readable entry points with the shared creation chooser', () => {
   const nav = section('<nav class="mobileBottomNav"', '</nav>');
   assert.equal((nav.match(/<button\b/g) || []).length, 5);
-  for (const id of ['bottomHome','bottomSchools','bottomMarket','bottomMenu','bottomAccount']) {
+  for (const id of ['bottomHome','bottomSchools','bottomMarket','bottomCreate','bottomAccount']) {
     assert.equal((nav.match(new RegExp('id="' + id + '"', 'g')) || []).length, 1);
   }
-  assert.match(nav, /onclick="SolioUX.menu\(\)"/);
+  assert.match(nav, /onclick="SolioUX.create\(\)"/);
   assert.match(nav, /id="bottomMarket" onclick="goDesktopListings\(\)"/);
   assert.match(nav, /onclick="goMobileSchools\(\)"/);
 });
@@ -89,7 +89,7 @@ test('DOM element IDs are unique', () => {
 test('essential marketplace destinations remain in the page', () => {
   for(const id of ['market','cards','schoolHub','schoolHubGrid','solioSearchPage',
     'solioSearchSchools','solioSearchListings','socialHub','communityPanel',
-    'wantedPanel','bottomHome','bottomMenu','bottomMarket','bottomSchools',
+    'wantedPanel','bottomHome','bottomCreate','bottomMarket','bottomSchools',
     'bottomAccount']){
     assert.ok(staticHtml.includes('id="'+id+'"'),id);
   }
@@ -313,7 +313,7 @@ test('large uploads shrink without upscaling and decoding failure retains the fi
   const small={...file,size:120000};assert.equal(await optimize(small),small);
 });
 
-test('The student home is the default and marketplace and Community keep separate routes',async()=>{
+test('Campus opens by default with a timetable and preserves marketplace and community links',async()=>{
   const start=inlineScript.lastIndexOf('setupSocial();');
   const startup=inlineScript.slice(start,inlineScript.indexOf('// PWA registration',start));
   assert.ok(startup.includes('restoreSolioPage();'));
@@ -333,12 +333,12 @@ test('The student home is the default and marketplace and Community keep separat
     await new Promise(resolve=>setImmediate(resolve));
     return {visible,load};
   };
-  assert.deepEqual(await visit(''),{visible:['bottomHome'],load:['student-home']});
-  assert.deepEqual(await visit('#community'),{visible:['community'],load:[]});
+  assert.deepEqual(await visit(''),{visible:['community'],load:['student-home']});
+  assert.deepEqual(await visit('#community'),{visible:['community'],load:['student-home']});
   assert.deepEqual(await visit('#wanted'),{visible:['wanted'],load:[]});
   assert.deepEqual(await visit('#market'),{visible:['bottomMarket'],load:['listings']});
   assert.deepEqual(await visit('#listing-example'),{visible:['bottomMarket'],load:['listings','listing-link']});
-  assert.deepEqual(await visit('#register'),{visible:['bottomHome','register'],load:['student-home']});
+  assert.deepEqual(await visit('#register'),{visible:['community','register'],load:['student-home']});
   assert.deepEqual(await visit('','/schools/num'),{visible:['МУИС'],load:[]});
   assert.deepEqual(await visit('#deals/apply'),{visible:[],load:[]});
   assert.doesNotMatch(startup,/setInterval|refreshSolioNotificationCount/);

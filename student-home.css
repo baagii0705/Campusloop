@@ -96,3 +96,29 @@
   .studentHomeTitle .boardPost svg { width: 14px; height: 14px; }
   .studentHomeFeeds { grid-template-columns: 1fr; gap: 17px; margin-top: 22px; }
 }
+
+.campusDiscussionLayout { grid-template-columns: minmax(0, 1fr) minmax(310px, 360px); }
+.campusDiscussionLayout #studentHome { min-width: 0; padding: 0; }
+.campusToday { border: 1px solid var(--board-rule); border-radius: 10px; background: #fffdf8; padding: 0 14px; }
+.campusToday summary { min-height: 46px; padding-block: 12px; cursor: pointer; font-weight: 700; }
+#studentTodaySummary { float: right; color: var(--board-muted); font-size: 13px; font-weight: 500; }
+.campusToday[open] { padding-bottom: 12px; }
+.campusToday .studentHomeTitle h2 { font-size: 16px; margin: 0; }
+.campusToday .studentHomeTitle .boardPost { font-size: 12px; padding-inline: 8px; }
+.campusToday .studentSchedule { padding: 0; margin-top: 10px; border: 0; }
+.campusToday .studentScheduleDays { gap: 4px; }
+.campusToday .studentScheduleDays button { padding-inline: 2px; }
+.campusDiscussionLayout .studentHomeFeeds { grid-template-columns: 1fr; gap: 14px; margin-top: 18px; }
+.campusSchoolScope, .marketDestinations { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+.campusSchoolScope button, .marketDestinations a { display: inline-flex; align-items: center; min-height: 40px; padding: 0 12px; border: 1px solid var(--board-rule); border-radius: 7px; color: var(--board-ink); background: #fffdf8; }
+.campusSchoolScope button[hidden] { display: none; }
+.campusSchoolScope button[aria-pressed="true"], .marketDestinations a[aria-current="page"] { border-color: var(--board-accent); color: var(--board-accent); font-weight: 700; }
+.marketDestinations { margin-top: 10px; }
+@media (max-width: 768px) {
+  .boardAccount .campusDesktopAction { display: none; }
+  .campusDiscussionLayout { grid-template-columns: minmax(0, 1fr); }
+  .campusDiscussionLayout #studentHome:not([hidden]) { display: contents; }
+  .campusToday { grid-row: 1; }
+  .campusDiscussionFeed { grid-row: 2; }
+  .campusDiscussionLayout .studentHomeFeeds { grid-row: 3; }
+}
