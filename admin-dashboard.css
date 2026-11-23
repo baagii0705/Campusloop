@@ -56,12 +56,15 @@
 .adminEmpty{padding:28px;border:1px dashed #cabfa8;background:#f8f4e9;border-radius:5px}
 .adminEmpty h3{font-size:19px;margin:0 0 10px}.adminEmpty p{color:#776b58;font-size:14px;line-height:1.6;margin:0}
 #adminMore{width:100%;margin-top:8px}
-#adminAction{border:1px solid #bfb39a;border-radius:10px;padding:25px;width:min(560px,calc(100% - 28px));max-height:85dvh;overflow:auto;background:#fffdf7;color:#292720;box-shadow:0 18px 70px #26201333}
-#adminAction::backdrop{background:#25211788}
-#adminAction h2{margin:0 0 10px;font-size:25px}
+:is(#adminAction,#adminUX){border:1px solid #bfb39a;border-radius:10px;padding:25px;width:min(560px,calc(100% - 28px));max-height:85dvh;overflow:auto;background:#fffdf7;color:#292720;box-shadow:0 18px 70px #26201333}
+:is(#adminAction,#adminUX)::backdrop{background:#25211788}
+:is(#adminAction,#adminUX) h2{margin:0 0 10px;font-size:25px}
 #adminActionIntro,.adminFormHint{font-size:14px;line-height:1.65;color:#71624b;overflow-wrap:anywhere}
 #adminActionFields{display:grid;gap:16px;margin-top:18px}
 #adminActionError{font-size:14px;line-height:1.6}
 @media(max-width:760px){.adminPanel{padding-top:20px}.adminHeader{gap:10px;flex-direction:column;padding-bottom:20px}.adminHeader>button{align-self:flex-start}.adminLayout{grid-template-columns:1fr;gap:24px}.adminNav{position:static;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;padding:8px;background:#eae5d9;border:1px solid #d8d0bf;border-radius:6px}.adminNav button{font-size:13px;padding:10px;min-width:0}.adminSectionHead{gap:10px}.adminSectionHead h2{font-size:23px}.adminToolbar{grid-template-columns:minmax(0,1fr) auto}.adminToolbar label:first-child{grid-column:1/-1}.adminOverview{gap:10px}.adminOverview>button{padding:14px}.adminOverview span{font-size:14px}.adminOverview strong{font-size:38px}.adminOverview p{font-size:12px}.adminCard{padding:16px}.adminCardHead{gap:10px}.adminCard h3{font-size:17px}.adminActions button{flex:1;min-width:100px}.adminBadge{font-size:10px}}
 
 @media(max-width:760px){.adminPanel input,.adminPanel select,.adminPanel textarea{font-size:16px}}
+
+#adminUXForm{display:grid;gap:12px}
+#adminUXResult{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.6}
