@@ -25,7 +25,21 @@ async function api(path,body){
  if(!r.ok)throw Error(data.error||'Үйлдэл амжилтгүй. Дахин оролдоно уу.');return data;
 }
 function mount(){
- root.innerHTML='<div class="adminHeader"><div><small>SOL1O · УДИРДЛАГА</small><h1 id="adminTitle" tabindex="-1">Удирдлагын самбар</h1><p>Хүсэлтээ шалга. Шийдвэрээ гарга.</p></div><button type="button" id="adminClose">Сайт руу буцах</button></div><div class="adminLayout"><nav class="adminNav" aria-label="Удирдлагын цэс">'+Object.entries(tabs).map(([key,label])=>'<button type="button" data-tab="'+key+'" aria-pressed="false">'+label+'<span data-count="'+key+'"></span></button>').join('')+'</nav><div class="adminWorkspace"><div class="adminSectionHead"><div><h2 id="adminSectionTitle" tabindex="-1"></h2><p id="adminDescription"></p></div><button type="button" id="adminRefresh">Шинэчлэх</button></div><div id="adminToolbar" class="adminToolbar"><label>Хайх<input type="search" id="adminQuery" placeholder="Нэр, сургууль, дугаар…" autocomplete="off"></label><label id="adminFilterLabel">Төлөв<select id="adminFilter"></select></label><button type="button" id="adminReset">Цэвэрлэх</button></div><p id="adminStatus" role="status" aria-live="polite"></p><div id="adminContent"></div><button type="button" id="adminMore" hidden>Дараагийн 50-ийг ачаалах</button></div></div><dialog id="adminAction" aria-labelledby="adminActionTitle"><form id="adminActionForm"><h2 id="adminActionTitle"></h2><p id="adminActionIntro"></p><div id="adminActionFields"></div><p id="adminActionError" role="alert"></p><div class="adminActions"><button type="button" id="adminActionCancel">Болих</button><button type="submit" id="adminActionSave" class="adminPrimary">Хадгалах</button></div></form></dialog>';
+ root.innerHTML='<div class="adminHeader"><div><small>SOL1O · УДИРДЛАГА</small><h1 id="adminTitle" tabindex="-1">Удирдлагын самбар</h1><p>Хүсэлтээ шалга. Шийдвэрээ гарга.</p></div><div class="adminActions"><button type="button" id="adminUXOpen">UX туслах</button><button type="button" id="adminClose">Сайт руу буцах</button></div></div><div class="adminLayout"><nav class="adminNav" aria-label="Удирдлагын цэс">'+Object.entries(tabs).map(([key,label])=>'<button type="button" data-tab="'+key+'" aria-pressed="false">'+label+'<span data-count="'+key+'"></span></button>').join('')+'</nav><div class="adminWorkspace"><div class="adminSectionHead"><div><h2 id="adminSectionTitle" tabindex="-1"></h2><p id="adminDescription"></p></div><button type="button" id="adminRefresh">Шинэчлэх</button></div><div id="adminToolbar" class="adminToolbar"><label>Хайх<input type="search" id="adminQuery" placeholder="Нэр, сургууль, дугаар…" autocomplete="off"></label><label id="adminFilterLabel">Төлөв<select id="adminFilter"></select></label><button type="button" id="adminReset">Цэвэрлэх</button></div><p id="adminStatus" role="status" aria-live="polite"></p><div id="adminContent"></div><button type="button" id="adminMore" hidden>Дараагийн 50-ийг ачаалах</button></div></div><dialog id="adminAction" aria-labelledby="adminActionTitle"><form id="adminActionForm"><h2 id="adminActionTitle"></h2><p id="adminActionIntro"></p><div id="adminActionFields"></div><p id="adminActionError" role="alert"></p><div class="adminActions"><button type="button" id="adminActionCancel">Болих</button><button type="submit" id="adminActionSave" class="adminPrimary">Хадгалах</button></div></form></dialog>';
+ root.insertAdjacentHTML('beforeend', `<dialog id="adminUX" aria-labelledby="adminUXTitle">
+  <form id="adminUXForm">
+   <h2 id="adminUXTitle">Sol1o UX туслах</h2>
+   <label>Дэлгэцийн зураг (PNG, JPEG, WebP)<input name="image" type="file" accept="image/png,image/jpeg,image/webp" required></label>
+   <label>Оюутан юу олох гэж байна? (сонголттой)<input name="goal" maxlength="250"></label>
+   <p>Зургийг Cloudflare Workers AI-аар шалгана.</p>
+   <p id="adminUXStatus" role="status"></p>
+   <div id="adminUXResult" aria-live="polite"></div>
+   <div class="adminActions"><button type="button" id="adminUXClose">Хаах</button><button type="submit" class="adminPrimary">Зураг шалгах</button></div>
+  </form>
+ </dialog>`);
+ $('adminUXOpen').onclick=()=>$('adminUX').showModal();
+ $('adminUXClose').onclick=()=>$('adminUX').close();
+ $('adminUXForm').onsubmit=reviewScreenshot;
  $('adminClose').onclick=close;
  root.querySelector('.adminNav').onclick=e=>{const b=e.target.closest('[data-tab]');if(b)choose(b.dataset.tab,true)};
  $('adminRefresh').onclick=()=>load(state.tab);
@@ -36,6 +50,32 @@ function mount(){
  $('adminActionCancel').onclick=()=>{if(!state.busy)$('adminAction').close()};
  $('adminAction').addEventListener('cancel',e=>{if(state.busy)e.preventDefault()});
  $('adminActionForm').onsubmit=saveAction;
+}
+async function reviewScreenshot(event){
+ event.preventDefault();
+ const form=event.currentTarget,submit=form.querySelector('[type=submit]');
+ if(submit.disabled||!isCampusAdmin())return;
+ const values=new FormData(form),file=values.get('image');
+ const status=$('adminUXStatus'),result=$('adminUXResult');
+ result.textContent='';
+ if(!file?.size||file.size>1_500_000||!['image/png','image/jpeg','image/webp'].includes(file.type)){
+  status.textContent='1.5 МБ хүртэлх PNG, JPEG эсвэл WebP зураг сонгоно уу.';
+  return;
+ }
+ submit.disabled=true;
+ status.textContent='Зургийг шалгаж байна…';
+ try{
+  const image=await new Promise((resolve,reject)=>{
+   const reader=new FileReader();
+   reader.onload=()=>resolve(reader.result);
+   reader.onerror=()=>reject(Error('Зургийг уншиж чадсангүй.'));
+   reader.readAsDataURL(file);
+  });
+  const {review}=await api('admin/ux-review',{image,goal:values.get('goal').trim()});
+  status.textContent='';
+  result.textContent=review;
+ }catch(error){status.textContent=error.message}
+ finally{submit.disabled=false}
 }
 function saveFilters(){state.filters[state.tab]={query:$('adminQuery').value,status:$('adminFilter').value}}
 function choose(tab,focus=false){

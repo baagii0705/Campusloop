@@ -14,6 +14,7 @@ import {onRequestPost as societySubmit,onRequestPatch as societyWithdraw} from '
 import {onRequestGet as societyAdmin,onRequestPost as societyReview} from '../functions/api/societies/admin.js';
 import {onRequestGet as calendar} from '../functions/api/societies/calendar.js';
 import {onRequestGet as vipGet,onRequestPost as vipPost} from '../functions/api/vip/index.js';
+import {onRequestPost as uxReview} from '../functions/api/admin/ux-review.js';
 import {onRequestGet as summary} from '../functions/api/admin/summary.js';
 import {onRequestGet as sponsorsAdminGet,onRequestPost as sponsorsAdminPost} from '../functions/api/sponsors/admin.js';
 import {onRequestGet as sponsorsActive} from '../functions/api/sponsors/active.js';
@@ -50,7 +51,7 @@ function seedPreview(){
 }
 const routes={
  '/api/saved-searches':{GET:getSaved,POST:postSaved},
- '/api/vip':{GET:vipGet,POST:vipPost},'/api/admin/summary':{GET:summary},
+ '/api/vip':{GET:vipGet,POST:vipPost},'/api/admin/summary':{GET:summary},'/api/admin/ux-review':{POST:uxReview},
  '/api/sponsors/admin':{GET:sponsorsAdminGet,POST:sponsorsAdminPost},'/api/sponsors/active':{GET:sponsorsActive},'/api/sponsors/apply':{GET:sponsorsApplyGet,POST:sponsorsApply},'/api/sponsors/event':{POST:sponsorsEvent},
  '/api/campus':{GET:campus},'/api/deals':{GET:deals},'/api/deals/apply':{POST:apply},'/api/deals/admin':{GET:adminGet,POST:adminPost},
  '/api/societies':{GET:societies},'/api/societies/mine':{GET:societyMine},'/api/societies/submit':{POST:societySubmit,PATCH:societyWithdraw},'/api/societies/admin':{GET:societyAdmin,POST:societyReview},'/api/societies/calendar':{GET:calendar}
