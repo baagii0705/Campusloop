@@ -26,18 +26,9 @@ function studentLessonsFromPrefs(prefs) {
 }
 
 function setupStudentHome() {
-  const days = studentHomeElement('studentScheduleDays');
   const form = studentHomeElement('studentLessonForm');
   const dialog = studentHomeElement('studentLessonDialog');
-  studentDays.forEach((name, index) => {
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.textContent = name.slice(0, 2);
-    button.setAttribute('aria-label', name);
-    button.onclick = () => { studentSelectedDay = index; renderStudentSchedule(); };
-    days.append(button);
-    form.elements.day.add(new Option(name, index));
-  });
+  studentDays.forEach((name, index) => form.elements.day.add(new Option(name, index)));
   studentHomeElement('studentLessonAdd').onclick = () => {
     if (studentHomeSessionReady) requireSolioAccount(() => openStudentLesson(), 'Хичээлийн хуваарь');
   };
@@ -75,49 +66,54 @@ function showStudentHome() {
 
 function renderStudentSchedule() {
   const today = studentToday();
-  const todayCount = studentLessons.filter(lesson => lesson.day === today).length;
-  studentHomeElement('studentTodaySummary').textContent =
-    studentHomeUser ? todayCount + ' хичээл' : studentDays[today];
-  [...studentHomeElement('studentScheduleDays').children].forEach((button, index) => {
-    button.setAttribute('aria-pressed', String(studentSelectedDay === index));
-    if (index === today) button.setAttribute('aria-current', 'date');
-    else button.removeAttribute('aria-current');
-  });
-  studentHomeElement('studentScheduleDay').textContent =
-    (studentSelectedDay === today ? 'Өнөөдөр · ' : '') + studentDays[studentSelectedDay];
-  const lessons = studentLessons.filter(lesson => lesson.day === studentSelectedDay)
-    .sort((a, b) => a.start.localeCompare(b.start) || a.end.localeCompare(b.end));
   const add = studentHomeElement('studentLessonAdd');
   add.disabled = !studentHomeSessionReady;
   studentHomeElement('studentCalendarOpen').hidden = !studentHomeUser || !studentLessons.length;
   studentHomeElement('studentScheduleStatus').textContent = !studentHomeSessionReady ? 'Хуваарийг ачаалж байна…' :
-    !studentHomeUser ? 'Хувийн хуваариа харах, нэмэхийн тулд нэвтэрнэ үү.' :
-    lessons.length ? '' : 'Энэ өдөр хичээл нэмээгүй байна.';
-  const list = studentHomeElement('studentScheduleLessons');
-  list.replaceChildren(...lessons.map(lesson => {
-    const item = document.createElement('li');
-    const time = document.createElement('span');
-    time.className = 'studentLessonTime';
-    time.textContent = lesson.start + '–' + lesson.end;
-    const details = document.createElement('div');
-    const title = document.createElement('strong');
-    title.textContent = lesson.name;
-    details.append(title);
-    if (lesson.room) {
-      const room = document.createElement('small');
-      room.textContent = lesson.room;
-      details.append(room);
-    }
-    const edit = document.createElement('button');
-    edit.type = 'button';
-    edit.textContent = 'Засах';
-    edit.setAttribute('aria-label', lesson.name + ' засах');
-    edit.onclick = () => openStudentLesson(lesson);
-    item.append(time, details, edit);
-    return item;
+    !studentHomeUser ? 'Хувийн хуваариа үүсгэхийн тулд нэвтэрнэ үү.' :
+    studentLessons.length ? '' : '«Хичээл нэмэх» товчоор хуваариа үүсгээрэй.';
+  const times = [...new Set(studentLessons.map(lesson => lesson.start + '–' + lesson.end))].sort();
+  const rows = times.length ? times : ['07:40–09:10', '09:20–10:50', '11:00–12:30', '12:40–14:10',
+    '14:20–15:50', '16:00–17:30', '17:40–19:10'];
+  const colors = new Map([...new Set(studentLessons.map(lesson => lesson.name))].sort().map((name, index) => [name, index % 6]));
+  const body = studentHomeElement('studentWeekRows');
+  const header = body.previousElementSibling.rows[0];
+  studentDays.forEach((_, day) => {
+    const cell = header.cells[day + 1];
+    if (day === today) cell.setAttribute('aria-current', 'date');
+    else cell.removeAttribute('aria-current');
+  });
+  body.replaceChildren(...rows.map(time => {
+    const row = document.createElement('tr');
+    const label = document.createElement('th');
+    label.scope = 'row';
+    label.textContent = time;
+    row.append(label);
+    studentDays.forEach((_, day) => {
+      const cell = row.insertCell();
+      if (day === today) cell.classList.add('studentWeekToday');
+      for (const lesson of studentLessons) {
+        if (lesson.day !== day || lesson.start + '–' + lesson.end !== time) continue;
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'studentWeekLesson';
+        button.dataset.color = colors.get(lesson.name);
+        button.setAttribute('aria-label', lesson.name + ' засах');
+        const title = document.createElement('strong');
+        title.textContent = lesson.name;
+        button.append(title);
+        if (lesson.room) {
+          const room = document.createElement('small');
+          room.textContent = lesson.room;
+          button.append(room);
+        }
+        button.onclick = () => openStudentLesson(lesson);
+        cell.append(button);
+      }
+    });
+    return row;
   }));
 }
-
 
 function openStudentCalendar() {
   if (!studentHomeUser || !studentLessons.length) return;

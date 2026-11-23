@@ -10,15 +10,7 @@
   font: 750 clamp(26px, 4vw, 40px)/1.15 var(--board-sans);
   letter-spacing: -.045em;
 }
-.studentSchedule {
-  margin-top: 16px;
-  padding: clamp(12px, 3vw, 24px);
-  border: 1px solid var(--board-rule);
-  border-radius: 12px;
-  background: #fffdf8;
-}
-.studentScheduleDays { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; max-width: 520px; }
-.studentScheduleDays button, .studentScheduleLessons button, .studentHomeStatus button, :is(#studentLessonForm, #studentCalendarForm) button:not(.boardPost) {
+:is(#studentLessonForm, #studentCalendarForm) button:not(.boardPost) {
   min-height: 44px;
   min-width: 0;
   padding: 0 8px;
@@ -28,23 +20,9 @@
   color: var(--board-ink);
   font: 650 14px var(--board-sans);
 }
-.studentScheduleDays button[aria-current=date] { border-color: #ad4325; }
-.studentScheduleDays button[aria-pressed=true] { border-color: #ad4325; background: #ad4325; color: #fff; }
-.studentScheduleDay { margin: 19px 0 6px; font: 700 17px var(--board-sans); }
-.studentHomeStatus { margin: 7px 0 0; color: var(--board-muted); font-size: 14px; line-height: 1.5; }
-.studentHomeStatus:empty, .studentScheduleLessons:empty { display: none; }
-.studentScheduleLessons { margin: 6px 0 0; padding: 0; list-style: none; }
-.studentScheduleLessons li {
-  display: grid;
-  grid-template-columns: minmax(82px, auto) minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 12px;
-  padding: 11px 0;
-  border-top: 1px solid var(--board-rule);
-  overflow-wrap: anywhere;
-}
-.studentScheduleLessons small, .studentHomeFeedLink small { display: block; margin-top: 4px; color: var(--board-muted); font-size: 13px; }
-.studentLessonTime { color: #923d24; font-size: 13px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.studentHomeStatus { margin: 8px 0; color: var(--board-muted); font-size: 14px; line-height: 1.5; }
+.studentHomeStatus:empty { display: none; }
+.studentHomeFeedLink small { display: block; margin-top: 4px; color: var(--board-muted); font-size: 13px; }
 .studentHomeFeeds { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; margin-top: 28px; }
 .studentHomeFeeds > section { min-width: 0; border-top: 1px solid var(--board-rule); }
 .studentHomeFeeds header { min-height: 52px; }
@@ -97,18 +75,6 @@
   .studentHomeFeeds { grid-template-columns: 1fr; gap: 17px; margin-top: 22px; }
 }
 
-.campusDiscussionLayout { grid-template-columns: minmax(0, 1fr) minmax(310px, 360px); }
-.campusDiscussionLayout #studentHome { min-width: 0; padding: 0; }
-.campusToday { border: 1px solid var(--board-rule); border-radius: 10px; background: #fffdf8; padding: 0 14px; }
-.campusToday summary { min-height: 46px; padding-block: 12px; cursor: pointer; font-weight: 700; }
-#studentTodaySummary { float: right; color: var(--board-muted); font-size: 13px; font-weight: 500; }
-.campusToday[open] { padding-bottom: 12px; }
-.campusToday .studentHomeTitle h2 { font-size: 16px; margin: 0; }
-.campusToday .studentHomeTitle .boardPost { font-size: 12px; padding-inline: 8px; }
-.campusToday .studentSchedule { padding: 0; margin-top: 10px; border: 0; }
-.campusToday .studentScheduleDays { gap: 4px; }
-.campusToday .studentScheduleDays button { padding-inline: 2px; }
-.campusDiscussionLayout .studentHomeFeeds { grid-template-columns: 1fr; gap: 14px; margin-top: 18px; }
 .campusSchoolScope, .marketDestinations { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
 .campusSchoolScope button, .marketDestinations a { display: inline-flex; align-items: center; min-height: 40px; padding: 0 12px; border: 1px solid var(--board-rule); border-radius: 7px; color: var(--board-ink); background: #fffdf8; }
 .campusSchoolScope button[hidden] { display: none; }
@@ -116,11 +82,37 @@
 .marketDestinations { margin-top: 10px; }
 @media (max-width: 768px) {
   .boardAccount .campusDesktopAction { display: none; }
-  .campusDiscussionLayout { grid-template-columns: minmax(0, 1fr); }
-  .campusDiscussionLayout #studentHome:not([hidden]) { display: contents; }
-  .campusToday { grid-row: 1; }
-  .campusDiscussionFeed { grid-row: 2; }
-  .campusDiscussionLayout .studentHomeFeeds { grid-row: 3; }
+
 }
 
 .studentCalendarButton { margin-top: 10px; min-height: 44px; border: 1px solid var(--board-rule); border-radius: 8px; padding: 0 10px; background: #fffdf8; color: var(--board-ink); font: inherit; font-size: 13px; cursor: pointer; }
+
+.studentScheduleActions { display: flex; flex-wrap: wrap; gap: 8px; }
+.studentScheduleActions .studentCalendarButton { margin: 0; }
+.studentWeekScroll { margin-top: 14px; overflow-x: auto; border: 1px solid #bfd4e3; border-radius: 12px; }
+.studentWeek { width: 100%; min-width: 960px; table-layout: fixed; border-collapse: separate; border-spacing: 0; }
+.studentWeek th, .studentWeek td { border-right: 1px solid #bfd4e3; border-bottom: 1px solid #bfd4e3; }
+.studentWeek tr > :last-child { border-right: 0; }
+.studentWeek tbody tr:last-child > * { border-bottom: 0; }
+.studentWeek thead th { padding: 12px 6px; background: #103c61; color: white; }
+.studentWeek thead th[aria-current="date"] { background: #17628d; }
+.studentWeek tr > :first-child { position: sticky; left: 0; width: 100px; z-index: 1; }
+.studentWeek tbody th { padding: 8px; background: #e1eff8; color: #143d60; font-size: 13px; }
+.studentWeek td { height: 64px; padding: 4px; vertical-align: top; background: #f7fbfe; }
+.studentWeek td.studentWeekToday { background: #eaf4fb; }
+.studentWeekLesson { display: grid; gap: 3px; width: 100%; min-height: 52px; padding: 7px; border: 0; border-radius: 6px; text-align: left; background: #cfe8fb; color: #17324a; overflow-wrap: anywhere; cursor: pointer; }
+.studentWeekLesson + .studentWeekLesson { margin-top: 4px; }
+.studentWeekLesson[data-color="1"] { background: #fae8ab; }
+.studentWeekLesson[data-color="2"] { background: #d3efd5; }
+.studentWeekLesson[data-color="3"] { background: #f9d6e1; }
+.studentWeekLesson[data-color="4"] { background: #e7daf9; }
+.studentWeekLesson[data-color="5"] { background: #f7dfc3; }
+@media (max-width: 650px) {
+  .studentHomeTitle { align-items: flex-start; flex-direction: column; }
+  .studentWeek { min-width: 850px; }
+  .studentWeek tr > :first-child { width: 82px; }
+}
+.studentWeekHint { display: none; }
+@media (max-width: 960px) {
+  .studentWeekHint { display: block; margin: 10px 0 0; color: var(--board-muted); font-size: 13px; }
+}

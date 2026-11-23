@@ -313,7 +313,7 @@ test('large uploads shrink without upscaling and decoding failure retains the fi
   const small={...file,size:120000};assert.equal(await optimize(small),small);
 });
 
-test('Campus opens by default with a timetable and preserves marketplace and community links',async()=>{
+test('The weekly timetable opens by default and community keeps its own route',async()=>{
   const start=inlineScript.lastIndexOf('setupSocial();');
   const startup=inlineScript.slice(start,inlineScript.indexOf('// PWA registration',start));
   assert.ok(startup.includes('restoreSolioPage();'));
@@ -333,12 +333,12 @@ test('Campus opens by default with a timetable and preserves marketplace and com
     await new Promise(resolve=>setImmediate(resolve));
     return {visible,load};
   };
-  assert.deepEqual(await visit(''),{visible:['community'],load:['student-home']});
-  assert.deepEqual(await visit('#community'),{visible:['community'],load:['student-home']});
+  assert.deepEqual(await visit(''),{visible:['bottomHome'],load:['student-home']});
+  assert.deepEqual(await visit('#community'),{visible:['community'],load:[]});
   assert.deepEqual(await visit('#wanted'),{visible:['wanted'],load:[]});
   assert.deepEqual(await visit('#market'),{visible:['bottomMarket'],load:['listings']});
   assert.deepEqual(await visit('#listing-example'),{visible:['bottomMarket'],load:['listings','listing-link']});
-  assert.deepEqual(await visit('#register'),{visible:['community','register'],load:['student-home']});
+  assert.deepEqual(await visit('#register'),{visible:['bottomHome','register'],load:['student-home']});
   assert.deepEqual(await visit('','/schools/num'),{visible:['МУИС'],load:[]});
   assert.deepEqual(await visit('#deals/apply'),{visible:[],load:[]});
   assert.doesNotMatch(startup,/setInterval|refreshSolioNotificationCount/);
