@@ -43,3 +43,23 @@ test('a lesson update merges with account preferences and supports validated edi
   await actions.save();
   assert.equal(account.prefs.solioTimetable, undefined);
 });
+
+test('timetable export uses Ulaanbaatar time and includes the final day of term', async () => {
+  const { timetableCalendar } = await import('../event-calendar.js');
+  const monday = {
+    id: 'mon', day: 0, start: '07:30', end: '09:00',
+    name: 'Электроник, хэмжилт; '.repeat(6), room: '2-р байр\r305 тоот'
+  };
+  const tuesday = { id: 'tue', day: 1, start: '10:00', end: '11:00', name: 'Физик' };
+  const calendar = timetableCalendar([monday, tuesday], '2026-11-25', '2026-12-07', new Date('2026-11-24T03:00:00Z'));
+  const lines = calendar.replace(/\r\n /g, '').split('\r\n');
+  assert.ok(lines.includes('DTSTART:20261129T233000Z'));
+  assert.ok(lines.includes('DTEND:20261130T010000Z'));
+  assert.ok(lines.includes('RRULE:FREQ=WEEKLY;COUNT=2'));
+  assert.ok(lines.includes('DTSTART:20261201T020000Z'));
+  assert.ok(lines.includes('LOCATION:2-р байр\\n305 тоот'));
+  assert.ok(lines.includes('SUMMARY:' + 'Электроник\\, хэмжилт\\; '.repeat(6)));
+  assert.ok(calendar.split('\r\n').every(line => Buffer.byteLength(line) <= 75));
+  assert.throws(() => timetableCalendar([monday], '2026-11-25', '2026-11-29'), /хичээл алга/);
+  assert.throws(() => timetableCalendar([monday], '2026-02-30', '2026-03-10'), /огноог зөв/);
+});

@@ -1,5 +1,5 @@
 #studentHome { padding: 28px 0 44px; }
-.studentHomeTitle, .studentHomeFeeds header, #studentLessonForm header {
+.studentHomeTitle, .studentHomeFeeds header, :is(#studentLessonForm, #studentCalendarForm) header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -18,7 +18,7 @@
   background: #fffdf8;
 }
 .studentScheduleDays { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; max-width: 520px; }
-.studentScheduleDays button, .studentScheduleLessons button, .studentHomeStatus button, #studentLessonForm button:not(.boardPost) {
+.studentScheduleDays button, .studentScheduleLessons button, .studentHomeStatus button, :is(#studentLessonForm, #studentCalendarForm) button:not(.boardPost) {
   min-height: 44px;
   min-width: 0;
   padding: 0 8px;
@@ -48,7 +48,7 @@
 .studentHomeFeeds { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; margin-top: 28px; }
 .studentHomeFeeds > section { min-width: 0; border-top: 1px solid var(--board-rule); }
 .studentHomeFeeds header { min-height: 52px; }
-.studentHomeFeeds h2, #studentLessonForm h2 { margin: 0; font: 750 20px/1.2 var(--board-sans); letter-spacing: -.025em; }
+.studentHomeFeeds h2, :is(#studentLessonForm, #studentCalendarForm) h2 { margin: 0; font: 750 20px/1.2 var(--board-sans); letter-spacing: -.025em; }
 .studentHomeFeeds header a { display: grid; place-items: center; min-height: 44px; color: #963c24; font-size: 13px; white-space: nowrap; }
 .studentHomeFeedLink {
   display: block;
@@ -62,7 +62,7 @@
 }
 .studentHomeFeedLink + .studentHomeFeedLink { margin-top: 7px; }
 .studentHomeFeedLink:hover { border-color: #ad4325; }
-#studentLessonDialog {
+:is(#studentLessonDialog, #studentCalendarDialog) {
   box-sizing: border-box;
   width: min(440px, calc(100% - 24px));
   max-height: calc(100% - 24px);
@@ -72,10 +72,10 @@
   background: var(--board-paper);
   color: var(--board-ink);
 }
-#studentLessonDialog::backdrop { background: #23221e73; }
-#studentLessonForm { display: grid; gap: 13px; }
-#studentLessonForm label { display: grid; gap: 5px; min-width: 0; font-size: 14px; }
-#studentLessonForm :is(input, select) {
+:is(#studentLessonDialog, #studentCalendarDialog)::backdrop { background: #23221e73; }
+:is(#studentLessonForm, #studentCalendarForm) { display: grid; gap: 13px; }
+:is(#studentLessonForm, #studentCalendarForm) label { display: grid; gap: 5px; min-width: 0; font-size: 14px; }
+:is(#studentLessonForm, #studentCalendarForm) :is(input, select) {
   box-sizing: border-box;
   width: 100%;
   min-height: 44px;
@@ -88,7 +88,7 @@
   font-size: 16px;
 }
 .studentLessonHours { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-#studentLessonForm footer { display: flex; justify-content: flex-end; gap: 9px; }
+:is(#studentLessonForm, #studentCalendarForm) footer { display: flex; justify-content: flex-end; gap: 9px; }
 @media (max-width: 620px) {
   #studentHome { padding-top: 20px; }
   .studentHomeTitle h1 { font-size: clamp(21px, 6vw, 26px); }
@@ -122,3 +122,5 @@
   .campusDiscussionFeed { grid-row: 2; }
   .campusDiscussionLayout .studentHomeFeeds { grid-row: 3; }
 }
+
+.studentCalendarButton { margin-top: 10px; min-height: 44px; border: 1px solid var(--board-rule); border-radius: 8px; padding: 0 10px; background: #fffdf8; color: var(--board-ink); font: inherit; font-size: 13px; cursor: pointer; }

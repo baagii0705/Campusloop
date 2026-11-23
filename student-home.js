@@ -46,12 +46,18 @@ function setupStudentHome() {
     if (confirm('Энэ хичээлийг хуваариас устгах уу?')) saveStudentLesson(true);
   };
   form.onsubmit = event => { event.preventDefault(); saveStudentLesson(); };
+  studentHomeElement('studentCalendarOpen').onclick = openStudentCalendar;
+  studentHomeElement('studentCalendarClose').onclick = () => studentHomeElement('studentCalendarDialog').close();
+  studentHomeElement('studentCalendarForm').onsubmit = downloadStudentCalendar;
   dialog.addEventListener('cancel', event => { if (studentLessonBusy) event.preventDefault(); });
 }
 
 function setStudentHomeSession(value) {
   const user = value?.user;
-  if (studentHomeUser !== (user?.id || '')) studentHomeElement('studentLessonDialog').close();
+  if (studentHomeUser !== (user?.id || '')) {
+    studentHomeElement('studentLessonDialog').close();
+    studentHomeElement('studentCalendarDialog').close();
+  }
   studentHomeUser = user?.id || '';
   studentLessons = studentLessonsFromPrefs(user?.prefs);
   finishStudentHomeSession();
@@ -83,6 +89,7 @@ function renderStudentSchedule() {
     .sort((a, b) => a.start.localeCompare(b.start) || a.end.localeCompare(b.end));
   const add = studentHomeElement('studentLessonAdd');
   add.disabled = !studentHomeSessionReady;
+  studentHomeElement('studentCalendarOpen').hidden = !studentHomeUser || !studentLessons.length;
   studentHomeElement('studentScheduleStatus').textContent = !studentHomeSessionReady ? 'Хуваарийг ачаалж байна…' :
     !studentHomeUser ? 'Хувийн хуваариа харах, нэмэхийн тулд нэвтэрнэ үү.' :
     lessons.length ? '' : 'Энэ өдөр хичээл нэмээгүй байна.';
@@ -109,6 +116,53 @@ function renderStudentSchedule() {
     item.append(time, details, edit);
     return item;
   }));
+}
+
+
+function openStudentCalendar() {
+  if (!studentHomeUser || !studentLessons.length) return;
+  const form = studentHomeElement('studentCalendarForm');
+  form.reset();
+  form.elements.termStart.value = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Asia/Ulaanbaatar' }).format();
+  studentHomeElement('studentCalendarStatus').textContent = '';
+  studentHomeElement('studentCalendarDialog').showModal();
+}
+
+async function downloadStudentCalendar(event) {
+  event.preventDefault();
+  const user = studentHomeUser;
+  const dialog = studentHomeElement('studentCalendarDialog');
+  if (!user || !dialog.open) return;
+  const form = event.currentTarget;
+  const values = new FormData(form);
+  const button = form.querySelector('[type="submit"]');
+  const status = studentHomeElement('studentCalendarStatus');
+  if (button.disabled) return;
+  status.textContent = '';
+  button.disabled = true;
+  try {
+    const { timetableCalendar } = await import('/event-calendar.js');
+    if (studentHomeUser !== user || !dialog.open) return;
+    const calendar = timetableCalendar(studentLessons, values.get('termStart'), values.get('termEnd'));
+    const url = URL.createObjectURL(new Blob([calendar], { type: 'text/calendar;charset=utf-8' }));
+    try {
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'sol1o-hicheeliin-huvaari.ics';
+      document.body.append(link);
+      link.click();
+      link.remove();
+      status.textContent = 'Татсан файлаа календарьтаа оруулна уу.';
+    } finally {
+      setTimeout(() => URL.revokeObjectURL(url), 10000);
+    }
+  } catch (error) {
+    if (studentHomeUser === user && dialog.open) {
+      status.textContent = error instanceof RangeError ? error.message : 'Файлыг бэлдэж чадсангүй. Дахин оролдоно уу.';
+    }
+  } finally {
+    button.disabled = false;
+  }
 }
 
 function openStudentLesson(lesson) {

@@ -88,6 +88,7 @@
           <p id="studentScheduleStatus" class="studentHomeStatus" role="status"></p>
           <ul id="studentScheduleLessons" class="studentScheduleLessons"></ul>
         </div>
+        <button type="button" class="studentCalendarButton" id="studentCalendarOpen" hidden>Календарьт нэмэх</button>
       </details>
       <div class="studentHomeFeeds">
         <section aria-labelledby="studentHomeEventsTitle">
@@ -157,6 +158,15 @@
     <label>Байр, өрөө<input name="room" maxlength="80" autocomplete="off" placeholder="Жишээ нь 2-р байр, 305 тоот"></label>
     <p id="studentLessonStatus" class="studentHomeStatus" role="status"></p>
     <footer><button type="button" id="studentLessonDelete" hidden>Устгах</button><button type="submit" class="boardPost">Хадгалах</button></footer>
+  </form>
+</dialog><dialog id="studentCalendarDialog" aria-labelledby="studentCalendarTitle">
+  <form id="studentCalendarForm">
+    <header><h2 id="studentCalendarTitle">Календарьт нэмэх</h2><button type="button" id="studentCalendarClose" aria-label="Хаах">×</button></header>
+    <p class="studentHomeStatus">Хичээлүүд сонгосон хугацаанд долоо хоног бүр давтагдана. Татсан файлаа Apple, Google эсвэл Outlook календарьт оруулна.</p>
+    <label>Улирал эхлэх огноо<input name="termStart" type="date" required></label>
+    <label>Улирал дуусах огноо<input name="termEnd" type="date" required></label>
+    <p id="studentCalendarStatus" class="studentHomeStatus" role="status"></p>
+    <footer><button type="submit" class="boardPost">Хуваарь татах (.ics)</button></footer>
   </form>
 </dialog><dialog class="schoolPicker" id="schoolPicker" aria-labelledby="schoolPickerTitle" onclick="if(event.target===this)this.close()">
   <div class="schoolPickerContent">
