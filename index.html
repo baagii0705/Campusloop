@@ -194,8 +194,8 @@ const appwriteAuth={
 };
 function appwriteDatabaseError(){return appwriteError("Appwrite database is not configured yet. Set databaseId before using marketplace data.","database_not_configured")}
 function appwriteCollection(name){const state={collection:name,operation:"select",filters:[],queries:[],payload:null,single:false,orFilters:[]};const builder={select(){state.operation="select";return builder},order(field,{ascending=false}={}){if(APPWRITE_CONFIG.databaseId)state.queries.push(ascending?Appwrite.Query.orderAsc(field):Appwrite.Query.orderDesc(field));return builder},range(start,end){if(APPWRITE_CONFIG.databaseId){state.queries.push(Appwrite.Query.offset(start),Appwrite.Query.limit(end-start+1))}return builder},limit(value){if(APPWRITE_CONFIG.databaseId)state.queries.push(Appwrite.Query.limit(value));return builder},eq(field,value){state.filters.push({field,value});return builder},or(expression){const parts=expression.split(",").map(x=>x.trim());const parsed=parts.map(x=>{const m=x.match(/^([a-zA-Z_][\w]*)\.eq\.(.+)$/);if(!m)throw new Error("Unsupported OR filter: "+x);return Appwrite.Query.equal(m[1]==="id"?"$id":m[1],[m[2]])});state.orFilters.push(Appwrite.Query.or(parsed));return builder},maybeSingle(){state.single=true;return builder},single(){state.single=true;return builder},insert(payload){state.operation="insert";state.payload=payload;return builder},update(payload){state.operation="update";state.payload=payload;return builder},delete(){state.operation="delete";return builder},then(resolve,reject){return appwriteExecute(state).then(resolve,reject)}};return builder}
-async function appwriteExecute(state){if(!APPWRITE_CONFIG.databaseId)return appwriteDatabaseError();try{const filters=state.filters.map(f=>Appwrite.Query.equal(f.field==="id"?"$id":f.field,[f.value]));const queries=state.queries.concat(filters,state.orFilters);if(state.operation==="select"){let result;try{result=await appwriteDatabases.listDocuments(APPWRITE_CONFIG.databaseId,state.collection,queries)}catch(primaryError){if(!/load failed|failed to fetch|networkerror/i.test(String(primaryError?.message||'')))throw primaryError;const fallbackClient=new Appwrite.Client().setEndpoint('https://cloud.appwrite.io/v1').setProject(APPWRITE_CONFIG.projectId);const fallbackDb=new Appwrite.Databases(fallbackClient);try{result=await fallbackDb.listDocuments(APPWRITE_CONFIG.databaseId,state.collection,queries)}catch(secondaryError){if(state.collection!=='listings'||state.filters.length||state.orFilters.length)throw secondaryError;const parsedQueries=queries.map(q=>typeof q==='string'?JSON.parse(q):q);const offsetQuery=parsedQueries.find(q=>q?.method==='offset');const limitQuery=parsedQueries.find(q=>q?.method==='limit');const offset=offsetQuery?.values?.[0]??0,limit=limitQuery?.values?.[0]??24;const proxy=await fetch('/api/public/listings?offset='+encodeURIComponent(offset)+'&limit='+encodeURIComponent(limit),{headers:{Accept:'application/json'}});if(!proxy.ok)throw new Error('Cloudflare proxy HTTP '+proxy.status+'; '+String(secondaryError?.message||''));result=await proxy.json()}}const data=result.documents.map(normalizeAppwriteDocument);return {data:state.single?(data[0]||null):data,error:null}}if(state.operation==="insert"){const rows=(Array.isArray(state.payload)?state.payload:[state.payload]).map(row=>({...row,created_at:row.created_at||new Date().toISOString()}));const publicCollections=["listings","seller_profiles","wanted_posts","campus_posts"];const userId=session?.user?.id;const permissions=[];if(publicCollections.includes(state.collection))permissions.push(Appwrite.Permission.read(Appwrite.Role.any()));if(userId)permissions.push(Appwrite.Permission.read(Appwrite.Role.user(userId)),Appwrite.Permission.update(Appwrite.Role.user(userId)),Appwrite.Permission.delete(Appwrite.Role.user(userId)));const docs=await Promise.all(rows.map(row=>appwriteDatabases.createDocument(APPWRITE_CONFIG.databaseId,state.collection,Appwrite.ID.unique(),row,permissions)));const data=docs.map(normalizeAppwriteDocument);return {data:Array.isArray(state.payload)?data:data[0],error:null}}const result=await appwriteDatabases.listDocuments(APPWRITE_CONFIG.databaseId,state.collection,queries);if(!result.documents.length)return {data:state.operation==="delete"?null:null,error:null};const docs=state.operation==="update"?await Promise.all(result.documents.map(d=>appwriteDatabases.updateDocument(APPWRITE_CONFIG.databaseId,state.collection,d.$id,state.payload))):await Promise.all(result.documents.map(d=>appwriteDatabases.deleteDocument(APPWRITE_CONFIG.databaseId,state.collection,d.$id)));return {data:state.operation==="update"?docs.map(normalizeAppwriteDocument):null,error:null}}catch(e){return appwriteError(e.message||"Appwrite database request failed",e.code)}}
-const appwriteStorageApi={from(bucket){return {upload:async(path,file)=>{if(!APPWRITE_CONFIG.storageBucketId)return appwriteError("Appwrite storage is not configured.","storage_not_configured");try{return {data:await appwriteStorage.createFile(APPWRITE_CONFIG.storageBucketId,path,file,[Appwrite.Permission.read(Appwrite.Role.any()),Appwrite.Permission.update(Appwrite.Role.user(session.user.id)),Appwrite.Permission.delete(Appwrite.Role.user(session.user.id))]),error:null}}catch(e){return appwriteError(e.message||"Appwrite upload failed",e.code)}},getPublicUrl(path){return {data:{publicUrl:APPWRITE_CONFIG.storageBucketId?appwriteStorage.getFileView(APPWRITE_CONFIG.storageBucketId,path).toString():""}}}}}}
+async function appwriteExecute(state){if(!APPWRITE_CONFIG.databaseId)return appwriteDatabaseError();try{const filters=state.filters.map(f=>Appwrite.Query.equal(f.field==="id"?"$id":f.field,[f.value]));const queries=state.queries.concat(filters,state.orFilters);if(state.operation==="select"){let result;try{result=await appwriteDatabases.listDocuments(APPWRITE_CONFIG.databaseId,state.collection,queries)}catch(primaryError){if(!/load failed|failed to fetch|networkerror/i.test(String(primaryError?.message||'')))throw primaryError;const fallbackClient=new Appwrite.Client().setEndpoint('https://cloud.appwrite.io/v1').setProject(APPWRITE_CONFIG.projectId);const fallbackDb=new Appwrite.Databases(fallbackClient);try{result=await fallbackDb.listDocuments(APPWRITE_CONFIG.databaseId,state.collection,queries)}catch(secondaryError){if(state.collection!=='listings'||state.filters.length||state.orFilters.length)throw secondaryError;const parsedQueries=queries.map(q=>typeof q==='string'?JSON.parse(q):q);const offsetQuery=parsedQueries.find(q=>q?.method==='offset');const limitQuery=parsedQueries.find(q=>q?.method==='limit');const offset=offsetQuery?.values?.[0]??0,limit=limitQuery?.values?.[0]??24;const proxy=await fetch('/api/public/listings?offset='+encodeURIComponent(offset)+'&limit='+encodeURIComponent(limit),{headers:{Accept:'application/json'}});if(!proxy.ok)throw new Error('Cloudflare proxy HTTP '+proxy.status+'; '+String(secondaryError?.message||''));result=await proxy.json()}}const data=result.documents.map(normalizeAppwriteDocument);return {data:state.single?(data[0]||null):data,error:null}}if(state.operation==="insert"){const rows=(Array.isArray(state.payload)?state.payload:[state.payload]).map(row=>({...row,created_at:row.created_at||new Date().toISOString()}));const publicCollections=["listings","seller_profiles","wanted_posts","campus_posts"];const userId=session?.user?.id;const permissions=[];if(publicCollections.includes(state.collection))permissions.push(Appwrite.Permission.read(Appwrite.Role.any()));if(userId)permissions.push(Appwrite.Permission.read(Appwrite.Role.user(userId)),Appwrite.Permission.update(Appwrite.Role.user(userId)),Appwrite.Permission.delete(Appwrite.Role.user(userId)));const docs=await Promise.all(rows.map(row=>appwriteDatabases.createDocument(APPWRITE_CONFIG.databaseId,state.collection,Appwrite.ID.unique(),row,permissions)));const data=docs.map(normalizeAppwriteDocument);return {data:Array.isArray(state.payload)?data:data[0],error:null}}const result=await appwriteDatabases.listDocuments(APPWRITE_CONFIG.databaseId,state.collection,queries);if(!result.documents.length)return state.operation==="update"?appwriteError("Засах мэдээлэл олдсонгүй.",404):{data:null,error:null};const docs=state.operation==="update"?await Promise.all(result.documents.map(d=>appwriteDatabases.updateDocument(APPWRITE_CONFIG.databaseId,state.collection,d.$id,state.payload))):await Promise.all(result.documents.map(d=>appwriteDatabases.deleteDocument(APPWRITE_CONFIG.databaseId,state.collection,d.$id)));return {data:state.operation==="update"?docs.map(normalizeAppwriteDocument):null,error:null}}catch(e){return appwriteError(e.message||"Appwrite database request failed",e.code)}}
+const appwriteStorageApi={from(bucket){return {removeFile:path=>appwriteStorage.deleteFile(APPWRITE_CONFIG.storageBucketId,path),upload:async(path,file)=>{if(!APPWRITE_CONFIG.storageBucketId)return appwriteError("Appwrite storage is not configured.","storage_not_configured");try{return {data:await appwriteStorage.createFile(APPWRITE_CONFIG.storageBucketId,path,file,[Appwrite.Permission.read(Appwrite.Role.any()),Appwrite.Permission.update(Appwrite.Role.user(session.user.id)),Appwrite.Permission.delete(Appwrite.Role.user(session.user.id))]),error:null}}catch(e){return appwriteError(e.message||"Appwrite upload failed",e.code)}},getPublicUrl(path){return {data:{publicUrl:APPWRITE_CONFIG.storageBucketId?appwriteStorage.getFileView(APPWRITE_CONFIG.storageBucketId,path).toString():""}}}}}}
 const db={from:appwriteCollection,storage:appwriteStorageApi};
 let savedOnly=false;let listings=[],session=null,school="Бүх сургууль",category="Бүх ангилал",onlyMine=false;
 function readSolioFavorites(){try{const values=JSON.parse(localStorage.getItem("solio_favorites")||"[]");return new Set(Array.isArray(values)?values.filter(x=>typeof x==="string"):[])}catch{return new Set()}}
@@ -938,6 +938,8 @@ async function saveListing(id){
   submit.disabled=true;
   submit.textContent=files.length?"Зураг бэлдэж байна…":"Нийтэлж байна…";
   showStatus("");
+  const uploadedPaths=[];
+  let cleanupAllowed=true;
   try{
     if(files.length){
       const {optimizeListingImage,uploadListingImageWithCard}=await import('/image-upload.mjs');
@@ -947,13 +949,16 @@ async function saveListing(id){
         while(nextIndex<files.length){
           const index=nextIndex++,file=await optimizeListingImage(files[index]),path=Appwrite.ID.unique();
           const bucket=db.storage.from("listing-images");
-          await uploadListingImageWithCard(bucket,path,file);
+          const created=await uploadListingImageWithCard(bucket,path,file);
+          uploadedPaths.push(...created);
           urls[index]=bucket.getPublicUrl(path).data.publicUrl;
           finished++;
           showStatus("Зураг ачаалж байна: "+finished+"/"+files.length);
         }
       });
-      await Promise.all(workers);
+      const outcomes=await Promise.allSettled(workers);
+      const failed=outcomes.find(outcome=>outcome.status==="rejected");
+      if(failed)throw failed.reason;
       image=urls[0];
       obj.image_url=image;
       obj.image_urls=urls;
@@ -966,10 +971,15 @@ async function saveListing(id){
     }
     submit.textContent=id?"Хадгалж байна…":"Зар нийтэлж байна…";
     showStatus("Зарыг хадгалж байна…");
+    // Once a write starts, a lost response can mean the listing already references these files.
+    cleanupAllowed=false;
     const {data:savedListing,error}=id
       ?await db.from("listings").update(obj).eq("id",id).eq("user_id",session.user.id)
       :await db.from("listings").insert(obj);
-    if(error)throw error;
+    if(error){
+      cleanupAllowed=[400,401,403,404,409,413,422].includes(error.code);
+      throw error;
+    }
     const publishedId=savedListing?.id||savedListing?.$id;
     if(!id&&publishedId)window.queueListingMatch?.(publishedId);
     if(id)extraListings.delete(id);
@@ -987,7 +997,15 @@ async function saveListing(id){
     toast(vipNotice||(id?"Зар амжилттай шинэчлэгдлээ!":"Зар амжилттай нийтлэгдлээ!"));
     await loadListings();
   }catch(error){
-    showStatus("Алдаа: "+(error.message||"Дахин оролдоно уу."),true);
+    let cleanupMessage="";
+    if(cleanupAllowed&&uploadedPaths.length){
+      const bucket=db.storage.from("listing-images");
+      const removed=await Promise.allSettled(uploadedPaths.map(path=>bucket.removeFile(path)));
+      if(removed.some(result=>result.status==="rejected"&&result.reason?.code!==404)){
+        cleanupMessage=" Зарим зургийг буцааж устгаж чадсангүй.";
+      }
+    }
+    showStatus("Алдаа: "+(error.message||"Дахин оролдоно уу.")+cleanupMessage,true);
   }finally{
     submit.disabled=false;
     submit.textContent=original;

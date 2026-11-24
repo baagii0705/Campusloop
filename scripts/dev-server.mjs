@@ -20,6 +20,7 @@ import {onRequestGet as sponsorsActive} from '../functions/api/sponsors/active.j
 import {onRequestGet as sponsorsApplyGet,onRequestPost as sponsorsApply} from '../functions/api/sponsors/apply.js';
 import {onRequestPost as sponsorsEvent} from '../functions/api/sponsors/event.js';
 import { onRequestGet as getSaved, onRequestPost as postSaved } from '../functions/api/saved-searches/index.js';
+import {onRequestGet as getTimetable,onRequestPost as postTimetable,onRequestOptions as timetableOptions} from '../functions/api/timetable/index.js';
 import { onRequestGet as publicFeed } from '../functions/api/public/[collection].js';
 import { schoolFromPath } from '../schools-data.js';
 import {societyFields} from '../societies-data.js';
@@ -49,6 +50,7 @@ function seedPreview(){
  insert('event','preview-photo',{title:'Хотын гэрэл — фото алхалт',school:'',category:'Урлаг',club_id:'preview-art',description:'Энэ бол зөвхөн дотоод харагдац шалгах жишээ эвент. Бодит зар биш.',location:'Хотын төв, уулзах цэгийг холбоосоор харна.',starts_at:new Date(+start+86400000).toISOString(),ends_at:new Date(+end+86400000).toISOString(),price_note:'Үнэгүй'});
 }
 const routes={
+ '/api/timetable':{GET:getTimetable,POST:postTimetable,OPTIONS:timetableOptions},
  '/api/saved-searches':{GET:getSaved,POST:postSaved},
  '/api/vip':{GET:vipGet,POST:vipPost},'/api/admin/summary':{GET:summary},
  '/api/sponsors/admin':{GET:sponsorsAdminGet,POST:sponsorsAdminPost},'/api/sponsors/active':{GET:sponsorsActive},'/api/sponsors/apply':{GET:sponsorsApplyGet,POST:sponsorsApply},'/api/sponsors/event':{POST:sponsorsEvent},

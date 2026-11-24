@@ -200,17 +200,20 @@ test('quick-post validates before uploading and saves multiple images in order',
       return {...field,focus(){},closest(){return null}};
     }
   };
-  let uploads=0,inserted=null,closed=0,refreshed=0;
+  let uploads=0,inserted=null,closed=0,refreshed=0,writeError=null;
+  const removed=[];
+  let failedUpload='';
   const db={
     storage:{from:()=>({
-      upload:async(id,file)=>{uploads++;return {error:null}},
+      upload:async(id,file)=>{uploads++;return {error:id===failedUpload?new Error('upload failed'):null}},
+      removeFile:async id=>{removed.push(id)},
       getPublicUrl:id=>({data:{publicUrl:'https://images.example/'+id}})
     })},
-    from:()=>({insert:async obj=>{inserted=obj;return {error:null}}})
+    from:()=>({insert:async obj=>{inserted=obj;return {error:writeError}}})
   };
   let nextId=0;
   const make=new Function('document','session','listings','Appwrite','db','toast','closeModal','loadListings','localStorage',
-    inlineScript.slice(start,end).replace("await import('/image-upload.mjs')","({optimizeListingImage:async file=>file,uploadListingImageWithCard:async(bucket,path,file)=>{const result=await bucket.upload(path,file);if(result.error)throw result.error;}})")+';return saveListing');
+    inlineScript.slice(start,end).replace("await import('/image-upload.mjs')","({optimizeListingImage:async file=>file,uploadListingImageWithCard:async(bucket,path,file)=>{const result=await bucket.upload(path,file);if(result.error)throw result.error;return [path];}})")+';return saveListing');
   const post=make(doc,{user:{id:'user-1'}},[],{ID:{unique:()=>String(++nextId)}},
     db,()=>{},()=>{closed++},async()=>{refreshed++},{setItem(){}});
   fields.newTitle.value='No';
@@ -227,6 +230,26 @@ test('quick-post validates before uploading and saves multiple images in order',
   assert.equal(inserted.image_urls[1],'https://images.example/2');
   assert.equal(closed,1);
   assert.equal(refreshed,1);
+  writeError=Object.assign(new Error('Rejected'),{code:400});
+  await post();
+  assert.deepEqual(removed.sort(),['3','4']);
+  writeError=Object.assign(new Error('Lost response'),{code:503});
+  await post();
+  assert.equal(removed.length,2);
+  failedUpload='7';
+  await post();
+  assert.deepEqual(removed.sort(),['3','4','8']);
+});
+
+test('edits report a missing listing and deleting an absent row stays idempotent', async()=>{
+  const adapter=inlineScript.slice(inlineScript.indexOf('async function appwriteExecute'),inlineScript.indexOf('const appwriteStorageApi'));
+  const execute=runInNewContext(adapter+';appwriteExecute',{
+    APPWRITE_CONFIG:{databaseId:'public'},appwriteDatabases:{listDocuments:async()=>({documents:[]})},
+    appwriteError:(message,code)=>({data:null,error:{message,code}})
+  });
+  const state={collection:'listings',filters:[],queries:[],orFilters:[]};
+  assert.equal((await execute({...state,operation:'update'})).error.code,404);
+  assert.equal((await execute({...state,operation:'delete'})).error,null);
 });
 
 test('listing uploads grant public read and retain owner-only modification',async()=>{

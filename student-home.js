@@ -7,22 +7,59 @@ const studentEventFormat = new Intl.DateTimeFormat('mn-MN', {
 });
 const studentHomeElement = id => document.getElementById(id);
 const studentToday = () => ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].indexOf(studentDayFormat.format());
-const studentScheduleKey = 'solioTimetable';
-const studentMaximumLessons = 60;
 let studentSelectedDay = studentToday();
 let studentHomeSessionReady = false;
 let studentHomeUser = '';
 let studentLessons = [];
-let studentLessonId = '';
+let studentScheduleRevision = -1;
+let studentScheduleLoad;
+let studentScheduleError = '';
+let studentHomeGeneration = 0;
+let studentLessonDraft;
 let studentLessonBusy = false;
 const studentHomeFeeds = new Map();
 
-function studentLessonsFromPrefs(prefs) {
-  const items = prefs?.[studentScheduleKey];
-  if (!Array.isArray(items)) return [];
-  return items.filter(item => typeof item?.id === 'string' && typeof item.name === 'string' &&
-    Number.isInteger(item.day) && item.day >= 0 && item.day < 7 &&
-    typeof item.start === 'string' && typeof item.end === 'string' && typeof item.room === 'string');
+async function studentTimetableRequest(owner, input) {
+  const token = await appwriteAccount.createJWT();
+  const headers = {
+    Authorization: 'Bearer ' + token.jwt,
+    'X-Solio-Timetable-Owner': owner,
+    ...(input ? { 'Content-Type': 'application/json' } : {}),
+  };
+  const response = await fetch(solioPublicPath('/api/timetable'), {
+    method: input ? 'POST' : 'GET',
+    cache: 'no-store',
+    headers,
+    ...(input ? { body: JSON.stringify(input) } : {}),
+  });
+  const data = await response.json();
+  const conflict = response.status === 409;
+  if (!response.ok && !conflict) throw Error(data.error || 'Хуваарийг шинэчилж чадсангүй.');
+  return { ...data, conflict };
+}
+
+function acceptStudentTimetable({ lessons, revision }) {
+  if (!Array.isArray(lessons) || !Number.isSafeInteger(revision) || revision < studentScheduleRevision) return;
+  studentLessons = lessons;
+  studentScheduleRevision = revision;
+  studentScheduleError = '';
+}
+
+function loadStudentTimetable() {
+  if (!studentHomeUser || studentScheduleLoad) return studentScheduleLoad;
+  const owner = studentHomeUser;
+  const generation = studentHomeGeneration;
+  studentScheduleError = '';
+  studentScheduleLoad = studentTimetableRequest(owner).then(data => {
+    if (generation === studentHomeGeneration) acceptStudentTimetable(data);
+  }).catch(() => {
+    if (generation === studentHomeGeneration) studentScheduleError = 'Хуваарийг ачаалж чадсангүй.';
+  }).finally(() => {
+    if (generation !== studentHomeGeneration) return;
+    studentScheduleLoad = null;
+    if (!studentHomeElement('studentHome').hidden) renderStudentSchedule();
+  });
+  return studentScheduleLoad;
 }
 
 function setupStudentHome() {
@@ -30,7 +67,12 @@ function setupStudentHome() {
   const dialog = studentHomeElement('studentLessonDialog');
   studentDays.forEach((name, index) => form.elements.day.add(new Option(name, index)));
   studentHomeElement('studentLessonAdd').onclick = () => {
-    if (studentHomeSessionReady) requireSolioAccount(() => openStudentLesson(), 'Хичээлийн хуваарь');
+    if (!studentHomeSessionReady) return;
+    requireSolioAccount(async () => {
+      const generation = studentHomeGeneration;
+      if (studentScheduleRevision < 0) await loadStudentTimetable();
+      if (generation === studentHomeGeneration) openStudentLesson();
+    }, 'Хичээлийн хуваарь');
   };
   studentHomeElement('studentLessonClose').onclick = () => dialog.close();
   studentHomeElement('studentLessonDelete').onclick = () => {
@@ -44,14 +86,20 @@ function setupStudentHome() {
 }
 
 function setStudentHomeSession(value) {
-  const user = value?.user;
-  if (studentHomeUser !== (user?.id || '')) {
+  const owner = value?.user?.id || '';
+  if (studentHomeUser !== owner) {
+    studentHomeGeneration++;
+    studentHomeUser = owner;
+    studentLessons = [];
+    studentScheduleRevision = -1;
+    studentScheduleLoad = null;
+    studentScheduleError = '';
+    studentLessonDraft = null;
     studentHomeElement('studentLessonDialog').close();
     studentHomeElement('studentCalendarDialog').close();
   }
-  studentHomeUser = user?.id || '';
-  studentLessons = studentLessonsFromPrefs(user?.prefs);
   finishStudentHomeSession();
+  if (!studentHomeElement('studentHome').hidden || studentScheduleRevision < 0) loadStudentTimetable();
 }
 
 function finishStudentHomeSession() {
@@ -60,6 +108,7 @@ function finishStudentHomeSession() {
 }
 
 function showStudentHome() {
+  loadStudentTimetable();
   renderStudentSchedule();
   loadStudentHomeFeeds();
 }
@@ -67,11 +116,20 @@ function showStudentHome() {
 function renderStudentSchedule() {
   const today = studentToday();
   const add = studentHomeElement('studentLessonAdd');
-  add.disabled = !studentHomeSessionReady;
+  add.disabled = !studentHomeSessionReady || Boolean(studentHomeUser && studentScheduleRevision < 0);
   studentHomeElement('studentCalendarOpen').hidden = !studentHomeUser || !studentLessons.length;
-  studentHomeElement('studentScheduleStatus').textContent = !studentHomeSessionReady ? 'Хуваарийг ачаалж байна…' :
+  const status = studentHomeElement('studentScheduleStatus');
+  status.textContent = !studentHomeSessionReady ? 'Хуваарийг ачаалж байна…' :
     !studentHomeUser ? 'Хувийн хуваариа үүсгэхийн тулд нэвтэрнэ үү.' :
-    studentLessons.length ? '' : '«Хичээл нэмэх» товчоор хуваариа үүсгээрэй.';
+    studentScheduleError || (studentScheduleRevision < 0 ? 'Хуваарийг ачаалж байна…' :
+      studentLessons.length ? '' : '«Хичээл нэмэх» товчоор хуваариа үүсгээрэй.');
+  if (studentScheduleError) {
+    const retry = document.createElement('button');
+    retry.type = 'button';
+    retry.textContent = 'Дахин ачаалах';
+    retry.onclick = () => { loadStudentTimetable(); renderStudentSchedule(); };
+    status.append(' ', retry);
+  }
   const times = [...new Set(studentLessons.map(lesson => lesson.start + '–' + lesson.end))].sort();
   const rows = times.length ? times : ['07:40–09:10', '09:20–10:50', '11:00–12:30', '12:40–14:10',
     '14:20–15:50', '16:00–17:30', '17:40–19:10'];
@@ -162,10 +220,11 @@ async function downloadStudentCalendar(event) {
 }
 
 function openStudentLesson(lesson) {
-  if (!studentHomeUser || studentLessonBusy) return;
+  if (!studentHomeUser || studentScheduleRevision < 0 || studentLessonBusy) return;
   const form = studentHomeElement('studentLessonForm');
   form.reset();
-  studentLessonId = lesson?.id || '';
+  for (const control of form.elements) control.disabled = false;
+  studentLessonDraft = { previous: lesson, id: lesson?.id || crypto.randomUUID(), revision: studentScheduleRevision };
   form.elements.day.value = String(lesson?.day ?? studentSelectedDay);
   for (const field of ['name', 'start', 'end', 'room']) form.elements[field].value = lesson?.[field] || '';
   studentHomeElement('studentLessonTitle').textContent = lesson ? 'Хичээл засах' : 'Хичээл нэмэх';
@@ -175,14 +234,15 @@ function openStudentLesson(lesson) {
 }
 
 async function saveStudentLesson(remove = false) {
-  if (studentLessonBusy || !studentHomeUser) return;
+  if (studentLessonBusy || !studentHomeUser || !studentLessonDraft || studentLessonDraft.stale) return;
   const form = studentHomeElement('studentLessonForm');
   const status = studentHomeElement('studentLessonStatus');
   const userId = studentHomeUser;
-  const editing = studentLessonId;
+  const generation = studentHomeGeneration;
+  const draft = studentLessonDraft;
   const values = new FormData(form);
   const lesson = {
-    id: editing || crypto.randomUUID(),
+    id: draft.id,
     name: values.get('name').trim(),
     day: Number(values.get('day')),
     start: values.get('start'),
@@ -198,26 +258,38 @@ async function saveStudentLesson(remove = false) {
   controls.forEach(control => { control.disabled = true; });
   status.textContent = 'Хадгалж байна…';
   try {
-    const account = await appwriteAccount.get();
-    if (account.$id !== userId || studentHomeUser !== userId) return;
-    const lessons = studentLessonsFromPrefs(account.prefs);
-    if (!remove && !editing && lessons.length >= studentMaximumLessons) {
-      status.textContent = 'Хуваарьт 60 хүртэл хичээл нэмэх боломжтой.';
+    const result = await studentTimetableRequest(userId, {
+      action: remove ? 'delete' : draft.previous ? 'update' : 'create',
+      id: draft.id,
+      lesson,
+      revision: draft.revision,
+    });
+    if (generation !== studentHomeGeneration) return;
+    acceptStudentTimetable(result);
+    renderStudentSchedule();
+    if (result.conflict) {
+      const latest = studentLessons.find(item => item.id === draft.id);
+      if (JSON.stringify(latest) === JSON.stringify(draft.previous)) {
+        draft.revision = studentScheduleRevision;
+        status.textContent = 'Хуваарь өөр төхөөрөмж дээр шинэчлэгдсэн. Дахин хадгална уу.';
+      } else {
+        draft.stale = true;
+        status.textContent = 'Энэ хичээл өөр төхөөрөмж дээр өөрчлөгдсөн. Хаагаад хамгийн сүүлийн хуваариас дахин нээнэ үү.';
+      }
       return;
     }
-    const next = lessons.filter(item => item.id !== lesson.id);
-    if (!remove) next.push(lesson);
-    const updated = await appwriteAccount.updatePrefs({ ...account.prefs, [studentScheduleKey]: next });
-    if (studentHomeUser !== userId || updated.$id !== userId) return;
-    studentLessons = studentLessonsFromPrefs(updated.prefs);
     if (!remove) studentSelectedDay = lesson.day;
     studentHomeElement('studentLessonDialog').close();
-    renderStudentSchedule();
-  } catch {
-    status.textContent = 'Хадгалж чадсангүй. Дахин оролдоно уу.';
+  } catch (error) {
+    if (generation === studentHomeGeneration) {
+      status.textContent = error instanceof SyntaxError ? 'Хадгалж чадсангүй. Дахин оролдоно уу.' : error.message;
+    }
   } finally {
     studentLessonBusy = false;
-    controls.forEach(control => { control.disabled = false; });
+    controls.forEach(control => {
+      control.disabled = generation === studentHomeGeneration && draft.stale &&
+        (control.type === 'submit' || control.id === 'studentLessonDelete');
+    });
   }
 }
 

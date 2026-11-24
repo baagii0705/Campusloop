@@ -36,12 +36,15 @@ export async function optimizeListingImage(file, {maxDimension=1600, quality=0.8
 export async function uploadListingImageWithCard(bucket, path, file) {
   const original = await bucket.upload(path, file, {contentType:file.type, upsert:false});
   if (original.error) throw original.error;
-  if (file.type === 'image/gif') return; // Keep animation on the original path.
+  const created = [path];
+  if (file.type === 'image/gif') return created; // Keep animation on the original path.
   try {
     const card = await optimizeListingImage(file, {maxDimension:720, quality:0.76, minBytes:0});
     const result = await bucket.upload(path+'_card', card, {contentType:card.type, upsert:false});
     if (result.error) console.warn('Card image unavailable; the original remains available.');
+    else created.push(path+'_card');
   } catch {
     console.warn('Card image unavailable; the original remains available.');
   }
+  return created;
 }

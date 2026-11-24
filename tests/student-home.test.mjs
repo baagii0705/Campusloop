@@ -5,43 +5,43 @@ import { runInNewContext } from 'node:vm';
 
 const source = readFileSync(new URL('../student-home.js', import.meta.url), 'utf8');
 
-test('a lesson update merges with account preferences and supports validated edits and deletion', async () => {
-  let values = { name: 'Электроник', day: '4', start: '08:30', end: '10:00', room: '305 тоот' };
-  const form = { elements: [] };
+test('a stale edit cannot overwrite a lesson changed on another device', async () => {
+  const values = { name: 'Электроник', day: '4', start: '08:30', end: '10:00', room: '305 тоот' };
+  const saveButton = { type: 'submit' };
+  const cancelButton = { type: 'button' };
   const status = {};
-  const dialog = { close() {} };
-  let account = { $id: 'student', prefs: { anotherSetting: 'keep' } };
+  const previous = { ...values, day: 4, id: 'lesson' };
+  const current = { ...previous, room: '406 тоот' };
+  let requests = 0;
   const context = {
-    document: { getElementById: id => ({ studentLessonForm: form, studentLessonStatus: status, studentLessonDialog: dialog })[id] },
-    crypto: { randomUUID: () => 'lesson' },
+    document: { getElementById: id => ({
+      studentLessonForm: { elements: [saveButton, cancelButton] },
+      studentLessonStatus: status,
+    })[id] },
     FormData: class { get(key) { return values[key]; } },
-    appwriteAccount: { get: async () => account, updatePrefs: async prefs => (account = { ...account, prefs }) }
+    appwriteAccount: { createJWT: async () => ({ jwt: 'token' }) },
+    solioPublicPath: path => path,
+    fetch: async (path, options) => {
+      requests++;
+      assert.equal(path, '/api/timetable');
+      assert.equal(options.headers['X-Solio-Timetable-Owner'], 'student');
+      assert.equal(JSON.parse(options.body).revision, 0);
+      return Response.json({ lessons: [current], revision: 1 }, { status: 409 });
+    },
+    previous,
   };
-  const actions = runInNewContext(source + `
+  const save = runInNewContext(source + `
     studentHomeUser = 'student';
+    studentLessonDraft = { id: 'lesson', revision: 0, previous };
     renderStudentSchedule = () => {};
-    ({ save: saveStudentLesson, edit: () => { studentLessonId = 'lesson'; } })
+    saveStudentLesson
   `, context);
-
-  await actions.save();
-  assert.equal(account.prefs.anotherSetting, 'keep');
-  assert.equal(account.prefs.solioTimetable[0].name, 'Электроник');
-  assert.equal(account.prefs.solioTimetable[0].day, 4);
-  actions.edit();
-  values = { ...values, end: '07:30' };
-  await actions.save();
-  assert.match(status.textContent, /Дуусах цаг/);
-  assert.equal(account.prefs.solioTimetable[0].end, '10:00');
-  values = { ...values, end: '10:30' };
-  await actions.save();
-  assert.equal(account.prefs.solioTimetable.length, 1);
-  assert.equal(account.prefs.solioTimetable[0].end, '10:30');
-  await actions.save(true);
-  assert.equal(account.prefs.solioTimetable.length, 0);
-
-  account = { $id: 'another-user', prefs: { anotherSetting: 'separate' } };
-  await actions.save();
-  assert.equal(account.prefs.solioTimetable, undefined);
+  await save();
+  assert.match(status.textContent, /энэ хичээл өөр төхөөрөмж дээр өөрчлөгдсөн/i);
+  assert.equal(saveButton.disabled, true);
+  assert.equal(cancelButton.disabled, false);
+  await save();
+  assert.equal(requests, 1);
 });
 
 test('timetable export uses Ulaanbaatar time and includes the final day of term', async () => {
