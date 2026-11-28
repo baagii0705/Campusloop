@@ -488,8 +488,11 @@ function render(){
   const ownBtn=document.getElementById('myListings');
   if(ownBtn)ownBtn.setAttribute('aria-pressed',String(onlyMine));
   if(solioImageObserver)cards.querySelectorAll('img[data-src]').forEach(img=>solioImageObserver.unobserve(img));
+  const visibleGrid = cards.getClientRects().length > 0 && cards.getBoundingClientRect().top < window.innerHeight;
+  const eagerCount = visibleGrid ? (window.innerWidth>=1100?4:window.innerWidth>=769?3:2) : 0;
   cards.innerHTML=(feedError&&!pending)?'<div class="boardEmpty solioListingError" role="alert">Заруудыг ачаалж чадсангүй. <button type="button" onclick="loadListings()">Дахин оролдох</button></div>':visible.map((x,index)=>{
     const mine=session?.user?.id===x.user_id;
+    const gallery=solioListingGallery(x);
     const sold=x.status==='sold';
     const reserved=x.status==='reserved';
     const free=Number(x.price)===0;
@@ -509,8 +512,8 @@ function render(){
     return '<article class="solioProductCard boardListing" id="listing-'+escapeHTML(x.id)+'" data-open="'+escapeHTML(x.id)+'">'
       +'<div class="boardMedia" data-category="'+escapeHTML(x.category||'')+'">'
       +'<div class="boardPaper" aria-hidden="true"><span>'+escapeHTML(x.category||'Оюутны зар')+'</span>'+note+'</div>'
-      +solioCoverImage(x,'boardPhoto',index<(window.innerWidth>=1100?4:window.innerWidth>=769?3:2))+(vip?'<span class="vipBadge">VIP</span>':'')+badge
-      +(solioListingGallery(x).length>1?'<span class="boardPhotoCount" aria-label="'+solioListingGallery(x).length+' зураг">'+boardIcon('image')+solioListingGallery(x).length+'</span>':'')
+      +solioCoverImage(x,'boardPhoto',index<eagerCount,gallery)+(vip?'<span class="vipBadge">VIP</span>':'')+badge
+      +(gallery.length>1?'<span class="boardPhotoCount" aria-label="'+gallery.length+' зураг">'+boardIcon('image')+gallery.length+'</span>':'')
       +'<button class="boardHeart" type="button" data-fav="'+escapeHTML(x.id)+'" aria-label="'+(saved?'Хадгалснаас хасах':'Зарыг хадгалах')+'" aria-pressed="'+String(saved)+'">'+boardIcon('heart')+'</button></div>'
       +'<div class="boardListingInfo"><strong class="boardPrice">'+price+'</strong><h3><button class="boardListingLink" type="button" aria-label="'+title+' — '+price+'">'+title+'</button></h3>'
       +'<div class="boardMeta">'+(schoolName?'<span title="'+escapeHTML(x.school)+'">'+schoolName+'</span>':'')+(date?'<time>'+date+'</time>':'')+'</div>'
@@ -587,16 +590,33 @@ function solioCardImageUrl(original){
   }catch(e){}
   return original;
 }
-function solioThumbImage(original,alt=''){
-  const url=solioCardImageUrl(original);
-  return '<img src="'+escapeHTML(url)+'"'+(url!==original?' data-original="'+escapeHTML(original)+'"':'')+' width="120" height="90" loading="lazy" decoding="async" alt="'+escapeHTML(alt)+'">';
+const failedListingImages=new Map();
+function imageAvailable(url){
+  return url && !(failedListingImages.get(url)>Date.now());
 }
-function solioCoverImage(listing,className,eager=false){
-  const original=solioListingGallery(listing)[0];
-  if(!original)return '';
-  const url=className==='detailPhoto'?original:solioCardImageUrl(original);
+function rememberImageFailure(url){
+  if(!url)return;
+  failedListingImages.delete(url);
+  failedListingImages.set(url,Date.now()+60000);
+  if(failedListingImages.size>256)failedListingImages.delete(failedListingImages.keys().next().value);
+}
+function solioThumbImage(original,alt=''){
+  const card=solioCardImageUrl(original);
+  const url=imageAvailable(card)?card:original;
+  if(!imageAvailable(url))return escapeHTML(alt);
+  return '<img src="'+escapeHTML(url)+'" data-listing-thumb'+(url!==original?' data-original="'+escapeHTML(original)+'"':'')+' width="120" height="90" loading="lazy" decoding="async" alt="'+escapeHTML(alt)+'">';
+}
+function solioCoverImage(listing,className,eager=false,gallery=solioListingGallery(listing)){
+  let index=0,url,original;
+  for(;index<gallery.length;index++){
+    original=gallery[index];
+    const preferred=className==='detailPhoto'?original:solioCardImageUrl(original);
+    url=imageAvailable(preferred)?preferred:original;
+    if(imageAvailable(url))break;
+  }
+  if(index===gallery.length)return '';
   const deferred=!eager&&typeof IntersectionObserver!=='undefined';
-  return '<img class="'+className+'" data-cover-id="'+escapeHTML(listing.id)+'" data-photo-index="0" '+(deferred?'data-src':'src')+'="'+escapeHTML(url)+'"'+(url!==original?' data-original="'+escapeHTML(original)+'"':'')+' alt="" width="520" height="390" loading="'+(eager?'eager':'lazy')+'" decoding="async"'+(eager?' fetchpriority="high"':'')+'>';
+  return '<img class="'+className+'" data-cover-id="'+escapeHTML(listing.id)+'" data-photo-index="'+index+'" '+(deferred?'data-src':'src')+'="'+escapeHTML(url)+'"'+(url!==original?' data-original="'+escapeHTML(original)+'"':'')+' alt="" width="520" height="390" loading="'+(eager?'eager':'lazy')+'" decoding="async"'+(eager?' fetchpriority="high"':'')+'>';
 }
 let solioImageObserver;
 function observeSolioImages(root){
@@ -614,11 +634,14 @@ function observeSolioImages(root){
 // A missing optimized copy falls back to its original before trying the gallery.
 document.addEventListener('error',event=>{
   const img=event.target;
-  if(!img.matches?.('img[data-cover-id],img[data-original]'))return;
-  if(img.dataset.original){img.src=img.dataset.original;delete img.dataset.original;return;}
+  if(!img.matches?.('img[data-cover-id],img[data-listing-thumb]'))return;
+  rememberImageFailure(img.currentSrc||img.src);
+  if(imageAvailable(img.dataset.original)){img.src=img.dataset.original;delete img.dataset.original;return;}
   const listing=listings.find(item=>String(item.id)===img.dataset.coverId);
-  const index=Number(img.dataset.photoIndex)+1;
-  const next=listing&&solioListingGallery(listing)[index];
+  const gallery=listing?solioListingGallery(listing):[];
+  let index=Number(img.dataset.photoIndex)+1;
+  while(index<gallery.length&&!imageAvailable(gallery[index]))index++;
+  const next=gallery[index];
   if(next){img.dataset.photoIndex=String(index);img.src=next;}
   else img.hidden=true;
 },true);

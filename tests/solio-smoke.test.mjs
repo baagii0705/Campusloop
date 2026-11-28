@@ -164,11 +164,13 @@ test('legacy gallery covers fall back to the next photo and then the text notice
   });
   assert.match(cover(item,'boardPhoto'),/src="https:\/\/img\/1\.jpg"/);
   assert.equal(cover({id:'no-photo'},'boardPhoto'),'');
-  const target={matches:()=>true,dataset:{coverId:'old',photoIndex:'0'}};
+  const target={matches:()=>true,src:'https://img/1.jpg',dataset:{coverId:'old',photoIndex:'0'}};
   handleError({target});
   assert.equal(target.src,'https://img/2.jpg');
+  assert.doesNotMatch(cover(item,'boardPhoto'),/1\.jpg/);
   handleError({target});
   assert.equal(target.hidden,true);
+  assert.equal(cover(item,'boardPhoto'),'');
 });
 
 test('quick-post validates before uploading and saves multiple images in order',async()=>{

@@ -4,7 +4,7 @@
 const features={
  campus:{script:'/campus-hub.js',style:'/campus-hub.css'},
  societies:{script:'/societies.js',style:'/societies.css'},
- sponsor:{script:'/sponsor-application.js'},
+ sponsor:{script:'/sponsor-application.js',style:'/sponsor-application.css'},
  admin:{script:'/admin-dashboard.js',style:'/admin-dashboard.css'}
 };
 const pending=new Map(),ready=new Set();
