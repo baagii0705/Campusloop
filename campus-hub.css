@@ -12,3 +12,23 @@ body.s1CampusMode main.wrap>*:not(#campusPage),body.s1DealsMode main.wrap>*:not(
 .s1DealInvite input{width:100%;padding:8px}
 .s1DealCard h2 .s1DealTitle{display:inline;padding:0;margin:0;background:transparent;border:0;color:inherit;font:inherit;text-decoration:none}
 .s1DealCard h2 .s1DealTitle:hover{text-decoration:underline}
+
+/* Organizations also use a short, three-step discount request form. */
+.solioDealWizard{display:grid;gap:14px}
+.solioDealProgress{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.solioDealProgress li{font-size:11px;font-weight:700;padding:10px 6px;text-align:center;background:#f4f0e8;border:1px solid #d4ccbd;color:#6d675e;border-radius:6px}
+.solioDealProgress li.current{background:#172e42;color:#fff}
+.solioDealProgress li.completed{background:#e5efe5;color:#35643d;border-color:#aac2ab}
+.solioDealStep{display:grid;gap:15px}
+.solioDealStep[hidden],.solioDealWizardActions button[hidden]{display:none!important}
+.solioDealStep h3{font-size:19px;margin:5px 0 2px}
+.solioDealStep>p{font-size:12px;color:#67635b}
+.solioDealWizardActions{display:flex;gap:10px}
+.solioDealWizardActions button{min-height:44px}
+.solioDealWizardActions button[type="submit"],.solioDealWizardActions button:nth-child(2){flex:1}
+.solioDealWizardActions button:first-child{background:#fff;color:#172e42}
+.solioDealSummary{margin:0;display:grid;grid-template-columns:110px minmax(0,1fr);border:1px solid #d3cbbc;border-radius:8px;overflow:hidden}
+.solioDealSummary dt,.solioDealSummary dd{margin:0;padding:11px;border-bottom:1px solid #e9e3d8;overflow-wrap:anywhere;font-size:12px}
+.solioDealSummary dt{background:#f5f0e7;color:#76695b}
+.solioDealSummary dd{font-weight:700}
+@media(max-width:600px){.solioDealProgress li{font-size:10px;padding:8px 4px}.solioDealSummary{grid-template-columns:90px minmax(0,1fr)}}

@@ -293,14 +293,35 @@ async function saveStudentLesson(remove = false) {
   }
 }
 
+let studentFeedObserver;
 function loadStudentHomeFeeds() {
+  studentFeedObserver?.disconnect();
   if (studentHomeElement('studentHome').hidden) return;
   const scope = profileSchool;
   const feeds = [
     { root: 'studentHomeDeals', api: '/api/deals?', key: 'deals', empty: 'Одоогоор идэвхтэй хөнгөлөлт алга.' },
     { root: 'studentHomeEvents', api: '/api/societies?kind=event&scope=upcoming&', key: 'items', empty: 'Одоогоор удахгүй болох эвент алга.' }
   ];
-  feeds.forEach(feed => loadStudentHomeFeed(feed, scope));
+  if (typeof IntersectionObserver === 'undefined') {
+    feeds.forEach(feed => loadStudentHomeFeed(feed, scope));
+    return;
+  }
+  studentFeedObserver = new IntersectionObserver((entries, observer) => {
+    if (observer !== studentFeedObserver || scope !== profileSchool) return;
+    for (const entry of entries) {
+      if (!entry.isIntersecting) continue;
+      observer.unobserve(entry.target);
+      loadStudentHomeFeed(feeds.find(feed => feed.root === entry.target.id), scope);
+    }
+  }, { rootMargin: '180px 0px' });
+  for (const feed of feeds) {
+    const root = studentHomeElement(feed.root);
+    if (studentHomeFeeds.get(feed.root)?.scope !== scope) {
+      studentHomeFeeds.delete(feed.root);
+      root.textContent = 'Ачаалж байна…';
+    }
+    studentFeedObserver.observe(root);
+  }
 }
 
 async function loadStudentHomeFeed(feed, scope, force = false) {
